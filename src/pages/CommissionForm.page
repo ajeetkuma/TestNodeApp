@@ -1,0 +1,995 @@
+<apex:page extensions="ComFormController" standardController="Opportunity"  showHeader="false" docType="html-5.0" applyBodyTag="true" standardStylesheets="false">
+
+<apex:stylesheet value="{!URLFOR($Resource.BootstrapDatePicker, 'css/bootstrap-datetimepicker.min.css')}"/>
+<link rel="stylesheet" href="httpS://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" /> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/alertifyjs/1.8.0/css/alertify.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/bootstrap.min.css" />
+<apex:includeScript value="https://cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"/>
+<apex:includeScript value="https://code.jquery.com/jquery-2.1.4.min.js"/>
+<apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"/> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"></script>
+<script src="{!URLFOR($Resource.ApplicationFormJs,'ApplicationFormJs/Resource/App.js')}"></script>
+  
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <style type="text/css">
+ label {
+    display: inline-block !important;
+    max-width: 100% !important;
+    margin-bottom: 5px !important;
+    font-weight: normal !important;
+}
+.Actuallabel {
+    
+    font-weight: 700 !important;
+}
+     .left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px;    
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 30px;    
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+.table-header{
+  font-size: 12px;
+    font-weight: bold;
+    font-family: Arial Unicode MS;
+}
+
+
+  body {
+   font-family: Arial Unicode MS;
+   font-size:9pt;
+  }
+
+
+  td {
+    font-size:11pt;
+    font-family:Tahoma;
+  }
+  .col-sm-3{padding-top:15px !important;}
+  body {
+      position: relative;
+  }
+  
+  #section1 {padding-top:100px;}
+  #section2 {padding-top:100px;}
+  #section3 {padding-top:100px;}
+  #section4 {padding-top:100px;}
+  #section5 {padding-top:100px;}
+  #section6 {padding-top:100px;}
+  #section7 {padding-top:100px;}
+
+  li a.active {
+    background-color: none;
+    color: white;
+    text-decoration-color: red;
+
+}
+
+li a:hover:not(.active) {
+    background-color: none;
+    color: white;
+}
+hr {
+  border: none;
+    height: 2px;
+    color: #333;
+    background-color: #333;
+    margin-top: 1px;
+
+    /*border: none;
+    height: 1px;
+    /* Set the hr color */
+    /*color: #333; /* old IE */
+    /*background-color: #333;*//***//*/ /* Modern Browsers */
+}
+/*.line-height{
+  margin-top:20px;
+  margin-bottom:10px;
+}*/
+</style>
+  <script>
+  
+   var opp='{!oppId}';
+   /*var afc1=JSON.parse('{!afc}');*/
+   console.log('Ajeeeeeet');
+   var sometext = {};
+   var temp = '{!jsonstring}';
+   temp = temp.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+// remove non-printable and other non-valid JSON chars
+temp = temp.replace(/[\u0000-\u0019]+/g,"");
+    sometext=JSON.parse(temp);
+    
+
+   console.log('sometext');
+   console.log(sometext);
+   /*alertify.alert('Ready!');*/
+ /* bootbox.alert('hy');*/
+   
+  </script>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">  
+    <div ng-app="main" ng-controller="app">
+          <nav class="navbar navbar-default navbar-fixed-top" style=" background-color:#53453C;height: 40px;">
+              <div class="container-fluid">
+                  <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                              <span class="icon-bar"></span>
+                              <span class="icon-bar"></span>
+                              <span class="icon-bar"></span>
+                        </button>
+                        <a class="logo" href="http://www.brigadegroup.com/"><img src="https://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" style="height: 40px;"/></a>
+                  </div>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                  <ul class="nav navbar-nav">
+                      <!-- <li class="active"><a href="#section1" style="color:#FFFFFF">Project Details</a></li>
+                      <li><a href="#section2" style="color:#FFFFFF">Applicant 1</a></li> -->
+                      <!-- <li><a href="#section3" style="color:#FFFFFF">Applicant 2</a></li>
+                      <li><a href="#section4" style="color:#FFFFFF">Applicant 3</a></li>
+                      <li><a href="#section5" style="color:#FFFFFF">Payment Details</a></li>
+                      <li><a href="#section6" style="color:#FFFFFF">Address Details</a></li>
+                      <li><a href="#section7" style="color:#FFFFFF">Address Details</a></li> -->
+                  </ul>
+              </div>
+          </nav>
+          <div class="container">
+        
+                <div id="section1" class="container-fluid" >
+                  <div class="panel panel-primary">
+                        <div class="panel-heading "><span ng-show="Opportunity.LeadSource=='Referral'">Brigade Referral Confirmation Form </span>
+                        <span ng-show="Opportunity.LeadSource=='Agents'">Brigade Brokerage confirmation Form</span></div>
+                                <div class="panel-body">
+                                  <form name="ProjectForm" role="form" style="line-height: 200%">
+                                              <div class="row">
+                                                <div class="col-sm-1" >
+                                                  <label class="Actuallabel">To : </label>
+                                                 
+                                                </div>
+                                                <div class="col-sm-6" >
+                                                  <p>Internal Audit / Accounts Department</p>
+                                                </div>
+                                                    
+                                                
+                                                <div class="col-sm-2" >
+                                                    
+                                                          <label for="usr" class="Actuallabel">From :</label>
+                                                          <!-- <p>{{ProjectName}}</p> -->
+                                                </div>
+                                                <div class="col-sm-2" >
+                                                            
+                                                              <p>{{ProjectName}}</p>
+                                                              <!-- <input type="text" class="form-control"  ng-model="ProjectName" ng-disabled="true"/>
+                                                              <i class="glyphicon glyphicon-home "></i> -->
+                                                          
+                                                </div>
+                                              </div>
+                                              
+                                              <hr/>
+                                              <div class="row" style="line-height: 200%">
+                                                    <div class="col-sm-4" >
+                                                        <label for="usr" class="Actuallabel">First Applicant Name: </label>
+                                                         
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                      </div>
+                                                    <div class="col-sm-4" >
+                                                        <label for="usr">{{Contact[0].Salutation}} {{Contact[0].FirstName}}</label>
+                                                    </div>
+                                                    <!-- <div class="col-sm-4" >
+                                                          <div class="left-inner-addon ">
+                                                          
+                                                            <input type="text" class="form-control"  ng-model="Contact[0].FirstName" ng-disabled="true"/>
+                                                            <i class="glyphicon glyphicon-user "></i>
+                                                          </div>
+                                                    </div> -->
+                                              </div>
+                                              <div class="row" >
+                                                      <div class="col-sm-4" >
+                                                        <label for="usr" class="Actuallabel">Building / Wing Name :</label>
+                                                      </div>
+                                                      <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                      </div>
+                                                      <div class="col-sm-4" >
+                                                          
+                                                          <label for="usr">{{PlantName}}</label>
+                                                            <!-- <input type="text" class="form-control"  ng-model="PlantName" ng-disabled="true"/> -->
+                                                          
+                                                      </div>
+                                              </div>
+                                              <div class="row" >
+                                                     <div class="col-sm-4" >
+                                                        <label for="usr" class="Actuallabel">Apartment Number</label>
+                                                      </div>
+                                                      <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                      </div>
+                                                      <div class="col-sm-4">
+                                                          <label for="usr">{{Opportunity.Unit_No__c}}</label>
+                                                      </div>     <!-- <input type="text" class="form-control"  ng-model="Opportunity.Unit_No__c"/> -->
+                                              </div>
+                                              <div class="row" ng-show="Opportunity.LeadSource=='Referral'">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel">Date Of Booking</label>  
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                            </div>
+                                                          <div class="col-sm-4">
+                                                                <label for="usr">{{Opportunity.Sale_Order_Date__c}}</label>
+                                                          </div>
+                                              </div>
+                                              <div class="row">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel">Unit Cost (Agreement Value)</label>  
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                            </div>
+                                                          <div class="col-sm-4">
+                                                           <label for="usr">{{Opportunity.For_ROI__c}}</label> 
+                                                               <!--  <input type="number" class="form-control" placeholder="" ng-model="Opportunity.For_ROI__c" min="0" ng-pattern="/^[0-9]{1,10}$/" ng-disabled="true"/>
+                                                                        <i class="fa fa-inr" style="margin-top: -30px;"></i> -->
+                                                                <!-- <label for="usr">{{Opportunity.For_ROI__c}}</label> -->
+                                                          </div>
+                                              </div>
+                                              <div class="row">
+                                                              
+                                                            <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel">Amount Received (Till Date)</label>
+                                                            </div> 
+                                                            <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                            <label for="usr">{{Opportunity.Bill_Value__c}}</label>
+                                                                  <!-- <div class="left-inner-addon ">
+                                                                        
+                                                                        <input type="number" class="form-control" placeholder="" ng-model="Opportunity.Bill_Value__c" min="0" ng-pattern="/^[0-9]{1,10}$/" ng-disabled="true"/>
+                                                                        <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                                         
+                                                                  </div> -->
+                                                            </div>
+                                              </div>
+                                              <!-- <div class="row">
+                                                            <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel">Commission Percentage </label> 
+                                                            </div> 
+                                                            <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                            <label for="usr">{{Opportunity.Commission_Percentage__c}}</label> 
+                                                                 <!--  <div class="left-inner-addon ">
+                                                                        
+                                                                        <input type="number" class="form-control" placeholder="" ng-model="Opportunity.of_Amount_Received__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="CH_Amount" ng-disabled="true"/>
+                                                                        <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                                        
+                                                                  </div> -->
+                                                           <!-- </div> -->
+                                           <!--   </div> -->
+                                              <div class="row">
+                                                            <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel">% of Amount Received (As on Date)</label> 
+                                                            </div> 
+                                                            <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                            <label for="usr">{{Opportunity.of_Amount_Received__c}}</label> 
+                                                                 <!--  <div class="left-inner-addon ">
+                                                                        
+                                                                        <input type="number" class="form-control" placeholder="" ng-model="Opportunity.of_Amount_Received__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="CH_Amount" ng-disabled="true"/>
+                                                                        <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                                        
+                                                                  </div> -->
+                                                            </div>
+                                              </div>
+                                              <div class="row">
+                                                      <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel">Sales Agreement Done </label> 
+                                                      </div> 
+                                                      <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                          </div>
+                                                      <div class="col-sm-4">
+                                                                 <label for="usr">{{Opportunity.Sale_agreement_done__c}}</label> 
+                                                      </div>
+                                                      
+                                              </div>
+                                              
+                                              <div class="row" ng-show="Opportunity.Sale_agreement_done__c !='No'">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel">Agreement Date </label>  
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                          </div>
+                                                          <div class="col-sm-4">
+                                                                <label for="usr">{{Opportunity.Agreement_Date__c}}</label>
+                                                          </div>
+                                              </div>
+                                              <div class="row">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel" ng-show="Opportunity.LeadSource=='Agents'">Channel partner Name(On Booking Form)</label>  
+                                                               <label for="usr" class="Actuallabel" ng-show="Opportunity.LeadSource=='Referral'">Refferer Name(On Bookin Form)</label>
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                          </div>
+                                                          <div class="col-sm-4">
+                                                                <label for="usr">{{Opportunity.Reffered_Agent__c}}</label>  
+                                                                <!-- <input type="text" class="form-control"  ng-model="Opportunity.Reffered_Agent__c" ng-disabled="true"/> -->
+                                                          </div>
+                                              </div>
+                                              <div class="row">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel">Mobile / Phone</label>  
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                          </div>
+                                                          <div class="col-sm-4">
+                                                                <div class="left-inner-addon ">
+                                                                  <label for="usr">{{RefMobilePhone}}</label> 
+                                                                  <!-- <input type="tel" class="form-control"  ng-model="RefMobilePhone" ng-pattern="/^[0-9]{1,10}$/" name="Phone0"/>
+                                                                   <i class="glyphicon glyphicon-phone"></i> -->
+                                                      
+                                                                 </div>
+                                                          </div>
+                                              </div>
+                                              <div class="row" ng-show="Opportunity.LeadSource=='Agents'">
+                                                    <div class="col-sm-5" >
+                                                          <div class="checkbox">
+                                                                  <label class="Actuallabel"><input type="checkbox" value="" ng-model="Channel_Partner__c.Channel_Partner_Registered_With_Brigade__c"/>Channel Partner Registered with Brigade Group</label>
+                                                          </div>
+                                                    </div>
+                                              </div>
+                                              <div class="row" ng-show="Channel_Partner__c.Channel_Partner_Registered_With_Brigade__c">
+                                                         <div class="col-sm-4" >
+                                                              <label for="usr" class="Actuallabel">Registration Number</label>
+                                                                <div class="">
+                                                                
+                                                                  <input type="text" class="form-control"  ng-model="Channel_Partner__c.Registration_Number__c"/>
+                                                                  
+                                                                </div>
+                                                         </div> 
+                                                         <div class="col-sm-4" >
+                                                              <label for="usr" class="Actuallabel">Vendor Number</label>
+                                                                <div class="">
+                                                                
+                                                                  <input type="text" class="form-control"  ng-model="Channel_Partner__c.Vendor_Number__c"/>
+                                                                  
+                                                                </div>
+                                                         </div> 
+                                              </div>
+                                              <div class="row" ng-show="Opportunity.LeadSource=='Referral'">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel">Type Of Refferer</label>  
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                          </div>
+                                                          <div class="col-sm-4">
+                                                                <label for="usr">{{Opportunity.Referrer_is_a__c}}
+                                                                 <span ng-show="Opportunity.Referrer_is_a__c == 'Employee'">1 % </span>
+                                                                 <span ng-show="Opportunity.Referrer_is_a__c == 'Existing Customer'">1 % </span>
+                                                                 <span ng-show="Opportunity.Referrer_is_a__c == 'Walkin'">0.5 % </span> </label> 
+                                                          </div>
+                                              </div>
+                                              <div class="row" ng-show="Opportunity.LeadSource=='Referral'">
+                                                          <div class="col-sm-4">
+                                                               <label for="usr" class="Actuallabel">Date Of Site Visit</label>  
+                                                          </div>
+                                                          <div class="col-sm-1">
+                                                               <label for="usr">:</label>  
+                                                            </div>
+                                                          <div class="col-sm-4">
+                                                                <label for="usr">{{Date_of_Site_Visit}}</label>
+                                                          </div>
+                                              </div>
+                                              
+                                              <div class="row" ng-show="Opportunity.LeadSource=='Referral'">
+                                                        <div class="col-sm-4">
+                                                              <label for="usr" class="Actuallabel">Employee Id</label>
+                                                                <div class=" ">
+                                                                        
+                                                                <input type="text" class="form-control"  ng-model="Commission__c.Employee_Id__c"  name="Phone0"/>
+                                                                      
+                                                                </div>  
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                                <label for="usr" class="Actuallabel">Existing customer unit ID</label>
+                                                                <div class=" ">
+                                                                        
+                                                                <input type="text" class="form-control"  ng-model="Commission__c.Existing_Customer_Unit_Id__c"  name=""/>
+                                                                      
+                                                                </div>  
+                                                        </div>
+                                              </div>
+                                              <div class="row">
+                                                        <div class="col-sm-4">
+                                                              <label for="usr" class="Actuallabel">
+                                                              <span ng-show="Opportunity.LeadSource=='Referral'">Referrer Tax Residence (Country):</span>
+                                                              <span ng-show="Opportunity.LeadSource=='Agents'">Channel Partner Tax Residence (Country):</span></label>
+                                                                <div class=" ">
+                                                                        
+                                                                <input type="text" class="form-control"  ng-model="Commission__c.Country__c"  name="Phone0"/>
+                                                                      
+                                                                </div>  
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                                <label for="usr" class="Actuallabel">Currency to be used for payment</label>
+                                                                <div class=" ">
+                                                                        
+                                                                <input type="text" class="form-control"  ng-model="Commission__c.Currency__c"  name=""/>
+                                                                      
+                                                                </div>  
+                                                        </div>
+                                              </div>
+                                              <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label for="usr" class="Actuallabel">
+                                                            <span ng-show="Opportunity.LeadSource=='Referral'">Referral Commission Payable %:</span>
+                                                            <span ng-show="Opportunity.LeadSource=='Agents'">Brokerage Commission Payable %:</span>
+                                                            </label>
+                                                              <div class="">
+                                                                
+                                                                  <input type="text" class="form-control"  ng-model="Opportunity.CommissionRate" ng-disabled ="true"/>
+                                                                  
+                                                                </div>  
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                                <label for="usr" class="Actuallabel">Amount Payable on Agreement Value (INR):</label>
+                                                                <div class=" ">
+                                                                        
+                                                            <input type="number" class="form-control"  ng-model="Commission__c.Amount_Payble_on_Agreement_Value__c"  name="" ng-disabled="true" />
+                                                                      
+                                                                </div>  
+                                                        </div>
+                                              </div>
+                                              
+                                              
+                                              
+                                              <div class="row">
+                                                    <div class="col-sm-4" >
+                                                          <div class="checkbox">
+                                                                  <label class="Actuallabel"><input type="checkbox" value="" ng-model="Commission__c.Sercive_Tax_Applicable__c" ng-change="ChangeServicetax()"/>Service Tax Applicable</label>
+                                                          </div>
+                                                    </div>
+                                                        <div class="col-sm-4">
+                                                            <!--<label for="usr" class="Actuallabel">Service Tax (If Any):</label>-->
+                                                            <label for="usr" class="Actuallabel" ng-show="Commission__c.Sercive_Tax_Applicable__c==true">Service Tax (If Any):</label> 
+                                                              <div class=" ">
+                                                                        
+                                                              <input type="number" class="form-control"   ng-show="Commission__c.Sercive_Tax_Applicable__c==true" ng-model="Commission__c.Service_Tax__c" name="ServiceTax" ng-disabled="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+                                                              <!-- max="100" ng-pattern="/^[0-9]+(\.[0-9]{1,5})?$/" ng-keyup="ChangeTotalAmountPayble() && Commission__c.Amount_Payble_on_Agreement_Value__c >= 0" -->
+                                                                  
+                                                              </div>  
+                                                        </div>
+                                                        
+                                              </div>
+                                              <div class="row" >
+                                                       <div class="col-sm-4">
+                                                                <label for="usr" class="Actuallabel">Total Payable Amount (INR):</label>
+                                                                <div class=" ">
+                                                                        
+                                                                <input type="number" class="form-control"  ng-model="Commission__c.Total_Amount_Payble__c"  name="" ng-disabled="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
+                                                                      
+                                                                </div>  
+                                                        </div>
+                                                         <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel"> SFDC Offer code for promotional schemes(if Any)</label>  
+                                                                  <div class="">
+                                                                        
+                                                                        <!-- <select class="form-control" ng-model=" Opportunity.Offer_Code__c" required="true" ng-options="type for type in OfferCodeTypes" ng-disabled="true"></select> -->
+
+                                                                        <input type="text" class="form-control" ng-model="Opportunity.Offer_Code_for_Commission__c" required="true" ng-disabled="false"/>
+                                                                        
+                                                                        
+                                                                  </div>
+                                                            </div>
+                                                            
+                                              </div>
+                                              <div class="row" >
+                                                         <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel"> Prepared By SalesPerson :Name</label>  
+                                                                  <div class="">
+                                                                        <input type="text" class="form-control" placeholder="" ng-model="PreparedBy"  name="CH_Amount" ng-disabled="true"/>
+                                                                       
+                                                                  </div>
+                                                            </div>
+                                              </div>
+                                              <br/>
+                                              
+                                              <!-- <hr /> -->
+                                              
+                                          <!-- <div style="line-height: 70%">
+                                          <div class="row">
+                                              <div class="col-sm-9">
+                                                <label for="usr"> <b>Project head Confirmation for payment approval:</b></label><br/>
+                                              </div>
+                                          </div>
+                                              <div class="row" style="font-weight: normal">
+                                                <div class="col-sm-1"></div>
+                                                 <label for="usr"> <span style="padding-right:10px"> &#x2714;</span>I hereby confirm that above mentioned booking was closed/reffered by said refferer</label><br/>
+                                              </div>
+                                              <div class="row" style="font-weight: normal">
+                                                <div class="col-sm-1"></div>
+                                                <label for="usr"> <span style="padding-right:10px"> &#x2714;</span>I hereby also confirm the name of the refferer has been captured in the Application form</label><br/>
+                                              </div>
+                                              <div class="row" style="font-weight: normal">
+                                                <div class="col-sm-1"></div>
+                                                <label for="usr">  <span style="padding-right:10px"> &#x2714;</span>I hereby also confirm that there is no over-writing/ white-ink / change of booking source on the application form</label><br/>
+                                              </div>
+                                              <div class="row" style="font-weight: normal">
+                                                <div class="col-sm-1"></div>
+                                                <label for="usr">  <span style="padding-right:10px"> &#x2714;</span>I have done validation of the booking source and confirm that the above points are correct</label><br/><br/>
+                                              </div>
+                                              <div class="row" style="font-weight: normal">
+                                                <div class="col-sm-9">
+                                                <label for="usr"> <b>Kindly process the attached invoice for payment as per agreed TATs</b></label><br/>
+                                              </div>
+                                            </div>
+                                          </div> -->
+
+
+                                              
+                                              <!-- <div class="row" >
+                                                        <div class="col-sm-4">
+                                                             <label for="usr" class="Actuallabel">Date:{{Date__c}}</label>
+                                                             <div class="left-inner-addon ">
+                                                                    
+                                                                    <input type="date" class="form-control"  ng-model="Date__c" name="wedding2" required="true" />
+                                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                                    <span ng-show="ContactForm.wedding2.$error.required && ($scope.Contact[2] != undefined)" style="color:red">Wedding date is mandatory !</span>
+                                                             </div>
+                                                        </div>
+                                                         <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel"> Project / Office Head Name</label>  
+                                                                  <div class="">
+                                                                        
+                                                                        <input type="text" class="form-control" placeholder="" ng-model="ProjectHeadname" min="0"  name="CH_Amount" ng-disabled="true"/>
+                                                                        
+                                                                         
+                                                                  </div>
+                                                            </div>
+                                                         <div class="col-sm-4">
+                                                                 <label for="usr" class="Actuallabel">Project / Office Head Name (Signature) </label>  
+                                                                  <div class="">
+                                                                        
+                                                                        
+                                                                        
+                                                                         
+                                                                  </div>
+                                                          </div>
+                                              </div> -->
+                                              <br/>
+                                              
+                                              <!-- <hr /> -->
+                                              <!-- <div class="row">
+                                              <div class="col-sm-12">
+                                                <table class="table table-bordered  table-condensed table-responsive">
+                                                      <thead>
+                                                              <tr>
+                                                                      <th>Department / Recepient</th>
+                                                                      <th>Signature / Approval for Processing</th>
+                                                                      <th>Date</th>
+                                                                      <th>Remarks</th>
+                                                              </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                              <tr >
+                                                                        <td class="table-header">Project Head</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                              </tr>
+                                                              <tr >
+                                                                        <td class="table-header">Sales HOD</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                              </tr>
+                                                              <tr >
+                                                                        <td class="table-header">Accounts</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                              </tr>
+                                                               <tr >
+                                                                        <td class="table-header">Internal Audit</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                               </tr>
+                                                                <tr >
+                                                                        <td class="table-header">Payments Details</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                  </div>
+                                             </div> -->
+                                             <div class="row">
+                                                <div class="col-sm-4">
+                                                  
+                                                </div>
+                                                <div class="col-sm-4">
+                                                  
+                                                </div>
+                                                <div class="col-sm-4">
+                                          
+                                                  <button type="button" class="btn btn-primary btn-sm" ng-click="Save('false')" >Save As Draft</button>
+                                                        
+                                                    
+                                         
+                                          
+                                                  <button type="button" class="btn btn-primary btn-sm"  ng-click="Save('true')" >Submit</button>
+                                                        
+                                                    
+                                        
+                                          
+                                                  <button type="button" class="btn btn-primary btn-sm" ng-click="cancle()" >Cancel</button>
+                                                        
+                                                    
+                                                </div>
+                                              </div>
+                                      
+                                    
+                                  </form>
+                                </div>              
+                          </div>
+                    </div>
+                 
+                        
+            </div>
+        </div> 
+  <!-- </div> -->
+     
+</body>
+    <script type="text/javascript">
+  var app = angular.module('main',[]);
+
+app.factory('NumaanFactory', ['$q', '$log', function($q, $log){
+    var service={};
+
+    service.removeAngularjsKey = function(targetData) {
+
+         var toJson = angular.toJson(targetData);
+         var fromJson = angular.fromJson(toJson);
+        
+         return fromJson;
+
+    }
+    service.saveCommisionPdf = function(opp){
+
+           var defer = $q.defer();
+           
+           ComFormController.savePdf(opp,function(result, event) {
+
+                if (event.status) {
+                  console.log(event);
+                    defer.resolve(result);
+                       
+                } else {
+                  console.log('errorLog');
+                  console.log(event);
+                    $log.error(event.message);
+            defer.reject(event.message);
+                  
+                }
+           },{ buffer: true, escape: true} );  
+           return defer.promise;
+        }
+        service.saveCommision = function(opp,utilClass,flag){
+
+           var defer = $q.defer();
+           
+           ComFormController.saveCommisions(opp,utilClass,flag,function(result, event) {
+
+                if (event.status) {
+                  console.log(event);
+                    defer.resolve(result);
+                       
+                } else {
+                  console.log('errorLog');
+                  console.log(event);
+                    $log.error(event.message);
+            defer.reject(event.message);
+                  
+                }
+           },{ buffer: true, escape: true} );  
+           return defer.promise;
+        }
+
+  
+    return service;
+}]);
+app.controller('app',['$compile','$q','$scope','NumaanFactory','$filter', function($compile,$q,$scope,NumaanFactory,$filter) {
+    $scope.name='Ajeet';
+    $scope.Date__c=new Date();
+    $scope.Opportunity=sometext.opport;
+    console.log('oppor');
+    console.log($scope.Opportunity);
+    $scope.ServiceTax=sometext.serviceTaxFromProject;
+    console.log('service tax');
+    console.log($scope.ServiceTax);
+    
+    //$scope.offerCode=sometext.OfferCode;
+    $scope.Opportunity.LeadSource=sometext.opport.Lead_Source__c;
+    $scope.Opportunity.CommissionRate=sometext.opport.Commission_rate__c;
+    $scope.commissionPer=($scope.Opportunity.CommissionRate != undefined) ? $scope.Opportunity.CommissionRate:0 ;
+    console.log('commission per'+$scope.Opportunity.CommissionRate)
+    console.log($scope.commissionPer);
+    
+    $scope.PreparedBy=sometext.preparedBySalesperson;
+    $scope.ProjectHeadname=sometext.projectHeadName;
+    $scope.Contact=sometext.contacts;
+    $scope.SalutationTypes=sometext.Salutations;
+    $scope.ProjectName=sometext.projectName;
+    $scope.RefMobilePhone=sometext.refferedByPhone;
+    $scope.PlantName=sometext.plantName;
+    $scope.OfferCodeTypes=sometext.AllOfferCodes;
+    $scope.PlantTypes=[];
+    $scope.ProjectTypes=[];
+
+    $scope.Commission__c=sometext.com;
+        //$scope.Commission__c.Service_Tax__c=0;
+    $scope.Channel_Partner__c={};
+    $scope.UtilityClassForCommissionForm=sometext.util;
+    $scope.Channel_Partner__c=sometext.chp;
+    $scope.Date__c= $filter('date')($scope.Date__c,'yyyy-MM-dd');
+    $scope.Date_of_Site_Visit=sometext.RefferdBySalesOrderDate;
+    angular.forEach(sometext.plantsToProject, function(value, key){
+              $scope.ProjectTypes.push(key);
+
+    });
+
+    alertify.defaults = {
+        // dialogs defaults
+        autoReset:true,
+        basic:false,
+        closable:true,
+        closableByDimmer:true,
+        frameless:false,
+        maintainFocus:true, // <== global default not per instance, applies to all dialogs
+        maximizable:true,
+        modal:true,
+        movable:true,
+        moveBounded:false,
+        overflow:true,
+        padding: true,
+        pinnable:true,
+        pinned:true,
+        preventBodyShift:false, // <== global default not per instance, applies to all dialogs
+        resizable:true,
+        startMaximized:false,
+        transition:'pulse',
+
+        // notifier defaults
+        notifier:{
+            // auto-dismiss wait time (in seconds)  
+            delay:5,
+            // default position
+            position:'bottom-right'
+        },
+
+        // language resources 
+        glossary:{
+            // dialogs default title
+            title:'',
+            // ok button text
+            ok: 'OK',
+            // cancel button text
+            cancel: 'Cancel'            
+        },
+
+        // theme settings
+        theme:{
+            // class name attached to prompt dialog input textbox.
+            input:'ajs-input',
+            // class name attached to ok button
+            ok:'ajs-ok',
+            // class name attached to cancel button 
+            cancel:'ajs-cancel'
+        }
+    };
+      
+    console.log('$scope.ProjectTypes');
+    console.log($scope.ProjectTypes);
+    $scope.ChangeAmountPayble = function(){
+      console.log('aaaa');
+     
+      
+     $scope.Commission__c.Amount_Payble_on_Agreement_Value__c=($scope.Opportunity.For_ROI__c*($scope.commissionPer))/100;
+    console.log('Amount PAyable');
+    console.log($scope.Commission__c.Amount_Payble_on_Agreement_Value__c);  
+    
+    }
+    
+    $scope.ChangeAmountPayble();
+
+    $scope.ChangeTotalAmountPayble = function(){
+    if($scope.Commission__c.Sercive_Tax_Applicable__c == false){
+         $scope.Commission__c.Total_Amount_Payble__c=$scope.Commission__c.Amount_Payble_on_Agreement_Value__c-(($scope.Commission__c.Amount_Payble_on_Agreement_Value__c )/100);
+    }else if(($scope.Commission__c.Sercive_Tax_Applicable__c == true)){
+        $scope.Commission__c.Total_Amount_Payble__c=$scope.Commission__c.Amount_Payble_on_Agreement_Value__c-(($scope.Commission__c.Amount_Payble_on_Agreement_Value__c* $scope.Commission__c.Service_Tax__c)/100);
+    
+    }
+    }
+    $scope.ChangeServicetax =function(){
+        console.log($scope.Commission__c.Sercive_Tax_Applicable__c);
+          /*if($scope.Commission__c.Sercive_Tax_Applicable__c == true){*/
+            $scope.Commission__c.Service_Tax__c = ($scope.Commission__c.Amount_Payble_on_Agreement_Value__c * $scope.ServiceTax)/100;
+            if($scope.Commission__c.Sercive_Tax_Applicable__c == true){
+                $scope.Commission__c.Total_Amount_Payble__c = $scope.Commission__c.Amount_Payble_on_Agreement_Value__c + $scope.Commission__c.Service_Tax__c;
+            }else if($scope.Commission__c.Sercive_Tax_Applicable__c == false){
+                 $scope.Commission__c.Total_Amount_Payble__c = $scope.Commission__c.Amount_Payble_on_Agreement_Value__c;
+            }
+          /*}*/
+      }
+     
+    $scope.ChangeServicetax();
+    $scope.ChangePlant = function(){
+          angular.forEach(sometext.plantsToProject, function(value, key){
+          $scope.PlantTypes=[];
+          if(key == $scope.ProjectName){
+            
+            angular.forEach(value, function(value1, key1){
+
+              $scope.PlantTypes.push(value1);
+            }
+            );
+          }
+          });
+        }
+        $scope.ChangePlant();
+        $scope.cancle = function(){
+      
+      top.location.href = '/'+opp;    
+    }
+    var errorMsg = 'aaaaaaaaaaa'; 
+
+    $scope.validateFormDetails = function() {
+      if($scope.ProjectForm.BokerageCommision != '' && $scope.ProjectForm.BokerageCommision != undefined) {
+              if($scope.ProjectForm.BokerageCommision.$error.pattern) {
+              errorMsg ='Commision is not a valid Number';
+              
+              return false;
+            }
+          }
+          if($scope.ProjectForm.BokerageCommision != '' && $scope.ProjectForm.BokerageCommision != undefined) {
+              if($scope.commissionPer <= 0.000001) {
+              errorMsg ='Commision payble should be greater than 0';
+              
+              return false;
+            }
+          }
+          
+          
+          if($scope.ProjectForm.ServiceTax != '' && $scope.ProjectForm.ServiceTax != undefined) {
+              if($scope.Commission__c.Service_Tax__c <= 0.000001 && $scope.Commission__c.Sercive_Tax_Applicable__c == true) {
+              errorMsg ='Service tax is should be greater than 0';
+              
+              return false;
+            }
+          }
+          if($scope.Opportunity.Bill_Value__c <= 0 ) {
+              errorMsg ='Amount Received till date should me more than 0.';
+              
+              return false;
+            }
+          /*if($scope.Opportunity.Bill_Value__c >= 0) {
+              
+            errorMsg ='Amount received till date should be greater than 0.';
+              return false;
+            }
+          }*/
+          
+          console.log('nooooooooooooooo errorrrrrrrrrrrrr');
+          return true;
+
+    }
+    $scope.Save = function(boolflag){
+      $scope.flag=boolflag;
+      delete $scope.Contact[0]["attributes"];
+      delete $scope.Opportunity["attributes"];
+      if($scope.Opportunity.Offer_Selected__r != undefined)
+      delete $scope.Opportunity.Offer_Selected__r["attributes"];
+      if($scope.Commission__c != undefined)
+      delete $scope.Commission__c["attributes"];
+      if($scope.Channel_Partner__c != undefined)
+      delete $scope.Channel_Partner__c["attributes"];
+      if($scope.Opportunity.Plant2__r != undefined)
+      delete $scope.Opportunity.Plant2__r["attributes"];
+      if($scope.Opportunity.Plant2__r.ProjectLookup__r != undefined)
+      delete $scope.Opportunity.Plant2__r.ProjectLookup__r["attributes"];
+      if($scope.Opportunity.Plant2__r.Project_Head__r != undefined)
+      delete $scope.Opportunity.Plant2__r.Project_Head__r["attributes"];
+      if($scope.Opportunity.Referred_by_Name2__r!= undefined)
+      delete $scope.Opportunity.Referred_by_Name2__r["attributes"];
+
+      if($scope.Opportunity.Unit__r!= undefined)
+      delete $scope.Opportunity.Unit__r["attributes"];
+
+    if($scope.Opportunity.Sales_Person_1__r!= undefined)
+      delete $scope.Opportunity.Sales_Person_1__r["attributes"];
+
+      $scope.UtilityClassForCommissionForm.ChannelPartnerRegistered       =($scope.Channel_Partner__c.Channel_Partner_Registered_With_Brigade__c != undefined) ?$scope.Channel_Partner__c.Channel_Partner_Registered_With_Brigade__c:'';
+      $scope.UtilityClassForCommissionForm.RegistrationNumber         =($scope.Channel_Partner__c.Registration_Number__c != undefined) ?$scope.Channel_Partner__c.Registration_Number__c:'';
+      $scope.UtilityClassForCommissionForm.VendorNumber             =($scope.Channel_Partner__c.Vendor_Number__c != undefined) ?$scope.Channel_Partner__c.Vendor_Number__c:'';
+      $scope.UtilityClassForCommissionForm.BrokerageCountry           =($scope.Commission__c.Country__c != undefined) ?$scope.Commission__c.Country__c:'';
+      $scope.UtilityClassForCommissionForm.BrokerageCurrency          =($scope.Commission__c.Currency__c != undefined) ?$scope.Commission__c.Currency__c:'';
+      $scope.UtilityClassForCommissionForm.BrokerageCommisionpayble       =(($scope.commissionPer != undefined) ?$scope.commissionPer:'').toString();
+      $scope.UtilityClassForCommissionForm.AmountPaybleOnAgreementValue     =(($scope.Commission__c.Amount_Payble_on_Agreement_Value__c != undefined) ?$scope.Commission__c.Amount_Payble_on_Agreement_Value__c.toFixed(2):'').toString();
+      $scope.UtilityClassForCommissionForm.ServiceTax             =(($scope.Commission__c.Service_Tax__c != undefined) ?$scope.Commission__c.Service_Tax__c.toFixed(2):'').toString();
+      $scope.UtilityClassForCommissionForm.TotalPaybleAmount          =(($scope.Commission__c.Total_Amount_Payble__c != undefined) ?$scope.Commission__c.Total_Amount_Payble__c.toFixed(2):'').toString();
+      $scope.UtilityClassForCommissionForm.SfdcOfferCode            =($scope.Opportunity.Offer_Code_for_Commission__c != undefined) ?$scope.Opportunity.Offer_Code_for_Commission__c :'';
+      $scope.UtilityClassForCommissionForm.EmployeeId             =($scope.Commission__c.Employee_Id__c != undefined) ?$scope.Commission__c.Employee_Id__c:'';
+      $scope.UtilityClassForCommissionForm.ExistingCustomerUnitId       =($scope.Commission__c.Existing_Customer_Unit_Id__c != undefined) ?$scope.Commission__c.Existing_Customer_Unit_Id__c:'';
+      if($scope.validateFormDetails() || $scope.flag== false){  
+        NumaanFactory.saveCommision(opp,$scope.UtilityClassForCommissionForm,$scope.flag).then(function(response){
+            
+             console.log(response );
+             if( response == 'sucessfalse'){
+              alertify.alert('Your request has been saved as draft sucessfully');
+              $scope.cancle();
+             }if(response == 'sucesstrue'){
+              alertify.alert('Your request has been submitted sucessfully');
+              $scope.cancle();
+             }
+             
+            },
+            function(error){
+              
+          });
+      }else{
+            console.log('inside save else')  ;
+                       // alert('Error : ' +errorMsg);
+                        alertify.alert('Error :' +errorMsg);
+                        //$alert({title: 'Oppss !!', content: errorMsg,container:'body', placement: 'topheader', type: 'danger', show: true,duration:4,dismissable:true});
+            }
+
+
+
+
+    }
+
+    
+}]);
+
+
+</script>
+</apex:page>

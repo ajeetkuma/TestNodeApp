@@ -1,0 +1,36 @@
+<apex:page controller="sendEKhathaSMS">
+    <apex:form >
+    <apex:sectionHeader title="{!sectionHeader}"/>
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:outputPanel id="mainPanel">
+        <br/>
+        <br/>
+        <apex:outputPanel id="firstPanel" rendered="{!firstPaneldisplay}">
+            <apex:outputLabel value="Select the SMS Template : ." rendered="{!isforEkhata}"></apex:outputLabel> <apex:selectList multiselect="false" size="1" value="{!smsTemplate}" rendered="{!isforEkhata}">
+                <apex:selectOption itemLabel="--NONE--" itemValue="none" ></apex:selectOption>
+                <apex:selectOption itemLabel="Send E-Khata SMS Before Last Seven Days " itemValue="EKhathaSMS" ></apex:selectOption>
+                <apex:selectOption itemLabel="Send E-Khata Penalty SMS" itemValue="EKhathaPenaltySMS" ></apex:selectOption>
+                <apex:selectOption itemLabel="Send Brigade Symphony Ready For Possession SMS" itemValue="ReadyForPossession" ></apex:selectOption>
+            
+            </apex:selectList>
+            <br/>
+            <br/>
+            <apex:commandButton action="{!populateUnitName}"  value="{!sectionHeader}"/ ><br/><br/>
+             <apex:pageBlock rendered="{!isforEkhata}">   
+                    <apex:pageBlockSection title="Information Related to SMS Template {Sample SMS}" columns="1">
+                        <b>1. Send E-Khata SMS Before Last Seven Days :-- </b>Dear Mr XYZ, Last 7days to remit your final payments towards your apartment BG-ALT-B-X-0114-XX,to schedule registration. Please contact 080-40467600. Kindly ignore if already registered/or in process. 
+Team CRM Meadows.<br/><br/>
+                        <b>2. Send E-Khata Penalty SMS :-- </b>Dear Mr XYZ, Request you to kindly remit your final payments to schedule registration. Please note: In case of delay, holding charges will be levied. Please contact 0821 -2511239. Kindly ignore if already registered/or in process. 
+Team CRM.<br/><br/>
+                        <b>3. Send Brigade Symphony Ready For Possession SMS :-- </b>Your Apartment at Brigade Symphony is ready for possession, to take possession please pay the balance amount due on priority, please call on 0821 2511239, delayed payments will attract 18% interest. If already paid kindly ignore. 
+Team CRM Mysore.<br/>
+                   </apex:pageBlockSection>
+             </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:outputPanel id="secondPanel" rendered="{!Not(firstPaneldisplay)}">
+            <apex:pageMessage strength="3" severity="info" title="SMS has been Sent . For sending SMS for other Plant Please Wait till this SMS Get inserted in SMS Magic Home Page. "></apex:pageMessage>
+        </apex:outputPanel>
+    
+    </apex:outputPanel>
+    </apex:form>
+</apex:page>

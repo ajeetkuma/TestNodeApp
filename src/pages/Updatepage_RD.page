@@ -1,0 +1,193 @@
+<!-----------------------------------------------------------------------------------------------------------------
+                                        Created by:
+                                        Author Name:
+                                        purpose:Accept and reject action saveing the data,depending on mail action
+                                        
+                                        Modified by:
+                                        Lastmodified by:
+                                        Purpose:
+------------------------------------------------------------------------------------------------------------------- -->
+
+<apex:page controller="Updatepagecon" sidebar="false" showHeader="false">
+ <apex:pageMessages />
+    <apex:form >
+     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap.css')}" rel="stylesheet" media="screen"/>
+        <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap-theme.css')}" rel="stylesheet" media="screen"/> 
+        <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+        <apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+        <link href="{!URLFOR($Resource.brigadecss)}" rel="stylesheet" media="screen"/>
+    <style> 
+      
+    #headcontainer {
+       background-image: url({!URLFOR($Resource.NavigatorBackground)});
+       }
+    </style>
+ </head>
+    <body>
+       <div id="page" align="center" background-color="white"> 
+         <table width="935" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                 <table width="935" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td height="117" id="headcontainer"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                       <tr>
+                          <td width="198" height="117" align="center" valign="middle"><a href="http://www.brigadegroup.com/">
+                          <img src="http://www.brigadegroup.com/corporate/images/brigade_group_logo.png" width="137" height="94" alt="Brigade Enterprises - 
+                          Leading Builders in Bangalore's Real Estate Industry" /></a></td>
+                          <td align="right" valign="bottom"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                         <td align="right" valign="baseline"><table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <!-- <td width="460" align="right">
+                              <a href="" class="ContactLinks">HOME</a> | 
+                              <a href="" class="ContactLinks">ABOUT US</a> | 
+                              <a href="" class="ContactLinks">VENDOR</a> | 
+                              <a href="" class="ContactLinks">CONTACT US</a> | 
+                              <a href="" class="ContactLinks">RSS FEED</a> | <img src="{!URLFOR($Resource.RSSFeed)}" width="14" height="14" alt="RSS"/>
+                              <a href="" class="ContactLinks">FAQs</a>&nbsp;&nbsp;&nbsp;</td>-->
+                              
+                              <td width="187" align="right"><table width="187" border="0" align="right" cellpadding="0" cellspacing="0">
+                                 <tr>
+                                    <td width="170" align="center" valign="baseline"><div id="search2">
+                                       <!--search form need to build hers-->
+                                      </div></td> 
+                                    <td width="17" align="center" valign="baseline">&nbsp;</td>
+                                  </tr>
+                                </table></td>
+                            </tr>
+                          </table></td>
+                      </tr>
+                     <tr>
+                        <td height="30" align="right" valign="top"><a href="" class="gotofooter"></a> <a href=""></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                      </tr>
+                      <tr>
+                       <td align="right"><table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                             <!-- <td><a href="/apex/BrigadeHomePage" class="resi_button">HOME</a></td>
+                              <td>&nbsp; | &nbsp;</td>
+                              <td><a href="/apex/Bridge_CPprofile_RD" class="resi_button">MY PROFILE</a></td>
+                              <td>&nbsp; | &nbsp;</td>
+                              <td><a href="/apex/myPayment_ext" class="comm_button">MY PAYMENTS</a></td>
+                              <td>&nbsp; | &nbsp;</td>
+                              <td><a href="#" class="retail_button">MY DOCUMENTS</a></td>
+                              <td>&nbsp; | &nbsp;</td>
+                              <td><a href="#" class="hosp_button">CASES</a></td>
+                              <td>&nbsp; | &nbsp;</td>
+                              <td><a href="/apex/BrigadeReferralpage" class="foun_button">REFERRAL</a></td>
+                              <td>&nbsp; | &nbsp;</td>
+                              <td><a href="/apex/FeedBack" id="blink" class="foun_button">Feed Back</a></td>
+                              <td>&nbsp; | &nbsp;</td>-->
+                             <!-- <td>
+                              <apex:outputLink value="http://brigadeforce.bgsandbox.cs16.force.com/loginpage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="hosp_button">Logout</apex:outputLink>
+                              </td>-->
+                              <td width="17">&nbsp;</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+               </tr>
+             </table>
+           </td>
+        </tr>
+      </table>
+     </td>
+   </tr>
+  </table>
+ </div>
+ <div id="page" align="right" background-color="white" class="login"> 
+<apex:Message />
+     <fieldset class="login">
+                 <!-------------------------------- We display the original information and mirror information--------------------------------------------------->
+             <apex:pageBlock mode="detail" >
+                     <apex:pageBlockSection columns="2"  ID="BG_pGBLOCKsECTION7" collapsible="false" title="Accept/Reject Information" rendered="{!not(CPupdatepage)}"  >
+                     <apex:outputText ><b style="padding-left:142px;" >             Current Information               </b></apex:outputText> 
+                     <apex:outputText ><b style="padding-left:135px;">              New Information                   </b> </apex:outputText>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BirthDate__c}" styleClass="text1" />
+                         <apex:outputField value="{!CPprofileObj.CP_profile_MirrorBirthdate__c}"   styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Wedding_Anniversary__c}" styleClass="text1" />
+                         <apex:outputField value="{!CPprofileObj.CP_Profile_MirrorWedding_Anniversary__c}" styleClass="text"/>                                                  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_EmailForCommunication__c}" styleClass="text1" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringEmailForCommunication__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Mobile__c}" styleClass="text1"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringMobile__c}"  styleClass="text"/>  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_HouseNumber__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringHouseNumber__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street1__c}"/>    
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringStreet1__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street2__c}"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringStreet2__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street3__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringStreet3__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCity__c}" styleClass="text1"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringMailing_City__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingPostcode__c}" styleClass="text1" />                    
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringMailingPostCode__c}"  styleClass="text"/>                       
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Company__c}" />                     
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringCompany__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Designation__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringDesignation__c}"  styleClass="text"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Industry__c}" /> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringIndustry__c}" styleClass="text" /> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_EducationalQualification__c}" />                     
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirrorEducationalQualification__c}"  styleClass="text"  />                     
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Profession__c}" />                     
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MirroringProfession__c}"  styleClass="text" /> 
+                    </apex:pageBlockSection>  
+                    <!----------------------- once display the mirror information accept and reject infromation depending on action----------------------->
+                    <apex:pageBlockSection columns="1"   collapsible="false" title="Accept Information" rendered="{!(CPupdatepage2)}"  >
+                     <apex:outputText ><b style="padding-left:245px;">              New Information                   </b> </apex:outputText>
+                         <apex:outputfield value="{!CPprofileObj.CPprofile_EmailForCommunication__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Mobile__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_HouseNumber__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street1__c}"/>  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street2__c}"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street3__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCity__c}" styleClass="text1"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingPostcode__c}" styleClass="text1" />  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Company__c}" />  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Designation__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Industry__c}" /> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_EducationalQualification__c}" />  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Profession__c}" />  
+                   </apex:pageBlockSection>
+                   <!----------------------------------------------- Reject Information----------------------------------------------------------------------->
+                   <apex:pageBlockSection columns="1"  collapsible="false" title="Reject Information" rendered="{!(reject1)}"  >
+                      <apex:outputText ><b style="padding-left:135px;">              New Information                   </b> </apex:outputText>
+                         <apex:outputfield value="{!CPprofileObj.CPprofile_EmailForCommunication__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Mobile__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_HouseNumber__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street1__c}"/>   
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street2__c}"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street3__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCity__c}" styleClass="text1"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingPostcode__c}" styleClass="text1" /> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Company__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Designation__c}" />
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Industry__c}" /> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_EducationalQualification__c}" />  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Profession__c}" />
+                    </apex:pageBlockSection>                       
+                     <!------------------------ enter the reason information--------------------------------------------------->
+                     <apex:pageBlockSection title="Reason for reject " rendered="{!not(reject)}"  >
+                        <apex:inputField value="{!CPprofileObj3.CPprofile_ReasonforReject_del__c}"/>                        
+                     </apex:pageBlockSection> 
+                     <apex:pageBlockSection title="Reason for reject " rendered="{!(reject1)}" >
+                       <apex:outputfield value="{!CPprofileObj3.CPprofile_ReasonforReject_del__c}"/>
+                     </apex:pageBlockSection>
+                     <!-----------------------------------Command buttons depending on action accept or reject------------------------>
+                    <apex:pageBlockButtons location="Bottom"   >
+                      <apex:commandButton value="Accept" action="{!acceptpage}"    Id="BG_uPDATE" rendered="{!not(CPupdatepage)}"  />
+                      <apex:commandButton value="Reject"  Id="BG_rEJECT" action="{!rejectpage}" rendered="{!not(CPupdatepage)}" /> 
+                      <apex:commandButton value="Home" action="{!Homepage}" rendered="{!(CPupdatepage)}" />
+                  </apex:pageBlockButtons>
+                </apex:pageBlock>
+          </fieldset>
+       </div>
+    </body>
+  </apex:form>
+</apex:page>

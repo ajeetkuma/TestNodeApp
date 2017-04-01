@@ -1,0 +1,2132 @@
+<apex:page extensions="AppFormController" standardController="Opportunity" showHeader="false" docType="html-5.0" applyBodyTag="true" standardStylesheets="false">
+
+<apex:stylesheet value="{!URLFOR($Resource.BootstrapDatePicker, 'css/bootstrap-datetimepicker.min.css')}"/>
+<link rel="stylesheet" href="httpS://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" /> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/alertifyjs/1.8.0/css/alertify.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/alertifyjs/1.8.0/css/themes/bootstrap.min.css" />
+<!--apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"/> 
+<apex:includeScript value="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/--> 
+
+<!-- <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.2.0/bootbox.min.js"/>
+<apex:includeScript value="{!URLFOR($Resource.Bootbox, '/makeusabrew-bootbox-4de42da/bootbox.js')}"/> -->
+<!-- <apex:includeScript value="{!URLFOR($Resource.alertifyjs, '/alertify.min.js')}"/>  -->
+
+<apex:includeScript value="https://cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"/>
+<apex:includeScript value="https://code.jquery.com/jquery-2.1.4.min.js"/>
+<apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"/> 
+    
+<!-- <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.js"/>  -->
+
+<!-- <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"/> 
+  <apex:includeScript value="{!URLFOR($Resource.ApplicationFormJs,'Resource/Controller.js')}"/> 
+-->
+            
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"></script>
+
+  <script src="{!URLFOR($Resource.ApplicationFormJs,'ApplicationFormJs/Resource/Controller.js')}"></script>
+    
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <style type="text/css">
+ /*label
+    {
+      width: 60px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    input
+    {
+      vertical-align: middle;
+    }*/
+
+    .button {
+    position: relative;
+    /* background-color: #4CAF50; */
+    border: none;
+    /* font-size: 28px; */
+    color: #FFFFFF;
+    /* padding: 20px;
+    width: 200px; */
+    text-align: center;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.button:after {
+    content: "";
+    background: #57ABDC;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+.button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}
+     .left-inner-addon {
+    position: relative;
+}
+.no-border{border:0px none #000 !important;}
+.left-inner-addon input {
+    padding-left: 30px;    
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 30px;    
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+ [type="radio"]{
+  position: absolute;
+    z-index: -1;
+    opacity: 0;
+ }
+.control-group {
+  display: inline-block;
+  width: 200px;
+  height: 210px;
+  margin: 10px;
+  padding: 30px;
+  text-align: left;
+  vertical-align: top;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.control {
+  font-size: 14px;
+  position: relative;
+  display: block;
+  /*margin-bottom: 15px;*/
+  padding-left: 30px;
+  cursor: pointer;
+}
+
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.control__indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: #e6e6e6;
+}
+
+.control--radio .control__indicator {
+  border-radius: 50%;
+}
+/* Hover and focus states */
+.control:hover input ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+  background: #ccc;
+}
+
+/* Checked state */
+.control input:checked ~ .control__indicator {
+  background: #2aa1c0;
+}
+
+/* Hover state whilst checked */
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+  background: #0e647d;
+}
+
+/* Disabled state */
+.control input:disabled ~ .control__indicator {
+  pointer-events: none;
+  opacity: .6;
+  background: #e6e6e6;
+}
+
+/* Check mark */
+.control__indicator:after {
+  position: absolute;
+  display: none;
+  content: '';
+}
+
+/* Show check mark */
+.control input:checked ~ .control__indicator:after {
+  display: block;
+}
+
+/* Checkbox tick */
+.control--checkbox .control__indicator:after {
+  top: 4px;
+  left: 8px;
+  width: 3px;
+  height: 8px;
+  transform: rotate(45deg);
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+}
+
+/* Disabled tick colour */
+.control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+
+/* Radio button inner circle */
+.control--radio .control__indicator:after {
+  top: 7px;
+  left: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Disabled circle colour */
+.control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+
+  @page
+  {
+
+    /* Landscape orientation */
+    size:landscape;
+
+    /* Put page numbers in the bottom right corner of each
+    page in the pdf document. */
+    @bottom-right {
+      content: "Page " counter(page);
+    }
+  }
+
+  body {
+   font-family: Arial Unicode MS;
+   font-size:9pt;
+  }
+
+
+  td {
+    font-size:11pt;
+    font-family:Tahoma;
+  }
+  .col-sm-3{padding-top:15px !important;}
+  body {
+      position: relative;
+  }
+  /*#section1 {padding-top:50px;height:500px;color: #fff; background-color: #1E88E5;}
+  #section2 {padding-top:50px;height:500px;color: #fff; background-color: #673ab7;}
+  #section3 {padding-top:50px;height:500px;color: #fff; background-color: #ff9800;}
+  #section4 {padding-top:50px;height:500px;color: #fff; background-color: #00bcd4;}
+  #section5 {padding-top:50px;height:500px;color: #fff; background-color: #009688;}*/
+  /*#section1 {padding-top:50px;height:500px;}
+  #section2 {padding-top:50px;height:500px;}
+  #section3 {padding-top:50px;height:500px;}
+  #section4 {padding-top:50px;height:500px;}
+  #section5 {padding-top:50px;height:500px;}*/
+  #section1 {padding-top:100px;}
+  #section2 {padding-top:100px;}
+  #section3 {padding-top:100px;}
+  #section4 {padding-top:100px;}
+  #section5 {padding-top:100px;}
+  #section6 {padding-top:100px;}
+  #section7 {padding-top:100px;}
+  #section9 {padding-top:100px;}
+  #section10 {padding-top:100px;}
+
+  li a.active {
+    background-color: none;
+    color: white;
+    text-decoration-color: red;
+
+}
+
+li a:hover:not(.active) {
+    background-color: none;
+    color: white;
+}
+
+.navbar-default{background-color:#FFF;border-color:#337ab7;}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover
+{
+background-color:#337ab7 !important;
+}
+  </style>
+   
+  <script>
+   function escapeSpecialChars(argument) {
+
+      return argument.replace('P', 'b');
+               /*.replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");*/
+      // body...
+    }
+  
+   var opp='{!oppId}';
+   /*var afc1=JSON.parse('{!afc}');*/
+   console.log('Ajeeeeeet');
+   console.log('{!jsonstring}');
+   //var x=escapeSpecialChars('{!jsonstring}');
+   var x='{!jsonstring}';
+   var sometext=JSON.parse(x);
+   console.log('sometext');
+   console.log(sometext);
+   /*alertify.alert('Ready!');*/
+ /* bootbox.alert('hy');*/
+   
+</script>
+</head>
+  <body data-spy="scroll" data-target=".navbar" data-offset="50">  
+      <!-- <select class="form-control" ng-model="vehical.HaulType__c" required="true" ng-options="hmodel for hmodel in HaulTypes"></select>   -->
+      <div ng-app="main" ng-controller="app">
+          <!-- <nav class="navbar navbar-default">
+                  <div class="container-fluid" >
+                        <div class="navbar-header"  style="float:center">
+                            <a class="logo" href="http://www.brigadegroup.com/"><img src="https://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" /></a>
+            
+                        </div>
+                  </div>
+          </nav> -->
+          <nav class="navbar navbar-default navbar-fixed-top" style="height: 40px;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button><!-- http://img6a.flixcart.com/www/prod/images/flipkart_logo-c76c6a19.png -->
+      <!-- <a class="navbar-brand" href="#">WebSiteName</a> --><a class="logo" href="http://www.brigadegroup.com/"><img src="https://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" style="
+    height: 40px;"/></a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#section1" >Project Details</a></li>
+          <li><a href="#section2" >Applicant 1</a></li>
+          <li><a href="#section3" >Applicant 2</a></li>
+          <li><a href="#section4" >Applicant 3</a></li>
+          <li><a href="#section5" >Payment Details</a></li>
+          <li><a href="#section6" >Address Details</a></li>
+          <li><a href="#section9" >Source of Enquiry</a></li>
+          <li><a href="#section10" >Others</a></li>
+          <!-- <li><a href="#section8">General Power of Attorney</a></li>
+          <li><a href="#section9">Source of Enquiry</a></li>
+          <li><a href="#section10">Additional Information</a></li>
+          <li><a href="#section11">TERMS and CONDITIONS</a></li>
+          <li><a href="#section12">Document CheckList</a></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+          <div class="container">
+        
+                <div id="section1" class="container-fluid">
+                  <div class="panel panel-primary">
+                        <div class="panel-heading ">Project Details</div>
+                                <div class="panel-body">
+                                  <form name="ProjectForm" role="form">
+                                     <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Project</label>
+                                              <div class="left-inner-addon ">
+                                                    <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="Application_Form__c.Project__c"/>
+                                                    <!-- <select class="form-control" ng-model="Application_Form__c.Project__c" ng-options="type for type in ProjectTypes" ng-change="ChangePlant();ChangeProjectsDetails()"></select> -->
+                                                    <!-- <i class="glyphicon glyphicon-home "></i> -->
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <div class="form-group">
+                                                  <label for="usr">Block</label>
+                                                <!-- <select class="form-control" ng-model="Application_Form__c.Plant__c" ng-options="type for type in PlantTypes" ng-change="ChangeUnit();ChangeProjectsDetails()"></select> -->
+                                                <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="Application_Form__c.Plant__c"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <div class="form-group">
+                                                <label for="usr">Apt / Unit No.</label>
+                                                <!-- <select class="form-control" ng-model="Application_Form__c.Unit__c" ng-options="type for type in UnitTypes" ng-change="ChangeProjectsDetails()"></select> -->
+
+                                                <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="Application_Form__c.Unit__c"/>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-4" >
+                                            <div class="form-group">
+                                                <label for="usr">Floor</label>
+                                                <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="FloorDescription"/>
+                                            </div>
+                                        </div>
+                                     
+                                        <div class="col-sm-4">
+                                             <label for="usr">Super-Built Area (In Sqft)</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" min="0" class="form-control" placeholder="" ng-model="Unit__c.Area__c"  ng-pattern="/^[0-9]{1,10}$/" name="Super_Built_Area" ng-disabled="true"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                                    <span ng-show="ProjectForm.Super_Built_Area.$error.pattern" style="color:red">Not a valid number!</span>
+                                                    
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">PT / Unit Price Agreed (Per Sqft)</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Opportunity.PT_Unit_Price_Agreed__c" min="0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" name="Apt_Unit_Price_Agreed" ng-keyup="changeAggrement()"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <span ng-show="ProjectForm.Apt_Unit_Price_Agreed.$error.pattern" style="color:red">Not a valid number!</span>
+                                              </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Pvt. Terrace  Area (In Sqft)</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Terrace_Area__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Area" ng-disabled="true"/>
+                                                    <span ng-show="ProjectForm.Pvt_Terrace_Garden_Area.$error.pattern" style="color:red">Not a valid number!</span>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Pvt. Terrace Area Price Agreed(Per Sqft)</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Terrace_Area_Price__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Area" ng-keyup="changeAggrement()"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                 <span ng-show="ProjectForm.Pvt_Terrace_Garden_Area.$error.pattern" style="color:red">Not a valid number!</span>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         
+                                     
+                                         <div class="col-sm-4">
+                                             <label for="usr">No of Car Park(s)</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                 <input type="number" class="form-control" placeholder="" ng-model="Opportunity.No_of_Car_Park_S__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="no_of_car_parks"  ng-keyup="changeCarPark();changeAggrement()"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                                    <span ng-show="ProjectForm.no_of_car_parks.$error.pattern" style="color:red">Not a valid number!</span>
+                                               </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                             <label for="usr">Pvt. Garden Area (In Sqft) </label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Garden_Area__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Price_Agreed" ng-disabled="true"/>
+                                                    
+                                                    <span ng-show="ProjectForm.Pvt_Terrace_Garden_Price_Agreed.$error.pattern" style="color:red">Not a valid number!</span>
+                                              </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Pvt. Garden Area Price Agreed(Per Sqft) </label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Garden_Area_Price__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Price_Agreed" ng-keyup="changeAggrement()"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <span ng-show="ProjectForm.Pvt_Terrace_Garden_Price_Agreed.$error.pattern" style="color:red">Not a valid number!</span>
+                                              </div>
+                                         </div>
+                                        
+                                         <div class="col-sm-4">
+                                             <label for="usr">Car Park Reservation Charges </label>
+                                              <div class="left-inner-addon ">
+                                                    
+      <input type="number" class="form-control" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Car_Park_Reservation_Charges" ng-model="Opportunity.Car_park_reservation_Charges__c" ng-disabled="true"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                  <span ng-show="ProjectForm.Car_Park_Reservation_Charges.$error.pattern" style="color:red">Not a valid number!</span>
+                                              </div>
+                                         </div>
+                                     </div>
+                                      <div class="row">
+                                        <div class="col-sm-4">
+                                             <label for="usr">Car Park Type</label>
+                                             <div class="left-inner-addon ">
+                                                      <select class="form-control" ng-model=" Opportunity.Car_Parking_Type__c" required="true" ng-options="type for type in CarParkTypes">
+                                                      <!-- ng-options="type for type in CarParkTypes" -->
+                                                         
+
+                                                        
+                                                      </select>
+                                                       <!-- <select id="selectbasic" name="selectbasic" class="form-control">
+                                                            <option value="1">Open</option>
+                                                            <option value="2">Covered</option>
+                                                            <option value="3">Vallet</option>
+                                                       </select> -->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Club House Fee </label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Plant__c.Club_Membership__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Club_House_Fee" ng-disabled="true"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <span ng-show="ProjectForm.Club_House_Fee.$error.pattern" style="color:red">Not a valid number!</span>
+                                              </div>
+                                         </div>
+                                      
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Agreement Value</label>
+                                              <div class="left-inner-addon ">
+                                                   
+                                                    <input type="number" class="form-control" ng-model="Application_Form__c.AGREEMENT_VALUE__c"  min="0" ng-pattern="/^[0-9]{1,20}/" name="Agreement_Value" ng-disabled="true"/>
+                                                      
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <span ng-show="ProjectForm.Agreement_Value.$error.pattern" style="color:red">Not a valid number!</span>
+                                              </div>
+                                         </div>
+                                      </div>
+                                
+                                    
+                    
+                                  </form>
+                                </div>
+                        
+                  </div>
+                </div>
+                <div id="section2" class="container-fluid">
+                  <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details- First Applicant (As in the Proof)</div>
+                                <div class="panel-body">
+                                <form name="ContactForm0" role="form">
+                                     <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <select class="form-control" ng-model="Contact[0].Salutation" required="true" ng-options="type for type in SalutationTypes"></select>
+                                                     <!-- <select id="selectbasic" name="selectbasic" class="form-control">
+                                                          <option value="1">MR</option>
+                                                          <option value="2">MRS</option>
+                                                          <option value="3">MISS</option>
+                                                          <option value="1">DR</option>
+                                                         <option value="2">M/S</option>
+                                                          <option value="3">MASTER</option>
+                                                     </select> -->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">First Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].FirstName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Middle Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Middle_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                    </div> 
+                                    
+                                     <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Last Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[0].LastName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Date of Birth </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[0]" required="true" name="dob0"/>
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    <span ng-show="ContactForm0.dob0.$error.required" style="color:red">DOB is mandatory !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Relation</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[0].Relation__c"  ng-options="type for type in RelationTypes"></select>
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">OF</label>
+                                              <div class="left-inner-addon ">
+                                                  
+                                                <input type="text" class="form-control" ng-model="Contact[0].Relation_Name__c" />
+                                                <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                              
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Industry</label>
+                                             <div>
+                                                    
+                                                    <!-- <input type="text" class="form-control" ng-model="Contact[0].Industry__c" /> -->
+                                                    <select class="form-control" ng-model="Contact[0].Industry__c"  ng-options="type for type in IndustryTypes"></select>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Profession</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Profession" ng-model="Contact[0].Profession__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Company</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Company" ng-model="Contact[0].Company__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">Designation</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model="Contact[0].Designation__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Email" name="email0" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="ContactForm0.email0.$error.pattern" style="color:red">Enter Valid Email !</span>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Mobile</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="tel" class="form-control"  ng-model="Contact[0].MobilePhone" ng-pattern="/^[0-9]{1,10}$/" name="Phone0"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="ContactForm0.Phone0.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">PAN No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[0].Income_Tax_PAN_GIR_No__c" required="true" name="pan0"/>
+                                                    <i class=""></i>
+                                                    <span ng-show="ContactForm0.pan0.$error.required" style="color:red">Pan No. is mandatory !</span>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Country Code for Mobile</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Country_Code_for_Mobile__c" name="CountryCode0"/>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Nationality</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="Contact[0].Nationality__c" ng-init="Contact[0].Nationality__c='Indian'" required="true" name="Nationality0"/>
+                                                    <span ng-show="ContactForm0.Nationality0.$error.required" style="color:red">Nationality is mandatory !</span>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Residence Status</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[0].Residency_Status__c" required="true" ng-options="type for type in ResidencyTypes"></select>
+                                               </div>
+                                         </div>
+                                     </div>
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Passport No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Passport_No__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                     
+                                         <div class="col-sm-4">
+                                             <label for="usr">Spouse's Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Spouse_s_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Wedding Anniversary</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[1]" required="true" name="wedding0"/>
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                   
+                                             </div>
+                                         </div>
+                                    </div>
+                                </form>
+                                    
+                    
+                                
+                                </div>
+                        
+                  </div>
+                </div>
+              <div id="section3" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details- Second Applicant (As in the Proof)</div>
+                                <div class="panel-body">
+                                  <form name="ContactForm1" role="form">
+                                    <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <select class="form-control" ng-model="Contact[1].Salutation" required="true" ng-options="type for type in SalutationTypes"></select>
+                                                     <!-- <select id="selectbasic" name="selectbasic" class="form-control">
+                                                          <option value="1">MR</option>
+                                                          <option value="2">MRS</option>
+                                                          <option value="3">MISS</option>
+                                                          <option value="1">DR</option>
+                                                         <option value="2">M/S</option>
+                                                          <option value="3">MASTER</option>
+                                                     </select> -->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">First Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].FirstName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Middle Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Middle_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                    </div> 
+                                    
+                                     <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Last Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[1].LastName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Date of Birth </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[2]" name="dob1" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    <!-- <span ng-show="ContactForm1.dob1.$error.required && ($scope.Contact[1] != undefined)" style="color:red">DOB is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Relation</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[1].Relation__c" required="true" ng-options="type for type in RelationTypes"></select>
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">OF</label>
+                                              <div class="left-inner-addon ">
+                                                  
+                                                <input type="text" class="form-control" ng-model="Contact[1].Relation_Name__c" />
+                                                <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                              
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Industry</label>
+                                             <div>
+                                                    
+                                                    <select class="form-control" ng-model="Contact[1].Industry__c"  ng-options="type for type in IndustryTypes"></select>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Profession</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Profession" ng-model="Contact[1].Profession__c" />
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Company</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Company" ng-model="Contact[1].Company__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">Designation</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model="Contact[1].Designation__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Email" name="email1" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="ContactForm1.email1.$error.pattern" style="color:red">Enter Valid Email !</span>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Mobile</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].MobilePhone" ng-pattern="/^[0-9]{1,10}$/" name="Phone1"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="ContactForm1.Phone1.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">PAN No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[1].Income_Tax_PAN_GIR_No__c" name="pan1" required="true" />
+                                                    <i class=""></i>
+                                                  <!-- <span ng-show="ContactForm1.pan1.$error.required && ($scope.Contact[1].FirstName.length > 0)" style="color:red">Pan No. is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Residence Status</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[1].Residency_Status__c" required="true" ng-options="type for type in ResidencyTypes"></select>
+                                               </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Nationality</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Nationality__c" name="Nationality1"  required="true" />
+                                                 <!--  <span ng-show="ContactForm1.Nationality1.$error.required && ($scope.Contact[1] != undefined)" style="color:red">Nationality is mandatory !</span> -->
+                                                    
+                                             </div>
+                                         </div>
+                                     </div>
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Passport No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Passport_No__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                     
+                                         <div class="col-sm-4">
+                                             <label for="usr">Spouse's Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Spouse_s_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Wedding Anniversary</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[3]" name="wedding1" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    
+                                             </div>
+                                         </div>
+                                    </div>
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                        
+                  </div>
+                </div>
+              <div id="section4" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details- Third Applicant (As in the Proof)</div>
+                                <div class="panel-body">
+                                  <form name="ContactForm" role="form">
+                                    <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <select class="form-control" ng-model="Contact[2].Salutation" required="true" ng-options="type for type in SalutationTypes"></select>
+                                                     <!-- <select id="selectbasic" name="selectbasic" class="form-control">
+                                                          <option value="1">MR</option>
+                                                          <option value="2">MRS</option>
+                                                          <option value="3">MISS</option>
+                                                          <option value="1">DR</option>
+                                                         <option value="2">M/S</option>
+                                                          <option value="3">MASTER</option>
+                                                     </select> -->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">First Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].FirstName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Middle Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Middle_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                    </div> 
+                                    
+                                     <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Last Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[2].LastName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Date of Birth </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[4]" name="dob2" required="true" />
+                                                    <!-- <i class="glyphicon glyphicon-calendar"></i>
+                                                    <span ng-show="ContactForm.dob2.$error.required && ($scope.Contact[4] != undefined)" style="color:red">DOB is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Relation</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[2].Relation__c" required="true" ng-options="type for type in RelationTypes"></select>
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">OF</label>
+                                              <div class="left-inner-addon ">
+                                                  
+                                                <input type="text" class="form-control" ng-model="Contact[2].Relation_Name__c" />
+                                                <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                              
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Industry</label>
+                                             <div>
+                                                    
+                                                    <select class="form-control" ng-model="Contact[2].Industry__c"  ng-options="type for type in IndustryTypes"></select>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Profession</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Profession" ng-model="Contact[2].Profession__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Company</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Company" ng-model="Contact[2].Company__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">Designation</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model="Contact[2].Designation__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Email" name="email2" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="ContactForm.email2.$error.pattern" style="color:red">Enter Valid Email !</span>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Mobile</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].MobilePhone" ng-pattern="/^[0-9]{1,10}$/" name="Phone2"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="ContactForm.Phone2.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">PAN No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[2].Income_Tax_PAN_GIR_No__c" name="pan2" required="true" />
+                                                    <i class=""></i>
+                                                    <!-- <span ng-show="ContactForm.pan2.$error.required && ($scope.Contact[2] != undefined)" style="color:red">Pan No. is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Residence Status</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[2].Residency_Status__c" required="true" ng-options="type for type in ResidencyTypes"></select>
+                                               </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Nationality</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Nationality__c" name="Nationality2" required="true"/>
+                                                    <!-- <span ng-show="ContactForm.Nationality2.$error.required && ($scope.Contact[2] != undefined)" style="color:red">Nationality is mandatory !</span> -->
+                                                    
+                                             </div>
+                                         </div>
+                                     </div>
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Passport No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Passport_No__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                     
+                                         <div class="col-sm-4">
+                                             <label for="usr">Spouse's Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Spouse_s_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Wedding Anniversary</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[5]" name="wedding2" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    
+                                             </div>
+                                         </div>
+                                    </div>
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                       
+                  </div>
+                </div>
+              <div id="section5" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Payment Details</div>
+                                <div class="panel-body">
+                                  <form name="Paymentdetails" role="form"> 
+                                    <div class="row">
+                                      <div class="col-sm-4" >
+                                        <label for="usr">Earnest Money deposired</label>
+                                      </div>
+                                    </div> 
+                                     <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Mode Of Payment</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Opportunity.Mode_of_Payment__c" required="true" ng-options="type for type in PaymentTypes"></select>
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Cheque / Draft / Transaction No.</label>
+                                              <div >
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model=" Opportunity.Transaction_number_c__c"/>
+                                                    <!-- <i class="fa fa-inr" style="margin-top: -30px;"></i> -->
+                                              </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Amount</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model=" Opportunity.Booking_Amount__c " min="0" ng-pattern="/^[0-9]{1,10}$/" name="Earnest_Amount"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <span ng-show="Paymentdetails.Earnest_Amount.$error.pattern" style="color:red">Earnest Amount is not a valid Number !</span>
+
+                                              </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Date</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="OppDateFields[0]" />
+                                                    <!-- datepicker-popup="{{format}}" --><!-- DateFields[6] -->
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Bank</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Opportunity.Bank_Name__c"/>
+                                                    <!-- <i class="glyphicon glyphicon-calendar"></i> -->
+                                             </div>
+                                        </div>
+                                          <div class="col-sm-4" >
+                                            <label for="usr">Branch</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Opportunity.Branch_Name_c__c"/>
+                                                    <!-- <i class="glyphicon glyphicon-calendar"></i> -->
+                                             </div>
+                                        </div>
+                                       
+                                     </div>
+                                     <br/>
+                                     <div class="row">
+                                      <div class="col-sm-4" >
+                                        <label for="usr">Club House Fee</label>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Mode of Payment</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Opportunity.CH_Mode_of_Payments__c" required="true" ng-options="type for type in CH_PaymentTypes"></select>
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Cheque / Draft / Transaction No.</label>
+                                              <div >
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model=" Opportunity.CH_Transaction_Number__c"/>
+                                                    <!-- <i class="fa fa-inr" style="margin-top: -30px;"></i> -->
+                                              </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Amount</label>  
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Opportunity.CH_Booking_Amount__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="CH_Amount"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                     <span ng-show="Paymentdetails.CH_Amount.$error.pattern" style="color:red">Earnest Amount is not a valid Number !</span>
+                                              </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Date</label> 
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control" ng-model="OppDateFields[1]"  />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                             </div>
+                                        </div>
+                                          <div class="col-sm-4" >
+                                            <label for="usr">Bank</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Opportunity.CH_Bank_Name__c"/>
+                                                    <!-- <i class="glyphicon glyphicon-calendar"></i> -->
+                                             </div>
+                                        </div>
+                                          <div class="col-sm-4" >
+                                            <label for="usr">Branch</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Opportunity.CH_Branch_Name__c"/>
+                                                    <!-- <i class="glyphicon glyphicon-calendar"></i> -->
+                                             </div>
+                                        </div>
+                                       
+                                     </div>
+                                 </form>   
+                                </div>
+                        
+                  </div>
+                  </div>
+            <div id="section6" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Address Details (Correspondence Address,Address Proof Required)</div>
+                                <div class="panel-body">
+                                  <form name="CorrespondenceAddressDetails" role="form">
+                                     <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 1</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Street1__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 2</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Street2__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 3</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Street3__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">City / Town</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.City__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Pin</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text"  class="form-control"  ng-model="Account.Postal_Code__c" ng-pattern="/^[0-9]{1,6}$/" name="pin"/>
+                                                    <i class=""></i>
+                                                    <span ng-show="CorrespondenceAddressDetails.pin.$error.pattern" style="color:red">Postal Code / Pin must be of 6 digits !</span>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">District</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.District__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="usr">State</label>
+                                             <div class="left-inner-addon ">                                                    
+                                                    <input type="text" class="form-control"  ng-model=""/>
+                                                    
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Country</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model=""/>
+                                                    
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Mobile / Phone</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.MobilePhone__c" ng-pattern="/^[0-9]{1,10}$/" name="Phone"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="CorrespondenceAddressDetails.Phone.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                       
+                                     </div>
+                                     
+                                    
+                                
+                                    
+                                </form>
+                                
+                                </div>
+                       
+                  </div>
+                <!-- </div>
+                              <div id="section7" class="container-fluid"> -->
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Address Details (Permanent Address - For Documentation in agreement and registration. Address proof is required)</div>
+                                <div class="panel-body">
+                                <form name="PermanentAddressDetails" role="form">
+                                 <div class="row">
+                                         <div class="col-sm-4">
+                                           <div class="checkbox">
+                                                  <label>
+                                                    <input type="checkbox" value="" ng-model="Account.Same_as_Correspondence_Address__c" ng-change="ChangeAddress()"/>Same as Correspondence Address
+                                                  </label>
+                                           </div>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 1</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_Street_1__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 2</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_Street_2__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 3</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_Street_3__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">City / Town</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_City__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Pin</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text"  class="form-control" ng-model="Account.A_Postal_Code__c"  ng-pattern="/^[0-9]{1,6}$/" name="pin"/>
+                                                    <i class=""></i>
+                                                    <span ng-show="PermanentAddressDetails.pin.$error.pattern" style="color:red">Postal Code / Pin must be of 6 digits !</span>
+
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">District</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="Account.A_District__c" />
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="usr">State</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="" />
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Country</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="" />
+                                                    <i class=""></i>
+                                             </div>                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Mobile / Phone</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_MobilePhone__c" ng-pattern="/^[0-9]{1,10}$/" name="Phone" />
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="PermanentAddressDetails.Phone.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                       
+                                     </div>
+                                     
+                                    
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                        
+                  </div>
+                <!-- </div>
+                              <div id="section8" class="container-fluid"> -->
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">General Power of Attorney (Correspondence Address)</div>
+                                <div class="panel-body">
+                                <form name="GenralPowerOfAttorney" role="form">
+                                <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="GenralPowerOfAttorneyy.Salutation" required="true" ng-options="type for type in SalutationTypes"></select>
+                                               </div>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 1</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Street1__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 2</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Street2__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Address Line 3</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Street3__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">City / Town</label>
+                                             <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.MailingCity"/>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Pin</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text"  class="form-control" ng-model="GenralPowerOfAttorneyy.MailingPostalCode" ng-pattern="/^[0-9]{1,6}$/" name="pin" />
+                                                    <i class=""></i>
+                                                    <span ng-show="GenralPowerOfAttorney.email.$error.pattern" style="color:red">Postal Code / Pin must be of 6 digits !</span>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">District</label>
+                                             <input type="text" class="form-control" ng-model="GenralPowerOfAttorneyy.District__c" />
+                                                    <i class=""></i>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="usr">State</label>
+                                              <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="GenralPowerOfAttorneyy.MailingState" />
+                                                    <i class=""></i>
+                                              </div>   
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Country</label>
+                                              <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="GenralPowerOfAttorneyy.MailingCountry" />
+                                                    <i class=""></i>
+                                              </div>   
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Email Id</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Email" name="email" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="GenralPowerOfAttorney.email.$error.pattern" style="color:red">Enter a valid Email !</span>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Mobile / Phone</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.MobilePhone" ng-pattern="/^[0-9]{1,10}$/" name="Phone" />
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="GenralPowerOfAttorney.Phone.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                       
+                                     </div>
+                                     
+                                    
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                        
+                  </div>
+                </div>
+              <div id="section9" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Source of Enquiry (Either A or B)</div>
+                              
+                          <div class="panel-body">
+                                    <label for="usr">A) If you have been referred by </label>
+                              <form name="SourceofEnquiry" role="form">
+                                <div class="row">
+                                       
+                                          <div class="col-sm-4" >
+                                            <label for="usr">Select Referral</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select id="selectbasic" name="selectbasic" class="form-control" ng-model="Opportunity.LeadSource" ng-change="CheckForApproval()">
+                                                          
+                                                          <option value="Agents">Agent</option>
+                                                          <option value="Referral">Referral</option>
+                                                          
+                                                     </select> 
+                                               </div>
+                                           </div>
+                                    
+                                            <div class="col-sm-4">
+                                               <div ng-show="Opportunity.LeadSource == 'Agents'">
+                                               
+                                                  <label for="usr">Channel Partner</label>
+                                                   <div class="left-inner-addon ">
+                                                          <!-- ng-model="Opportunity.ChannelPartner" -->
+                                                          <select class="form-control" ng-model="ChannelPartner"   required="true" ng-options="type for type in ChannelPartnerType" name="ChannelPartnerName"></select>
+                                                          <!-- <i class="glyphicon glyphicon-user"></i> -->
+                                                   </div>
+                                                </div>
+                                                 <div ng-show="Opportunity.LeadSource == 'Referral'">
+                                               
+                                                   <label for="usr">Referred By</label>
+                                                   <div class="left-inner-addon">
+                                                          <!-- ng-model="Opportunity.ReferredBy" -->
+                                                          <!-- <select class="form-control" ng-model="ReferredBy"  ng-options="type for type in ReferredByType" name="referredbyname" required="Opportunity.LeadSource == 'Referral'"></select> -->
+                                                          <input type="text" class="form-control"  ng-model="Opportunity.Referred_By_Name_Text__c"  name="referredbyname" />
+                                                          <!-- <i class="glyphicon glyphicon-user"></i> -->
+
+                                                   </div>
+                                               
+                                                </div>
+                                            </div>
+                                            
+                                      </div>
+                                    </form>
+                                    <!-- <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Others</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select id="selectbasic" name="selectbasic" class="form-control" ng-model="othersrefferal">
+                                                         <option value="1">Associate / Vendor</option>
+                                                          <option value="2">Brigade Walkin</option>
+                                                          
+                                                          
+                                                     </select>
+                                               </div>
+                                           </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Name</label>
+                                                 <div class="left-inner-addon ">
+                                                        
+                                                        <input type="text" class="form-control"  />
+                                                        <i class="glyphicon glyphicon-user"></i>
+                                                 </div>
+                                            
+                                        </div>
+                                        
+                                    </div> -->
+                                    <br/>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                           <label for="radios-0">
+                                           <input type="checkbox" name="radios" id="radios-0" value="1"  />
+                                               I confirm the source of enquiry as mentioned above.
+                                            
+                                            </label>
+                                         </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                           <label for="usr">Applicant's Name</label>
+                                                 <div class="left-inner-addon ">
+                                                        
+                                                        <input type="text" class="form-control"  />
+                                                        <i class="glyphicon glyphicon-user"></i>
+                                                 </div>
+                                         </div>
+                                        <!-- <div class="col-sm-4">
+                                           <label for="usr">Signature</label>
+                                                 <div class=" ">
+                                                        
+                                                        <input type="text" class="form-control"  />
+                                                        <i class=""></i>
+                                                 </div>
+                                         </div> -->
+                                        
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                         <label for="usr">B) If you have not been referred, How did you hear about us ? </label>
+                                      </div>
+                                          
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-4">
+                                          <select class="form-control" ng-model="Opportunity.LeadSource"  ng-options="type for type in LeadSourceType" ng-change="CheckForApproval()">
+                                          
+                                          </select>
+                                        </div>                                          
+                                    </div>
+                                    
+                                    
+                                    
+                                   
+                                    
+                                
+                                    
+                    
+                                
+                                </div>
+                      
+                  </div>
+                </div>
+              <div id="section10" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Additional Information</div>
+                  
+                                <div class="panel-body">
+                                    
+                                <div class="row">
+                                       
+                                          <div class="col-sm-4" >
+                                            <label for="usr">Finance:</label>
+                                             <div class="">
+                                                    
+                                                    <select class="form-control" ng-model="Opportunity.Mode_Of_Funding__c" ng-options="type for type in FinanceTypes"></select>
+                                               </div>
+                                           </div>
+                                    
+                                            <div class="col-sm-4">
+                                             <div ng-show="Opportunity.Mode_Of_Funding__c=='Loan'">
+                                                   <label for="usr">Bank / HFI Name</label>
+                                                   <div class="">
+                                                          
+                                                          <input type="text" class="form-control"  ng-model="Application_Form__c.Customer_Bank_HFI__c"/>
+                                                          <!-- <i class="glyphicon glyphicon-phone"></i> -->
+                                                   </div>
+                                                 
+                                             </div>
+                                             
+                                             
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-sm-4" >
+                                            <label for="usr">This Booking is for</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Opportunity.Purpose_of_Buying__c" ng-options="type for type in BuyingPurposeType"></select>
+                                               </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                     
+                  </div>
+                </div>
+              <div id="section11" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">TERMS and CONDITIONS</div>
+                      
+                                <div class="panel-body">
+                                  <label for="usr">FORMING PART OF THIS APPLICATION FOR ALLOTMENT OF A RESIDENTIAL APARTMENT.</label>  
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                           The broad terms and conditions for allotment of the residential Apartment
+                                            (“Residential Apartment”) is as mentioned below:<br/>
+                                            1. The Applicant has applied for the allotment of a Residential Apartment
+                                            by paying the booking amount after reading and understanding the Terms
+                                            and Conditions of this Application. Subscribing to the application by the
+                                            Applicant/s amounts to deemed acceptance of all the terms and conditions
+                                            specified herein.<br/>
+                                            2. The booking amount constitutes a minimum of 20% of the prevailing basic sale
+                                            price of the Residential Apartment.<br/>
+                                            3. The Applicant cannot claim any right or interest in the Residential Apartment
+                                            merely by subscribing to the application for allotment. The allotment of
+                                            the Residential Apartment is entirely at the discretion of Brigade Group of
+                                            Companies (“Company”) and the Company may at its sole discretion decide
+                                            not to allot any or all of the Residential Apartments and/or keep the project
+                                            in abeyance without assigning any reasons thereof and refund the amounts
+                                            received from the Applicant without any interest thereon.<br/>
+                                            4. The acceptance of this Application for Allotment by the Company is subject to
+                                            the receipt and realization of the entire booking amount as in #2 above.<br/>
+                                            5. The Applicant shall enter into definitive agreements with the Company within
+                                            60 (sixty) days from the date of Allotment Letter. In case this is not done, the
+                                            allotment of the Residential Apartment will be deemed as cancelled without
+                                            any further notice unless the Company agrees to extend the timeline for
+                                            execution of the definitive agreements at its sole discretion.<br/>
+                                            6. Withdrawal and/or cancellation of the booking by the Applicant for whatever
+                                            reason before the signing of the definitive agreements entitles the Company to
+                                            forfeit a sum equivalent to 20% of the booking amount, and the balance sum,
+                                            if any, will be refunded to the Applicant within 60 days without any interest
+                                            thereon. The Applicant has given his/her/their consent for such forfeiture.<br/>
+                                            7. The super built-up area of the Residential Apartment, its specifications, sale
+                                            plan, handing over date, facilities, rights and obligations of the purchaser etc.,
+                                            shall be more clearly defined in the definitive agreements.<br/>
+                                            8. The Company reserves the right to cancel the booking and forfeit a sum
+                                            equivalent to 20% of the booking amount if the amounts are not paid by the
+                                            Applicant as per the terms of booking and/or if the amounts paid by cheque
+                                            is dishonored for non-availability of funds or for any other reasons, and/or
+                                            suppression of information/wrong information of any information which is
+                                            
+
+                                        </div>
+                                        <div class="col-sm-1">
+                                        </div>
+                    <div class="col-sm-5">
+                                            required to be provided at the time of booking resulting in a violation by the
+                                            Applicant. The balance amount if any will be refunded to the applicant within
+                                            60 days without any interest thereon. The Applicant has given his/her/their
+                                            consent for such forfeiture.<br/>
+                                            9. The Applicant confirms and represents that he/she/they has made payment
+                                            to the Company only towards the Residential Apartment and that he/she/they
+                                            shall not have any claim of any kind whatsoever in any other development
+                                            undertaken by the Company within the project.<br/>
+                                            10. The price list is subject to change from time to time at the sole discretion of the
+                                            Company and the price as prevalent on the date of submitting the Application
+                                            along with the booking amount shall prevail. The price shall be confirmed by
+                                            the Company when the allotment letter is issued.<br/>
+                                            11. Any cancellation/termination subsequent to entering into definitive agreements
+                                            entails payment of damages by the applicant/s to the company at the rates
+                                            provided in the Agreements.<br/>
+                                            12. The Applicant cannot claim shifting of the booking with in the project/any
+                                            other project of the company, unless the Company specifically agrees for the
+                                            same, and subject to such charges as may be leviable in this regard.<br/>
+                                            13. The transfer of the booking to a third party can be allowed only after the
+                                            Applicant enters into the definitive agreements. The transfer will be allowed
+                                            solely at the discretion of the company subject to a transfer fee payable based
+                                            on the prevailing rates as prescribed by the company and as defined in the
+                                            definitive agreements.<br/>
+                                            14. The car park(s) will be allotted only at a later point in time by the company by
+                                            drawing lots after completion of the project. Allotment of additional car parks
+                                            space in restricted common area other than the regular car parking is subject
+                                            to availability and will be done on first come first served basis.<br/>
+                                            15. A lterations to the building plan: The Applicant has seen and accepted the
+                                            plans, design and specifications and the Applicant authorizes the Company
+                                            to effect suitable and necessary alterations/modifications in the layout plan/
+                                            building plans, designs and specifications as the Company may deem fit or as
+                                            may be directed by any competent authority/(ies).<br/>
+                                            16. Dimensions and details provided in the accompanying literature are
+                                            approximate and are subject to alternation without notice.<br/>
+                                            17. T his booking is subject to acceptance by Company in writing, and the receipt
+                                            passed for money received is tentative.<br/>
+                                            18. T he courts at Bangalore shall have the exclusive jurisdiction in all matters
+                                            arising from this application.<br/>
+                                        </div>                                    
+                                    
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" />I/We confirm all the information given above are true to my/our knoweledge and I/We have gone through the condition stated above and agree to the same.</label>
+                                       </div>
+                                    </div>
+                                    <!--<div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" />I/We hereby authorize you to remit 1% TDS under section 194-IA to the concerned authorities on my/our behalf if the agreement value is Rs. 50 lakh and above. </label>
+                                       </div>
+                                    </div>-->
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" />I/We also hereby undertake to promptly notify you of any change in my/our residential address and/or details for communication.</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <label for="usr"><h3>NRI / PIO / OCI Declaration:</h3></label>
+                  </div> 
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" />I/We do hereby declare that I am/we are a NRI/PIO/OCI as on date and affirm that the payment of the sale consideration to the Company for the purchase of immovable property in India will be made by me/us through normal banking channels by way of inward remittance from any place outside India or from my/our Non Resident External (NRE)/Non Resident Ordinary (NRO) bank account, the details of which are mentioned above. I/we declare that I am/we are in due compliance/will duly comply with the Foreign Exchange Management Act, 1999 as amended from time to time relating to purchase of the aforesaid immovable property in India.</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Date </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Place </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  />
+                                                    <i class="glyphicon glyphicon-map-marker"></i>
+                                             </div>
+                                         </div> 
+                                        <div class="col-sm-4">
+                                           <label for="usr">1st Applicant's Signature</label>
+                                                 <div class=" ">
+                                                        
+                                                        <input type="text" class="form-control"  />
+                                                        <i class=""></i>
+                                                 </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                             <label for="usr">Date </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"/>
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Place </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  />
+                                                    <i class="glyphicon glyphicon-map-marker"></i>
+                                             </div>
+                                         </div> 
+                                        <div class="col-sm-4">
+                                           <label for="usr">2nd Applicant's Signature</label>
+                                                 <div class=" ">
+                                                        
+                                                        <input type="text" class="form-control"  />
+                                                        <i class=""></i>
+                                                 </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                             <label for="usr">Date </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"/>
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Place </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  />
+                                                    <i class="glyphicon glyphicon-map-marker"></i>
+                                             </div>
+                                         </div> 
+                                        <div class="col-sm-4">
+                                           <label for="usr">3rd Applicant's Signature</label>
+                                                 <div class=" ">
+                                                        
+                                                        <input type="text" class="form-control"  />
+                                                        <i class=""></i>
+                                                 </div>
+                                         </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <label for="usr"><h5>For Brigade's Use.</h5></label> 
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                              <label for="usr"><h5>Attended By: Name</h5></label>                                         
+                                        </div>
+                                        <div class="col-sm-4">
+                                              <label for="usr"><h5>Finilized By: Name</h5></label>                                         
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                             <label for="usr"><h5>Designation</h5></label>                                         
+                                        </div>
+                                        <div class="col-sm-4">
+                                              <label for="usr"><h5>Designation</h5></label>                                         
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                              <label for="usr"><h5>Signature</h5></label>                                         
+                                        </div>
+                                        <div class="col-sm-4">
+                                              <label for="usr"><h5>Signature</h5></label>                                         
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                    <hr/>
+                                  </div>
+                              
+                  </div>
+                </div>
+              <div id="section12" class="container-fluid">
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Document CheckList</div>
+                          
+                                <div class="panel-body">
+                                    <label for="usr">Please ensure you have submitted self-attested copies of the following document along with the Application form (tick the ones submitted):</label>
+                                <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Photographs_Received__c" />Two passport size photographs of each applicant.</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Received_the_PAN_Card_Copy__c"/>Photocopy of PAN card (mandatory) for each applicant</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Received_the_Address_Proof_Copy__c"/>One proof of correspondence address(acceptable documents are Driving License, Passport, Aadhar Card, Voter ID, Utility Bills, Authorized Bank Statements)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Permanent_Address_Proof__c"/>One proof of permanent address(acceptable documents are Driving License, Passport, Aadhar Card, Voter ID, Utility Bills)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Buisness_Card_Primary_Applicant__c"/>Buisness card of primary applicant.{!Opportunity.Buisness_Card_Primary_Applicant__c}</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Photocopy_Power_of_Attorney__c"/>Photocopy of power of Attorney(If Any)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Received_the_Passport_Copy_for_NRI__c"/>For NRIs: Photocopy of first, last and Latest visa page of passport(to establish residency)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Provisional_Allotment_letter__c"/>For Foreign Citizens: Photocopy of first, last and Latest visa page of passport(to establish residency) and copy of PIO card for each foreign applicant </label>
+                                       </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                       
+                                    </div>
+                                    <div class="row">
+                                       
+                                    </div>
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" />I have submitted self-attested copy of all the required documents AND/OR will email scanned self-attested copies of all the pending documents within 2 workink days</label>
+                                       </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                           <label for="usr">First Applicant's Signature</label>
+                                                 <div class=" ">
+                                                        
+                                                       
+                                                 </div>
+                                         </div>
+                                    </div>
+                                    <br/>
+                                    
+                                  </div>
+                        <!-- <div class="panel-footer">
+                            <img class="img-responsive" style="max-width: 100%;" src="https://s4.postimg.org/5izd8gxm5/Image_1.jpg" alt="Chania" / >
+                      </div> -->
+                  </div>
+           </div>
+          
+                              <div class="panel panel-primary no-border">
+                                <div class="panel-body">
+                                    <div class="row" >
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div  style="float:right">
+                                                 <button type="button" class="btn btn-primary btn-sm" ng-click="Save('false')"  ng-required = '!required'>Save As Draft</button>
+                                                  
+                                               <!--   <button type="button" class="btn btn-primary btn-sm" ng-disabled="showSumitbuttononOtp() && (SubmitStatus =='Approved' || SubmitStatus == 'Submitted' || SubmitStatus == 'default') " ng-click="Save('true')" >Submit</button>-->
+                                                 <button type="button" class="btn btn-primary btn-sm" ng-disabled="(SubmitStatus =='Approved' || SubmitStatus == 'Submitted' ) " ng-click="Save('true')" >Submit</button>
+                                                  
+                                                  <button type="button" class="btn btn-primary btn-sm" ng-click="cancle()" >Reset</button>
+
+                                        </div>
+                                    </div>
+</div>
+</div>
+          </div>
+          
+      </div>
+     
+    </body>
+
+    <!--apex:form >
+        <apex:pageBlock title="My Content" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="My Content Section" columns="2">
+                <apex:inputField value="{!app.Form_Name__c}"/>
+                <apex:inputField value="{!app.name}"/>
+                <apex:inputField value="{!app.Opportunity__c}"/>
+                <!--apex:inputField value="{!account.type}"/-->
+                <!--apex:inputField value="{!account.accountNumber}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form >
+    -->
+</apex:page>

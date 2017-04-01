@@ -1,0 +1,12 @@
+<apex:page standardController="Account">
+    <apex:pageMessage severity="FATAL" strength="3" detail="Cannot create Account directly. Create a lead, then convert it to Account !!" />
+    <!--
+    <apex:pageMessage severity="FATAL" strength="3" rendered="{!$User.Id !='005300000051xlUAAQ'}"> Cannot create Account directly. Create a lead, then convert it to Account !! </apex:pageMessage>
+    <apex:panelGroup rendered="{!$User.Id =='005300000051xlUAAQ'}">
+        <apex:pageMessage severity="INFO" strength="3" detail="It is not recommended to create Account directly. Best practise is to create lead and convert it." />
+        <br/>
+        Click <apex:outputLink value="https://na1.salesforce.com/001/e?retURL=%2F001%2Fo" > here </apex:outputLink> 
+        to create new Account directly.
+    </apex:panelGroup>
+    -->
+</apex:page>

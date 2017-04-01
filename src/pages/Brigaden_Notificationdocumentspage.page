@@ -1,0 +1,119 @@
+<!----------------------------------------------------------------------------------------------------
+                                        Created by:
+                                        Author Name:
+                                        purpose:Upload The Images and Documents
+                                        
+                                        Modified by:
+                                        Lastmodified by:
+                                        Purpose:
+----------------------------------------------------------------------------------------------------- -->
+
+<apex:page standardController="Notification_Documents__c" extensions="Brigade_NotificationsDocuments" id="page" >
+         <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+          <apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+          <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+          <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap.css')}" rel="stylesheet" media="screen"/>
+          <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap-theme.css')}" rel="stylesheet" media="screen"/> 
+          <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+          <apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+          <link href="{!URLFOR($Resource.brigadecss)}" rel="stylesheet" media="screen"/>-->
+          
+         
+        
+        <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+        <!--<apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+        <link href="{!URLFOR($Resource.brigadecss)}" rel="stylesheet" media="screen"/> -->
+       
+        
+<script>
+          function readURL(input){
+          
+                if (input.files && input.files[0])
+                      {
+                            var reader = new FileReader();
+                            reader.onload = function (e)
+                                                  {
+                                                         $('#blah')
+                                                        .attr('src',e.target.result)
+                                                        .width(250)
+                                                        .height(150);
+                                                  };
+                           reader.readAsDataURL(input.files[0]);
+                       }
+                }
+             
+   
+</script>
+    <!-- form of Select Criteria text or document or image -->
+    <apex:form id="frm">
+    <apex:pageMessages />
+        <apex:pageBlock id="pblock" title="Upload Notification/Documents">
+            <apex:pageBlockSection > 
+                <apex:inputField value="{!Notification_Documents__c.Notification_Type__c}" id="notifitype">
+                    <apex:actionSupport event="onchange" reRender="frm,frm1,frm2,frm3" />
+                </apex:inputField>
+                
+                <apex:inputField value="{!Notification_Documents__c.CategoryN_EandPro__c}"  id="Category3" rendered="{!if(Notification_Documents__c.Notification_Type__c=='Text' ,true,false)}">
+                    <apex:actionsupport event="onchange" reRender="frm,frm1,frm2,frm3" />
+                </apex:inputField>
+                
+                 <apex:inputField value="{!Notification_Documents__c.CategoryDocandPro__c}"  id="CategoryDoc" rendered="{!if(Notification_Documents__c.Notification_Type__c=='Document' ,true,false)}">
+                    <apex:actionsupport event="onchange" reRender="frm,frm1,frm2,frm3" />
+                </apex:inputField>
+                
+             </apex:pageBlockSection>
+         </apex:pageBlock>
+     </apex:form> 
+     <!-- .......................form of text................-->
+     
+     <apex:form id="frm1"  >
+         
+         <apex:pageBlock rendered="{!if(Notification_Documents__c.Notification_Type__c=='Text' && Notification_Documents__c.CategoryN_EandPro__c!=null ,true,false)}" id="Pbblock" >     
+            <apex:pageBlockSection title="Text Information"  id="sce1" >
+                <apex:inputField value="{!Notification_Documents__c.Name__c}" id="name1"/>
+                <apex:inputField value="{!Notification_Documents__c.Active__c}" id="active1"/>
+                <apex:inputField value="{!Notification_Documents__c.Notifications__c}" id="notifictions1" />
+                <apex:inputField value="{!Notification_Documents__c.News_URL__c}" id="news1"  required="true"/>
+                <apex:inputField value="{!Notification_Documents__c.Plant__c}" id="Plant1"  rendered="{!if(Notification_Documents__c.CategoryN_EandPro__c == 'Project Specefic Updates',true,false)}"/> 
+            </apex:pageBlockSection> 
+            <center>
+                <apex:commandButton value="save" action="{!SaveText}"/>
+            </center>
+         </apex:pageBlock>           
+    </apex:form>  
+    <!-- .................................form of image------------------------- -->
+    <!-- <apex:form id="frm3" >  
+        <apex:pageBlock rendered="{!if(Notification_Documents__c.Notification_Type__c=='Image',true,false)}" id="Pblock3" >  
+            <apex:pageBlockSection title="Image Information"  id="sec3">
+                <apex:inputField value="{!Notification_Documents__c.Name__c}" id="name3"/>
+                <apex:inputField value="{!Notification_Documents__c.Active__c}" id="active3" />  
+                <apex:inputField value="{!Notification_Documents__c.Place_of_Image__c}" id="palceofimage3" required="true" /> <br/>             
+                <apex:inputfile value="{!Attach}" id="file4" fileName="{!UploadedfileName}" required="true" onchange="readURL(this);"  />
+                <img id="blah" width="200px" height="50px"  />
+            </apex:pageBlockSection> 
+            <br/>
+            <center>
+                <apex:commandButton value="Save" action="{!SaveImage}"  /> 
+            </center>
+        </apex:pageBlock>  
+    </apex:form> -->
+    <!-- .............................form of document........................-->  
+ 
+    <apex:form id="frm2" >
+        <apex:pageBlock rendered="{!if(Notification_Documents__c.Notification_Type__c=='Document' && Notification_Documents__c.CategoryDocandPro__c!=null,true,false)}" id="Pbc2" >      
+            <apex:pageBlockSection id="sec2"  title="Document Information" >   
+                <apex:inputField value="{!Notification_Documents__c.Name__c}" id="name2"/>
+                <apex:inputField value="{!Notification_Documents__c.Active__c}" id="active2"/>
+                 <apex:inputField value="{!Notification_Documents__c.Notifications__c}" id="notifictions2" />
+                <apex:inputField value="{!Notification_Documents__c.Plant__c}" id="Plant2" rendered="{!if(Notification_Documents__c.CategoryDocandPro__c == 'Project Specific Documents',true,false)}"/>
+                <apex:inputField value="{!Notification_Documents__c.Opportunity__c}" id="opp2" rendered="{!if(Notification_Documents__c.CategoryDocandPro__c == 'Cost Breakup Document',true,false)}"/> 
+                <apex:inputFile id="myFile" value="{!myDoc.Body}" fileName="{!myDoc.name}" style="align:left" required="true"/>
+            </apex:pageBlockSection>  
+            <br/>
+            <center>
+                <apex:commandButton value="Save" action="{!SaveDocu}" />
+            </center>
+        </apex:pageBlock>  
+    </apex:form>
+   
+</apex:page>

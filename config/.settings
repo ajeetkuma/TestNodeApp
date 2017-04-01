@@ -1,0 +1,17 @@
+{
+    "projectName": "Brigade _Phase3_QA_Final",
+    "username": "extentor@brigadegroup.com.qa",
+    "id": "745d21c0-e461-11e6-a2d3-4b381573f93f",
+    "namespace": "",
+    "orgType": "developer",
+    "loginUrl": "https://login.salesforce.com/",
+    "instanceUrl": "https://bgproduction-brigadeforce-na19--QA.cs14.my.salesforce.com",
+    "workspace": "C:\\Users\\ADMIN\\Documents",
+    "subscription": [
+        "ApexClass",
+        "ApexComponent",
+        "ApexPage",
+        "ApexTrigger",
+        "StaticResource"
+    ]
+}

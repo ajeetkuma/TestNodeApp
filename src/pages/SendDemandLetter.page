@@ -1,0 +1,36 @@
+<apex:page standardController="Demand_Letter_Repository__c" extensions="DemandLetterEmailController" action="{!dbOperation}" standardStylesheets="true" sidebar="false">
+    <apex:sectionHeader subtitle="Sending Progress-cum-Demand Letters" title="Progress-cum-Demand Letters" rendered="{!IF($CurrentPage.Parameters.oppId == null, TRUE,FALSE)}"/>
+    <apex:sectionHeader subtitle="Sending Progress-cum-Demand Letter" title="Progress-cum-Demand Letter" rendered="{!IF($CurrentPage.Parameters.oppId != null, TRUE,FALSE)}"/>
+    <center>
+    <apex:form rendered="{!IF($CurrentPage.Parameters.oppId == null, TRUE,FALSE)}">
+        <br/>
+        <!-- <h2> You have selected the following Opportunities/Customers: </h2>
+        <apex:dataTable value="{!lstDLR}" var="opp">
+            <apex:column headerValue="Opportunity Name" value="{!opp.Opportunity__r.Name}"/>
+            <apex:column headerValue="TO address" value="{!opp.Opportunity__r.Email__c}"/>
+        </apex:dataTable> -->
+        <apex:outputPanel rendered="{!showSendBtn}">
+            <font style="font-size:14px;font-family:Verdana;color:#000033;">
+                 You are one click away from sending Progress cum Demand letter to your Customers. <br/>
+                 Click on Send Email button NOW !!
+             </font>
+         </apex:outputPanel>
+         <br/><br/><br/>
+         <apex:commandButton value="Send Email" action="{!sendAction}" rendered="{!showSendBtn}"/>
+    </apex:form>
+    </center>    
+    <apex:pageMessages />
+    <br/>
+    <apex:outputPanel rendered="{!showSendBtn && IF($CurrentPage.Parameters.oppId == null, TRUE,FALSE)}">
+        <font style="font-size:12px;font-family:Verdana;color:red;">
+            <i> Warning: Please dont navigate from this page before clicking on Send Email button !! </i>
+        </font>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!IF(showSendBtn == true, FALSE,TRUE) && IF($CurrentPage.Parameters.oppId == null, TRUE,FALSE)}">
+        Click &nbsp;<apex:outputLink target="" value="/006/o">here</apex:outputLink> to go back.
+    </apex:outputPanel>
+    <br/><br/>
+    <apex:outputPanel rendered="{!IF($CurrentPage.Parameters.oppId != null, TRUE,FALSE)}">
+        Click &nbsp;<apex:outputLink target="" value="/{!$CurrentPage.Parameters.id}">here</apex:outputLink> to go back.
+    </apex:outputPanel>
+</apex:page>

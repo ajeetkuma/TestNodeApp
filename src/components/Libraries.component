@@ -1,0 +1,24 @@
+<apex:component >
+
+			<!-- VisualForce Component to load all necessary Libraries -->
+
+
+			<!-- All CSS -->
+            <apex:stylesheet value="{!URLFOR($Resource.Libraries, 'Libraries/assets/Bootstrap.css')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.Libraries, 'Libraries/assets/Fontawesome.css')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.Libraries, 'Libraries/assets/Alertify.css')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.Libraries, 'Libraries/assets/style.css')}" />
+
+
+            <!-- All JS -->
+            <script src="{!URLFOR($Resource.Libraries, 'Libraries/assets/Alertify.js')}"/>
+            <script src="{!URLFOR($Resource.Libraries, 'Libraries/assets/jQuery.js')}"/>
+            <script src="{!URLFOR($Resource.Libraries, 'Libraries/assets/Bootstrap.js')}"/>
+            <script src="{!URLFOR($Resource.Libraries, 'Libraries/assets/Angular.js')}"/>
+            <script src="{!URLFOR($Resource.Libraries, 'Libraries/assets/fileupload.js')}"/>
+            <script src="{!URLFOR($Resource.Libraries, 'Libraries/assets/CustomerApplicationController.js')}"/>
+
+
+            
+
+</apex:component>

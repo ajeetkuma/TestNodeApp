@@ -1,0 +1,1598 @@
+<apex:page sidebar="false"  showHeader="false" controller="Referralcon" id="Page">
+    <apex:form id="Form"  >
+
+            <apex:outputPanel styleClass="custPopup2"  style="text-align: right; margin-top: -5px;" id="fiedPopup1" > 
+                <div style="float:right; text-align:center; width:auto; line-height:10px; padding-right: 15px; position: absolute; right: -122px;">
+                    
+                    
+                    <apex:outputLink value="/apex/logoutPage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="caseButton" >&nbsp;Logout </apex:outputLink>  
+                </div> 
+            </apex:outputPanel>
+            
+           
+            <apex:outputPanel styleClass="custPopup3"   >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Project:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!selectedcodenew}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText><br/>
+             </apex:outputPanel>
+            
+            <apex:outputPanel styleClass="custPopup4"  id="fiedPopup2" >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Unit No:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!unitnumber}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText>
+                <br/><br/>
+                </apex:outputPanel>
+
+            <style>
+            .caseButton1{
+            width: 9%;
+            padding: 5px 5px;
+            background-color:#fff;
+            //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+            border-radius: 4px;
+            border: 1px solid #4e3043;
+            box-shadow:
+            inset 0 1px rgba(255,255,255,0.4),
+            0 2px 1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            color: white;
+            align: center;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Raleway', 'Lato', Arial, sans-serif;
+            }
+            .fontStyle {
+            font-weight: bold;
+            color: #95969b;
+            }
+            </style>
+            <style type="text/css">
+                
+                .custPopup {
+                background-color: white;
+                border-width: 2px;
+                border-style: solid;
+                z-index: 100;
+                left: 29%;
+                padding: 5px;
+                position: absolute;
+                width:850px;
+                height:520px;
+                margin-left: -146px;
+                top:249px
+                
+                }
+                .caseButton{
+                    width: 13%;
+                    padding: 5px 4px;
+                    background-color:#1797c0;
+                    //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+                    border-radius: 4px;
+                    border: 1px solid #4e3043;
+                    box-shadow:
+                    inset 0 1px rgba(255,255,255,0.4),
+                    0 2px 1px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: all 0.3s ease-out;
+                    color: white;
+                    align: center;
+                    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+                    font-size: 12px;
+                    font-weight: bold;
+                    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+                    }
+                
+                .custPopup1 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 30%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                .custPopup2 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 63%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                
+                }
+                .custPopup3 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 9;
+                left: 36%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup4 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 9;
+                left: 48%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup5 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 56%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                
+                .popupBackground {
+                background-color: black;
+                opacity:.6;
+                filter: alpha(opacity =   20);
+                position: absolute;
+                width: 100%;
+                height: 2000px;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                }
+                
+                .overlay {
+                background-color: #ffffff;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: 0.5;
+                filter: Alpha(opacity =     50); /* IE8 and earlier */
+                z-index: 12;
+                <!--background-image: url({!$Resource.loading1});-->
+                background-repeat: no-repeat;
+                background-position: center;
+                }
+                
+                .fontStyle {
+                font-weight: bold;
+                color: #95969b;
+                }
+                .fontButton{
+                text-align:center;
+                color: grey;
+                }
+            </style>
+            
+            <head>
+                
+                
+                
+                <script type="text/javascript">
+                function openWindow()
+                {
+                    window.open("https://bgproduction-brigadeforce-na19--c.na19.visual.force.com/apex/myPayment_ext");
+                    
+                }
+                </script>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                
+                <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+                
+                <link href="{!URLFOR($Resource.brigadecss2)}" rel="stylesheet" media="screen"/ >
+                <style type="text/css" media="print">
+                    @page { size: landscape; }
+                </style>
+                
+                <script>
+                $( document ).ready(function() {
+                    
+                    setInterval("$('#blink').fadeOut(600).fadeIn(600);",600);
+                    
+                });
+                </script>
+                
+                <style>        
+                    #headcontainer {
+                    //background-image: url({!URLFOR($Resource.NavigatorBackground)});
+                    }
+                    .text {
+                    font-family: 'Lato', Calibri, Arial, sans-serif;
+                    font-size: 9px;
+                    font-weight: 400;
+                    display: block;
+                    width: 80%;
+                    padding: 3px;
+                    margin-bottom: 5px;
+                    border: 3px solid #ebe6e2;
+                    border-radius: 5px;
+                    transition: all 0.3s ease-out;
+                    }
+                    
+                </style>  
+                
+                <style>
+                    a.resi_button{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 11px;
+                    color: #ffffff;
+                    margin: 0px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    line-height: 0px;
+                    padding:14px;
+                    background-color:#0065b3;
+                    text-decoration:none;
+                    }
+                    a.resi_button2{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 11px;
+                    color: #0065b3;
+                    margin: 0px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    line-height: 0px;
+                    padding:10px;
+                    background-color:#ffffff;
+                    text-decoration:none;
+                    }  
+                    
+                    a.resi_button:hover{
+                    background-color:#ffc20f;
+                    }
+                    a.resi_button2:hover{
+                    background-color:#ffffe6;
+                    cursor: pointer;
+                    }
+                    td{
+                    min-width:1px;
+                    }
+                </style> 
+                
+                <style>
+                    .pbSubheader h3, .pbSubheader h3 a {
+                    color: #2F436F;
+                    font-family: Arial;
+                    font-weight:bold;
+                    font-size:120%;
+                    } 
+                    
+                    
+                    
+                </style>
+            </head>
+            <body>
+                <div id="page" align="center" background-color="white"  style="width:1005px">  
+                    
+                    <table width="1005px" border="0" align="center" cellpadding="0" cellspacing="0">         
+                        <tr>
+                            <td>
+                                <table width="100%" height="135px" border="0" cellpadding="0" cellspacing="0">                 
+                                    <tr>
+                                        <td height="117" id="headcontainer">
+                                            <table width="1005px" border="1" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td  height="117" align="left" valign="bottom">
+                                                    <table width="100%">
+                                                        <tr><td>
+                                                            <a href="http://www.brigadegroup.com/" target="brigadegroup">
+                                                    <img src="http://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" width="137" height="70" alt="Brigade Enterprises - 
+                                                                                                                                                                Leading Builders in Bangalore's Real Estate Industry" /></a>
+                                                            </td>
+                                                        <td valign="bottom" align="right" style="font-family: Arial;"><font size="2" color="black">Welcome</font>&nbsp;&nbsp;<font size="3" color="#0095ce"><b>{!usr.Name}&nbsp;&nbsp;</b></font></td>
+                                                        </tr>
+                                                    </table>
+                                                    
+                                                 
+                                                </td>
+                                                
+                                                
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td align="left" valign="bottom">
+                                                    
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td align="left" valign="baseline"><table border="0" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    
+                                                                    <td width="187" align="left"><table width="187" border="0" align="left" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td width="170" align="center" valign="baseline"><div id="search2">
+                                                                                <!--search form need to build hers-->
+                                                                                </div></td> 
+                                                                            <td width="17" align="center" valign="baseline">&nbsp;</td>
+                                                                        </tr>
+                                                                        </table></td>
+                                                                </tr>
+                                                                </table>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td align="left"><table border="0" cellspacing="0" cellpadding="0" >
+                                                                <tr>   
+                                                                    
+                                                                    
+                                                                    <td><a href="/apex/BrigadeHomePage" >
+                                                                        
+                                                                        <apex:image id="theImage" value="{!$Resource.Home}" style="width:98%;margin-bottom:2px;"  /></a></td>
+                                                                    
+                                                                    <td></td><td></td>
+                                                                    <!--<td><a href="/apex/CPprofileCreationpage" class="resi_button" >
+MY PROFILE</a>
+</td>-->
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myPayment_ext" class="resi_button">MY PAYMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/MyDocuments" class="resi_button">MY DOCUMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myCase" class="resi_button">QUERIES</a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/BrigadeReferralpage" class="resi_button"  >REFERRAL</a></td>                             
+                                                                    <td></td>
+                                                                    <td ><apex:outputLabel rendered="{!Imagenew}"> <a href="/apex/FeedBack" class="resi_button" id="blink" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td ><apex:outputLabel rendered="{!ImagenewNoFeedBack}"><a href="/apex/FeedBack" class="resi_button" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td></td>
+                                                                    <td width="322" ><a class="resi_button"> </a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/CPprofileCreationpage" class="resi_button2"  >MY PROFILE</a></td>                                                                    
+                                                                </tr>
+                                                                </table>                           
+                                                            </td>
+                                                            
+                                                        </tr>                      
+                                                    </table>
+                                                </td>
+                                                
+                                            </tr>
+                                            </table>
+                                        </td>
+                                    </tr>          
+                                </table>
+                            </td>
+                        </tr>
+                    </table>    
+            
+            <style>
+            .bPageBlock .pbBody {
+                    margin-right: 0px;
+                    padding: 1px 0px 4px;
+                    background-color: #F3F3EC;  //#F3F3EC
+                }
+                 #page {
+                text-align: left;
+                margin: 0px auto;
+                padding: 0px;
+                width: 938px;
+            }
+            
+            </style>
+             
+                
+                <apex:pagemessages rendered="{!!errorMessage}" showDetail="false" />    
+                <!-- table to show all existing referral related to logged user-->
+                <apex:outputLabel rendered="{!not(ReferralDataallpage)}"> 
+                 
+                    <apex:pageBlock tabStyle="Case" rendered="{!not(newsecreferral)}">
+                          <!-- apex:image id="the" value="{!$Resource.refferralnew}" width="1005px" height="173px"  / -->
+
+                        
+<!------------------------------------------New look--------------------------------->
+<style>
+/*Reset Begin*/
+html, body, p, div, span, h1, h2, h3, h4, h5, h6, blockquote, pre, em, font, img, small, strong, sub, sup, ul, ol, li, dl, dt, dd, fieldset, form, label, legend, tr, th, td, input, select, textarea {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+em {
+    font-style: italic;
+}
+strong {
+    font-weight: bold;
+}
+ul, ol {
+    list-style: none;
+}
+img, fieldset {
+    border: 0;
+}
+a {
+    color: #0191d7;
+    text-decoration: none;
+    outline: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:active {
+    outline: none;
+    text-decoration: none;
+}
+a img {
+    border: 0;
+    outline: none;
+}
+/*Reset End*/
+/*Tag customization begin*/
+body {
+    background: #eaf0f2;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.clear-both {
+    clear: both;
+}
+.clear-fix {
+    height: 1px;
+    clear: both;
+    overflow: hidden;
+}
+.img-block {
+    display: block;
+}
+/*Tag customization End*/
+#wrapper {
+    width: 1005px;
+    margin: 0 auto;
+    font: normal 12px/135% Verdana, Geneva, sans-serif;
+    color: #58595b;
+    background-color: #ffffff;
+}
+/*Header Styles Begin*/
+#header {
+    height: 105px;
+    background: url(../images/home-images/header-bg.png) repeat-x left top;
+    padding: 29px 15px 0 118px;
+}
+#header h1 a.logo {
+    width: 138px;
+    height: 95px;
+    display: block;
+    background: url(../images/home-images/brigade-group-logo.png) no-repeat 0 0;
+    text-indent: -9999px;
+}
+#header .rhs-cont {
+    width: 600px;
+    height: 95px;
+}
+#header .rhs-top-cont {
+    height: 49px;
+}
+#header a.chatt {
+    width: 101px;
+    height: 49px;
+    display: block;
+}
+#search-from {
+    width: 178px;
+    height: 24px;
+    padding: 0 10px 0 0;
+    margin: 13px 0 0 0;
+    background: url(../images/home-images/search-unit.png) no-repeat left bottom;
+}
+#search-from p.search-box-element {
+    width: 116px;
+    height: 16px;
+    position: relative;
+    padding: 4px 0 4px 33px;
+}
+#search-from label {
+    width: 116px;
+    height: 16px;
+    position: absolute;
+    display: block;
+    font: normal 10px/16px Verdana, Geneva, sans-serif;
+    color: #567483;
+    cursor: text;
+}
+#search-from .kewword-textbox {
+    width: 116px;
+    height: 16px;
+    position: absolute;
+    display: block;
+    font: normal 10px/16px Verdana, Geneva, sans-serif;
+    color: #567483;
+    cursor: text;
+    background-color: transparent;
+}
+#search-from .search-submit {
+    width: 29px;
+    height: 24px;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+#search-from .search-submit:hover {
+    background: url(../images/home-images/go-hover.png) no-repeat right top;
+}
+.top-links-one, .top-links-two {
+    font: normal 10px/100% Verdana, Geneva, sans-serif;
+    color: #48626f;
+    letter-spacing: 1px;
+}
+.top-links-one {
+    margin: 21px 11px 0 0;
+}
+.top-links-one a, .top-links-two a {
+    color: #48626f;
+}
+.top-links-two {
+    line-height: 160%;
+    text-align: right;
+    margin: 16px 0 0 0;
+}
+/*Header Styles End*/
+
+/*Main Navi Styles Begin*/
+#main-navi-cont {
+    margin-top: 4px;
+    /*padding: 4px 4px 0px 4px;*/
+    border-left: 4px solid #ffffff;
+    border-right: 4px solid #ffffff;
+    background-color: #eeeff0;
+}
+#WTC-flash-cont {
+    padding: 2px 0;
+    background-color: #ffffff;
+    line-height: 0;
+}
+#main-link-cont {
+    width: 365px;
+    height: 257px;
+    margin: 0 4px 0 0;
+}
+#main-link-cont a.resi, #main-link-cont a.comm, #main-link-cont a.ret, #main-link-cont a.bhsl, #main-link-cont a.foundation, #main-link-cont a.wtc {
+    width: 110px;
+    height: 43px;
+    display: block;
+    font: normal 16px/115% 'Droid Sans', arial, serif;
+    color: #285b6e;
+    margin: 0 4px 4px 0;
+    padding: 84px 9px 0 0;
+    text-align: right;
+}
+#main-link-cont a.resi {
+    background-color: #bce7ce;
+}
+#main-link-cont a.resi:hover {
+    background-color: #55c785;
+}
+#main-link-cont a.comm {
+    background-color: #9fddf7;
+}
+#main-link-cont a.comm:hover {
+    background-color: #6fbcdc;
+}
+#main-link-cont a.ret {
+    margin: 0 0 4px 0;
+    background-color: #f2afaf;
+}
+#main-link-cont a.ret:hover {
+    background-color: #d77d7d;
+}
+#main-link-cont a.bhsl {
+    margin: 0 4px 0 0;
+    background-color: #c5bdeb;
+}
+#main-link-cont a.bhsl:hover {
+    background-color: #897ccf;
+}
+#main-link-cont a.foundation {
+    margin: 0 4px 0 0;
+    background-color: #f8d48e;
+}
+#main-link-cont a.foundation:hover {
+    background-color: #e1b461;
+}
+#main-link-cont a.wtc {
+    height: 61px;
+    padding: 66px 9px 0 0 !important;
+    margin: 0;
+    background-color: #dbd7bb;
+}
+#main-link-cont a.wtc:hover {
+    background-color: #b1ab84;
+}
+#main-link-cont a.resi:hover, #main-link-cont a.comm:hover, #main-link-cont a.ret:hover, #main-link-cont a.bhsl:hover, #main-link-cont a.foundation:hover, #main-link-cont a.wtc:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+#flash {
+    line-height: 0;
+    height: 258px;
+}
+#flash_margin {
+    line-height: 0;
+}
+/*Main Navi Styles End*/
+/*Slider Styles Begin*/
+/*#home-slider {
+    width: 628px;
+    height: 258px;
+    overflow: hidden;
+}
+#home-slider .bx-captions {
+    width: 628px;
+    height: 25px;
+    background-color: #627d24;
+    text-align: center;
+    font: normal 12px/20px Verdana, Geneva, sans-serif;
+    color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    z-index: 25555;
+}*/
+/*Slider Styles End*/
+/*Main Content Styles Begin*/
+#main-content-cont {
+    width: 989px;
+    padding: 1px;
+    border-left: 4px solid #ffffff;
+    border-right: 4px solid #ffffff;
+    background-color: #eeeff0;
+}
+.lhs-cont {
+    width: 531px;
+}
+#work-with-us {
+    width: 525px;
+    height: 26px;
+    margin: 0 4px 0 0;
+    overflow: hidden;
+}
+#banner-dubai {
+    width: 525px;
+    height: 55px;
+    margin: 0 0 4px 0;
+    overflow: hidden;
+}
+#news-events-cont {
+    width: 236px;
+    height: 216px;
+    border: 1px solid #c0c2c4;
+    background-color: #ffffff;
+    margin: 0 4px 4px 0;
+    overflow: hidden;
+}
+#news-events-cont h2 {
+    width: 236px;
+    height: 24px;
+    margin: 0 0 13px 0;
+    text-align: center;
+    font: normal 10px/24px Verdana, Geneva, sans-serif;
+    color: #536d8b;
+    border-bottom: 1px solid #c0c2c4;
+    background: url(../images/home-images/news-events-heading-bg.gif) repeat-x left top;
+}
+.nl {
+    padding: 0 0 0 13px;
+}
+#news-events-cont ul.news-list {
+    font: normal 14px/110% Georgia, "Times New Roman", Times, serif;
+    color: #7086a0;
+    margin: 0;
+}
+#news-events-cont ul.news-list li {
+    width: 223;
+    height: 45px;
+}
+#news-events-cont ul.news-list li a {
+    color: #7086a0;
+}
+#news-events-cont img {
+    display: block;
+    float: left;
+    margin: 0 5px 0 0;
+}
+#allied-cities {
+    width: 123px;
+    height: 218px;
+    margin: 0 4px 4px 0;
+}
+#allied-cities a.allied {
+    width: 121px;
+    height: 61px;
+    display: block;
+    border: 1px solid #c2c4c5;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 9px 0 0 0;
+    margin: 0 0 4px 0;
+    color: #636466;
+    font: normal 10px/16px Arial, Helvetica, sans-serif;
+}
+#allied-cities a.allied span {
+    font: normal 12px/120% Verdana, Geneva, sans-serif;
+    color: #58728f;
+    padding: 0 0 5px 0;
+    display: block;
+}
+#cities {
+    width: 112px;
+    height: 130px;
+    display: block;
+    border: 1px solid #c2c4c5;
+    background-color: #fbfbfb;
+    padding: 10px 0 0 9px;
+}
+#cities h2 {
+    font: normal 12px/100% Verdana, Geneva, sans-serif;
+    color: #57718e;
+    margin: 0 0 8px 0;
+}
+#cities ul {
+    font: normal 10px/100% Arial, Helvetica, sans-serif;
+    color: #58595b;
+    margin: 0 0 0 11px;
+}
+#cities ul li {
+    list-style: disc;
+    margin: 0 0 4px 0;
+}
+#cities ul li a {
+    color: #58595b;
+}
+#advt-pin {
+    width: 154px;
+    margin: 0 4px 4xp 0;
+    border: 1px solid #c3c4c5;
+    background-color: #ffffff;
+}
+/*#awards-testi {
+    width: 156px;
+    height: 218px;
+    margin: 0 4px 4xp 0;
+}
+#awards {
+    width: 154px;
+    height: 141px;
+    border: 1px solid #c3c4c5;
+    background-color: #ffffff;
+    margin: 0 0 4px 0;
+}
+*/#awards h2 {
+    width: 154px;
+    height: 24px;
+    margin: 0 0 13px 0;
+    text-align: center;
+    font: normal 14px/24px Verdana, Geneva, sans-serif;
+    color: #526b89;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #c0c2c4;
+    background: url(../images/home-images/news-events-heading-bg.gif) repeat-x left top;
+}
+#awards ul.awards-list {
+    font: normal 10px/120% Arial, Helvetica, sans-serif;
+    color: #58595b;
+    margin: 0 0 0 21px;
+}
+#awards ul.awards-list li {
+    list-style: disc;
+    margin: 0 0 4px 0;
+}
+#awards ul.awards-list a {
+    color: #58595b;
+}
+#awards-testi a.testi {
+    width: 156px;
+    height: 71px;
+    display: block;
+    background: url(../images/home-images/testimonials.gif) no-repeat left top;
+    text-indent: -9999px;
+}
+#ad-cont-one {
+    width: 525px;
+    height: 255px;
+    /*margin: 0 4px 0 0;*/
+    border: 1px solid #c0c2c4;
+}
+#ad-cont-two {
+    width: 283px;
+    height: 295px;
+    margin: 0 4px 0 0;
+    overflow: hidden;
+}
+#rhs-cont {
+    width: 458px;
+    height: 544px;
+}
+/*#launched-cont {
+    width: 441px;
+    height: 469px;
+    border: 1px solid #bec0c2;
+    background-color: #ffffff;
+    padding: 15px 0 0 15px;
+    _padding: 15px 0 0 12px;
+    margin: 0 0 4px 0;
+}*/
+
+/*#launched-cont ul.launched-projects, #launched-cont ul.launched-projects-nine-images, #launched-cont ul.launched-projects-four-images {
+    height: 365px;
+}
+#launched-cont ul.launched-projects-nine-images, #launched-cont ul.launched-projects-four-images {
+    height: 458px;
+}
+#launched-cont ul.launched-projects li, #launched-cont ul.launched-projects-nine-images li, #launched-cont ul.launched-projects-four-images li {
+    float: left;
+    display: inline;
+    margin: 0 15px 16px 0;
+    _margin: 0 12px 16px 0;
+    font: normal 9px/110% Arial, Helvetica, sans-serif;
+    color: #636466;
+    font-weight: bold;
+}
+#launched-cont ul.launched-projects-nine-images li {
+    margin: 0 15px 26px 0;
+    _margin: 0 12px 26px 0;
+}
+#launched-cont ul.launched-projects-four-images li {
+    margin: 0 14px 15px 0;
+    _margin: 0 11px 15px 0;
+}
+#launched-cont ul.launched-projects li img, #launched-cont ul.launched-projects-nine-images li img, #launched-cont ul.launched-projects-four-images li img {
+    display: block;
+    margin: 0 0 3px 0;
+}
+#launched-cont ul.launched-projects li h3, #launched-cont ul.launched-projects-nine-images li h3, #launched-cont ul.launched-projects-four-images li h3 {
+    font: normal 12px/100% Arial, Helvetica, sans-serif;
+    color: #f58220;
+    padding: 0 0 3px 0;
+}
+#launched-cont ul.launched-projects li h3 span, #launched-cont ul.launched-projects-nine-images li h3 span, #launched-cont ul.launched-projects-four-images li h3 span {
+    font-size: 9px;
+    color: #636466;
+}*/
+#ad-cont-three {
+    width: 458px;
+    height: 96px;
+    margin: 0 0 4px 0;
+}
+/*Main Content Styles End*/
+
+/*Footer Style Begin*/
+#footer-top {
+    height: 15px;
+    padding: 0px 110px 5px 21px;
+    background-color: #ffffff;
+    position: relative;
+    text-align: center;
+    font: normal 9px/15px Verdana, Geneva, sans-serif;
+    color: #606060;
+    clear: both;
+}
+#footer-top a {
+    color: #606060;
+}
+.wi {
+    width: 120px;
+    height: 15px;
+    display: block;
+    position: absolute;
+    left: 0;
+    font: normal 10px/15px Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0 0 0 21px;
+}
+a.your-feed-back {
+    width: 150px;
+    height: 15px;
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0;
+    padding: 0 21px 0 0;
+    text-align: right;
+}
+#footer-site-map {
+    width: 960px;
+    padding: 15px 0 10px 37px;
+    border: 4px solid #b0b1b1;
+    background-color: #f0f1f1;
+    font: normal 10px/100% Arial, Helvetica, sans-serif;
+    color: #60676d;
+}
+.share-rss {
+    width: 200px;
+    height: 15px;
+    padding: 0 37px 0 0;
+    text-align: right;
+}
+#footer-site-map a.home-link, #footer-site-map a.head-links, #footer-site-map a.last-col-links {
+    height: 13px;
+    display: block;
+    margin: 0 0 20px 0;
+    font-size: 11px;
+    font-weight: bold;
+    color: #0076a3;
+    letter-spacing: 3px;
+}
+#footer-site-map a.home-link {
+    width: 300px;
+    margin: 0 0 20px 0;
+}
+#footer-site-map a.head-links {
+    margin: 0 0 8px 0;
+}
+#footer-site-map a.last-col-links {
+    height: 20px;
+    line-height: 20px;
+    border-bottom: 1px solid #9fafc4;
+    margin: 0;
+    padding: 0;
+}
+#footer-site-map .footer-cols {
+    width: 292px;
+    margin: 0 44px 0 0;
+}
+#footer-site-map .footer-last-cols {
+    width: 251px;
+}
+#footer-site-map ul.links-lhs {
+    width: 146px;
+    padding: 0 0 8px 0;
+    margin: 0 0 10px;
+    border-bottom: 1px solid #9fafc4;
+}
+#footer-site-map ul.links-one-col {
+    width: 292px;
+    padding: 0 0 8px 0;
+    margin: 0 0 10px;
+    border-bottom: 1px solid #9fafc4;
+}
+#footer-site-map ul.links-lhs li, #footer-site-map ul.links-one-col li {
+    list-style: disc inside;
+    display: list-item;
+    margin: 0 0 5px 0;
+}
+#footer-site-map ul.links-lhs li a, #footer-site-map ul.links-one-col li a {
+    color: #60676d;
+}
+#footer-site-map .get-in-touch {
+    width: 249px;
+    height: 230px;
+    background-color: #ebf6f9;
+    border: 1px solid #9fafc4;
+    margin: 15px 0 0 0;
+}
+#footer-site-map .get-in-touch .get-in-touch-heading {
+    height: 33px;
+    background: #bbd5ee url(../images/home-images/getintouch.gif) no-repeat left center;
+}
+#footer-site-map p.git-text {
+    width: 229px;
+    margin: 4px auto 0 auto;
+    padding: 0 0 4px 14px;
+    border-bottom: 1px solid #9fafc4;
+    font: normal 10px/115% Arial, Helvetica, sans-serif;
+    color: #3e3e3e;
+}
+#footer-site-map p.copy-text {
+    text-align: right;
+    font: normal 10px/100% Arial, Helvetica, sans-serif;
+    color: #666666;
+    margin: 10px 0 0 0;
+    padding: 0 37px 0 0;
+}
+#footer-site-map p.copy-text span {
+    font-size: 11px;
+    font-weight: bold;
+}
+#footer-site-map p.copy-text a {
+    color: #666666;
+}
+/*Footer Style End*/
+
+/*WTC Content Styles Begin*/
+#WTC-content-cont {
+    width: 835px;
+    padding: 9px 82px 16px 88px;
+}
+#WTC-content-cont a.wtc-logo {
+    width: 356px;
+    height: 73px;
+    display: block;
+    margin: 0 0 18px 242px;
+}
+#WTC-content-cont .wtc-lhs-col {
+    width: 346px;
+    margin: 0 47px 0 0;
+}
+#WTC-content-cont .wtc-rhs-col {
+    width: 442px;
+}
+#WTC-content-cont h2 {
+    height: 15px;
+    font: normal 11px/15px Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0 0 9px 0;
+}
+#WTC-content-cont h2.wtc-services {
+    width: 100px;
+    padding: 0 5px;
+    background-color: #fcb040;
+}
+#WTC-content-cont h2.wtc-building {
+    width: 130px;
+    padding: 0 5px;
+    background-color: #0072bc;
+}
+#WTC-content-cont h3 {
+    font: normal 14px/100% Arial, Helvetica, sans-serif;
+    color: #58595b;
+    font-weight: bold;
+    margin: 0 0 18px 0;
+}
+#WTC-content-cont p {
+    font: normal 10px/130% Arial, Helvetica, sans-serif;
+    color: #58595b;
+    margin: 0 0 14px 0;
+}
+#WTC-content-cont a.wtc-link {
+    font: normal 16px/100% Arial, Helvetica, sans-serif;
+    color: #0072bc;
+    padding: 0 0 0 70px;
+}
+#WTC-content-cont a.wtc-enter {
+    width: 107px;
+    height: 18px;
+    display: block;
+    margin: 0 0 0 150px;
+}
+
+/*WTC Content Styles Begin*/
+
+/* Light Box */
+#lightboxOverlay {
+    background-color: #000;
+    display: none;
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+}
+.lightboxcontent {
+    display: none;
+    left: 50%;
+    position: fixed;
+    top: 80px;
+    z-index: 10001;
+}
+.lightboxClose {
+    background: url("../images/btn-close-black.png") no-repeat 0 0;
+    display: block;
+    height: 32px;
+    width: 32px;
+    position: absolute;
+    right: -15px;
+    /*text-indent:-9999px;*/
+    top: -15px;
+    z-index: 10002;
+}
+/*------------- Referral Form  -----------------*/
+
+.communities_banner {
+    background: url(http://www.brigadegroup.com/images/communities_banner.jpg) no-repeat;
+    width: 987px;
+    height: 177px;
+    margin: 0 auto;
+}
+.communities_banner p {
+    font-size: 16px;
+    width: 490px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: #000000;
+    line-height: 25px;
+    float: right;
+    padding: 30px 30px 0px 0px;
+}
+.blue_bg {
+    width: 987px;
+    height: 860px;
+    margin: 0 auto;
+    background: #1B75BC;
+    clear: both;
+    font-family: 'Open Sans', sans-serif;
+}
+.left_part {
+    width: 510px;
+    float: left;
+    margin: 40px 0px 0px 45px;
+}
+.left_part p {
+    font-size: 14px;
+    width: 510px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 20px;
+    padding-bottom: 8px;
+}
+.left_part .one_percent_img {
+    padding: 5px 0px 15px;
+}
+.left_part h4 {
+    color: #FFFFFF;
+    font-size: 14px;
+    text-transform: uppercase;
+    line-height: 19px;
+    padding: 10px 0px 5px 0px;
+}
+.right_part {
+    width: 345px;
+    float: right;
+    margin: 40px 45px 0px 0px;
+    background: url(http://www.brigadegroup.com/images/referral_form_bg.png) no-repeat;
+    height: 850px;
+    background-position: 4px 20px;
+}
+.right_part_referral_heading {
+    margin-left: 27px;
+}
+.right_part p {
+    font-size: 14px;
+    width: 250px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 20px;
+    padding-bottom: 10px;
+    text-align: left;
+    padding: 0px 0px 0px 35px;
+}
+.referal_info_bg {
+    background: #449AD2;
+    width: 510px;
+    height: 115px;
+    border-radius: 3px;
+    margin: 3px 0px 0px 0px;
+    clear: both;
+}
+.referal_info_bg_left {
+    width: 180px;
+    float: left;
+    margin: 17px 0px 13px 16px;
+}
+.referal_info_bg_left p {
+    width: 180px;
+    font-size: 14px;
+*font-size:13px;
+    color: #FFFFFF;
+    line-height: 22px;
+}
+.referal_info_bg_right {
+    float: left;
+    background: url(../images/seperator.jpg) no-repeat;
+    margin: 13px 10px;
+    background-position: 0px 5px;
+}
+.referal_info_bg_right p {
+    width: 250px;
+    font-size: 14px;
+*font-size:13px;
+    color: #FFFFFF;
+    padding-left: 20px;
+    line-height: 22px;
+}
+.ie8 p {
+    font-size: 13px;
+}
+.referral_form {
+    margin: 0;
+    padding: 5px 0;
+    text-align: center;
+}
+.referral_form * {
+    color: #666666;
+}
+.referral_form p {
+    color: #94E6F5;
+    font-size: 13px;
+    text-indent: 0px;
+    display: block;
+    width: 300px;
+    text-align: left;
+}
+.referral_form .contact_details {
+    color: #ffffff;
+    font-size: 13px;
+    padding-top: 35px;
+}
+.referral_form label span {
+    text-decoration: underline;
+}
+.referral_form label span a {
+    color: #94E6F5;
+    text-decoration: underline;
+}
+.referral_form label {
+    display: block;
+    margin: 0px;
+    padding: 5px 0px 10px 0px;
+    font-size: 14px;
+    color: #81C5E2;
+    text-indent: -68px;
+}
+.referral_form input.text {
+    width: 260px;
+    border: 2px solid #ffffff;
+    margin: 5px 0px 3px 0px;
+    padding: 5px 7px;
+    height: 23px;
+    background: #ffffff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+}
+.referral_form textarea {
+    width: 182px;
+    border: 2px solid #ffffff;
+    margin: 5px 0px 11px 0px;
+    padding: 5px 7px;
+    height: 80px;
+    background: #ffffff;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.referral_form select {
+    width: 275px;
+    border: 2px solid #ffffff;
+    margin: 5px 0px 3px 0px;
+    padding: 5px 2px;
+    height: 35px;
+    background: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+}
+.referral_form .checkbox {
+    padding: 0px;
+    margin: 10px 5px 0px 45px;
+]margin:0px 5px 0px 45px;
+    position: relative;
+    vertical-align: bottom;
+    top: -1px;
+}
+.referral_form .button {
+    margin: 12px 0px 0px 0px;
+}
+#conditions {
+    margin: 30px;
+    font-family: 'Open Sans', sans-serif;
+}
+#conditions h3 {
+    font-size: 20px;
+    color: #1B75BC;
+    font-weight: 600;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 10px;
+}
+.terms_conditions_left {
+    float: left;
+    width: 370px;
+    font-size: 12px;
+    margin-top: 0px;
+}
+.terms_conditions_left ol li {
+    padding: 0px 0px 0px 0px;
+    list-style: disc;
+}
+.terms_conditions_right {
+    float: right;
+    width: 380px;
+    font-size: 12px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+.terms_conditions_right ol li {
+    padding: 0px 20px 12px 10px;
+    list-style: disc;
+}
+.referral_form_input_text {
+    width: 260px;
+    border: 2px solid #ffffff;
+    margin: 5px 0px 3px 34px;
+    padding: 5px 7px;
+    height: 23px;
+    background: #ffffff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+}
+.referral_form_select {
+    width: 275px;
+    border: 2px solid #ffffff;
+    margin: 5px 0px 3px 34px;
+    padding: 5px 2px;
+    height: 35px;
+    background: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+}
+.referral_form_contact_details {
+    color: #ffffff;
+    font-size: 13px;
+    padding-top: 55px;
+}
+.referral_form_checkbox {
+    padding: 0px;
+    margin: 10px 5px 0px 45px;
+]margin:0px 5px 0px 45px;
+    position: relative;
+    vertical-align: bottom;
+    top: -1px;
+}
+.referralButton2{
+width: 20%;
+height: 35px;
+padding: 5px 5px;
+background-color:#blue;
+//background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+border-radius: 4px;
+border: 1px solid #4e3043;
+box-shadow:
+inset 0 1px rgba(255,255,255,0.4),
+0 2px 1px rgba(0,0,0,0.1);
+cursor: pointer;
+transition: all 0.3s ease-out;
+color: white;
+align: center;
+text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+font-size: 14px;
+font-weight: bold;
+font-family: 'Raleway', 'Lato', Arial, sans-serif;
+margin:0px 5px 0px 120px;
+}
+.cboxClose {
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    display: block;
+    background:url(http://www.brigadegroup.com/images/controls.png) no-repeat top center;
+    width: 65px;
+    height: 35px;
+    text-indent: -9999px;
+    z-index: 1000;
+}
+
+
+</style>
+
+   <script type="text/javascript">
+        var lostNotes= getCleanName('{!$Component.theForm.pbMain.pbS1.lostNotes}');
+        var j$ = jQuery.noConflict();
+        function getCleanName(theName)
+        {
+            return '#' + theName.replace(/:/gi,"\\:");
+        }        
+        //Jscript to populate the description box 
+        function fillLostNotes()
+        {
+            j$(lostNotes).val('* What could have been done to salvage the opportunity?' + '\n\n' + '* What is required within Compass Learning to correct the Loss reason? \n\n\n'); 
+        }
+       j$(document).ready(function(){
+            fillLostNotes();
+        });
+    </script>
+
+  
+  <div id="main-navi-cont" style="padding: 4px 4px 0;">
+    <div class="communities_banner">
+      <p>Truly great projects are those that give rise to lively,<br/>
+        well-integrated communities. For the last 30 years, <br/>
+        Brigade Group projects have created a multitude of such communities. Each one has become a hub in its locality <br/>
+        and has delivered an enviable lifestyle to its residents.</p>
+    </div>
+  </div>  
+
+  <div id="main-content-cont">
+        <div class="blue_bg">
+          <div class="left_part">
+            <p>Satisfied customers have become brand ambassadors of the Brigade way of life and have brought their family and friends into our circle. Brigade Communities, our Referral-Reward Programme, is our way of thanking all those who have helped us build wonderful communities across our projects.</p>
+            <apex:image value="{!$Resource.One_percent_principle}"   styleClass="one_percent_img"/>
+            <p>When you help us expand our community through referrals, we share part of the business you’ve facilitated with you.</p>
+            <p>For every successful referral, existing customers of Brigade Group are rewarded with up to 1% of the Agreement Value of the property booked.</p>
+            <p>Should the customer book another property with Brigade Group, he or she will earn a Loyalty Bonus, up to 1% of the Agreement Value of the property booked.</p><br/>
+            <h4>All you need to do is fill the REFERAL form Or,<br/>
+              if you prefer, you can:</h4>
+            <div class="referal_info_bg">
+              <div class="referal_info_bg_left ie8">
+                <p><b>Fill a simple form</b> either at the time of booking or on a subsequent visit to our office.</p>
+              </div>
+              <div class="referal_info_bg_right ie8">
+                <p><b>Send an email</b> to<br/>
+                  brigadecommunities@brigadegroup.com, with name and contact details of your referral and your booking details.</p>
+              </div>
+            </div>  
+            <br class="clear-both" />
+            <p>We’ll send you a confirmation communication once the referral is accepted.</p>
+            <p>We regret we cannot credit referrals that already exist in our database through some other source.</p>  
+            <apex:image value="{!$Resource.Brigade_communities}"   styleClass="one_percent_img"/></div>
+             
+            <div class="right_part"> <apex:image value="{!$Resource.Brigade_referral_form}" styleClass="right_part_referral_heading" /> 
+            <p>Fill in this form to refer a family member or friend to us.</p>
+            <p style="padding-top:13px;">Your referral’s contact details</p>
+            
+            <form action="thankyou.php" method="post" class="referral_form" id="Form2">
+            <apex:inputField value="{!NewReferralInformation.Name__c}" styleClass="referral_form_input_text " id="lostNotes" html-placeholder="Name" />
+            <apex:inputField value="{!NewReferralInformation.Mobile__c}" styleClass="referral_form_input_text " id="mobile" label="Mobile Number" html-placeholder="Mobile Number" />    
+            <apex:inputField value="{!NewReferralInformation.Email__c}" styleClass="referral_form_input_text " id="email" html-placeholder="Email" />
+            <apex:selectList value="{!selectPlant}" multiselect="false"  size="1" id="projectValu"  styleClass="referral_form_select ">
+            <apex:selectOptions value="{!projectOption}"/>  
+            </apex:selectList> 
+            <br/><br/><br/><br/>
+            <p >Your contact details</p>
+             <apex:inputText value="{!usr.name}" styleClass="referral_form_input_text " id="userName" />
+             <apex:inputText value="{!usr.MobilePhone}" styleClass="referral_form_input_text " id="userMobile" title="Mobile Number"/>
+             <apex:inputText value="{!usr.email}" styleClass="referral_form_input_text " id="userEmail"/>
+             <apex:inputText value="{!selectedcodenew}" label="Project Booked#" styleClass="referral_form_input_text " id="userProject"/>
+             <apex:inputText value="{!unitnumber}" label="Unit Number" styleClass="referral_form_input_text " id="userUnit"/>
+            <apex:inputField value="{!NewReferralInformation.Relation__c}" styleClass="referral_form_select " id="relation" label="Relationship"/>
+              <label>
+              <p><font size="2" >* Fields are mandatory<br/>
+                #Full project name,e.g.:'Brigade Gardenia'</font></p>
+                </label>  
+                <br/> 
+                <label>
+              <input type="checkbox" name="termsconditions" checked="checked" class="referral_form_checkbox " required="true"/> 
+              <font size="2" color="White">I agree to the <span><a class="inline cboxElement" href="#conditions"><font size="2" color="White"><u><apex:commandLink action="{!countryDetails}">terms and conditions</apex:commandLink></u></font></a></span></font></label>   
+   <!-----------------pop up start --------------------------->
+           <apex:outputPanel id="intPop" >       
+
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+
+<div id="conditions" style="overflow:hidden;">
+    <apex:commandLink action="{!closePopup}" styleClass="cboxClose">Close</apex:commandLink>
+      <h3>Terms and conditions:</h3>
+      <table><tr><td>
+      <div class="terms_conditions_right">
+        <ol>
+          <li>This program is applicable for individuals who are existing owners of Brigade properties i.e. the Referrer/Source should have purchased at least one Brigade property and must be existing in Brigade Group's records</li>
+          <li>For successful referrals, existing customers of Brigade Group are eligible for upto 1% of the Agreement Value of the booked property</li>
+          <li>The Referred customer should not be an existing Brigade customer OR engaged in a purchase discussion with a Brigade executive in the last 90 days</li>
+          <li>Date of walk-in/site visit should not be the same for the Referrer &amp; the Referred</li>
+          <li>Bookings through channel partners (and their employees), employees &amp; associates of Brigade Group are not eligible to participate in this referral program (separate referral program exists for employees &amp; associates of Brigade Group)</li>
+          <li>The referral bonus will be paid within 45 working days after the Referred customer signs  the agreement and pays at least 20% of the Agreement value of the purchased unit</li>
+        </ol>
+      </div>
+      </td>
+      <td>
+      <div class="terms_conditions_right">
+        <ol>
+          <li>In case of multiple bookings by the Referred customer, if the 1st booking involves multiple units, the Referrer/Source will be eligible for bonus on all the units booked only if the residences are booked in different primary/secondary applicant names. For subsequent  bookings by the same customer, no referral bonus will be applicable, though the customer gets a 1% Loyalty Bonus on his/her repeat  booking</li>
+          <li>The Referral bonus will be paid after deduction of applicable taxes</li>
+          <li>Referral offer &amp; rewards cannot be replaced partially/fully with any other offer and/or discount</li>
+          <li>In case of cancellation of the residence/s either by Referred customer, Brigade Group will not be liable for any distribution of any rewards</li>
+          <li>In case of any conflict by either parties, the decision of Brigade Group will be final</li>
+          <li>Brigade Group reserves the rights to include, modify and/or remove projects in the referral program and the referral program itself without any prior notice</li>
+        </ol>
+      </div>
+      </td>      
+      </tr></table>
+</div>
+                  
+            </apex:outputPanel>
+                
+                
+        </apex:outputPanel>
+   
+   
+   <!---------------pop up ends ------------------------------->   
+
+               <br/><br/>        
+              <apex:commandButton value="Submit" action="{!SaveReferral}"  immediate="false" styleClass="referralButton2"/>
+
+            </form>
+            
+                  
+            
+            
+ </div>
+ </div>
+ </div>              
+
+
+<!------------------------------------------End new page----------------------------->                      
+                        
+                        
+                        
+                        <!-- center>
+                            <apex:commandButton value="New Referral" action="{!CreateNewReferral}" rendered="false" immediate="false" styleClass="referralButton" rendered="false"/>
+                        </center -->
+                        <br/>
+                        <apex:pageBlockSection columns="1" rendered="{!if(referraldataAll.size=0,true,false)}">
+                            <h1>No referrals available</h1>
+                        </apex:pageBlockSection>
+                        <table width="100%"><tr style="background-color:#C8D7E3;padding-top:5px;padding-left:3px" ><td style="font-family: Arial;"><font color="black"> <b>My Referrals</b></font></td></tr></table>
+                        <apex:pageBlockSection columns="1" showHeader="true" rendered="{!if(referraldataAll.size>0,true,false)}">
+                            <apex:pageBlockTable value="{!referraldataAll}" var="Con1" style="font-family: Arial;">
+                                <apex:column headerValue="Name"><apex:outputLink value="/apex/detailReferral?id={!Con1.id}"> {!Con1.Name__c} </apex:outputLink></apex:column>
+                                <apex:column value="{!Con1.Email__c}" />
+                                <apex:column value="{!Con1.Mobile__c}"/>
+                                <apex:column value="{!Con1.Project_Information__c}" headerValue="Project Interested"/>
+                                <apex:column value="{!Con1.Status__c}"/>
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    
+                    <!-- page block to create new referral -->
+                    <apex:pageBlock id="pblock" rendered="{!(newsecreferral)}" title="New Referral Information"> 
+                        <!-- <apex:pageMessages rendered="{!!errorMessage}"/> -->
+                        <apex:pageMessage summary="The referral email or phone already exists in Brigade Group's records" strength="2" severity="ERROR" rendered="{!errorMessage }"></apex:pageMessage>
+                        <apex:pageBlockSection columns="1" title=" Your referral’s contact details" showHeader="true" id="pbsction">
+                            <apex:inputField value="{!NewReferralInformation.Name__c}" styleClass="text" id="name" label="Name*"/>
+                            <apex:inputField value="{!NewReferralInformation.Email__c}" styleClass="text" id="email" label="Email*"/>
+                            <apex:inputField value="{!NewReferralInformation.Mobile__c}" styleClass="text" id="mobile" label="Mobile Number*"/>
+                          <!--  <apex:inputField value="{!NewReferralInformation.Type_of_Apartment__c}" id="typeAparment" label="Type of Apartment"/>
+                            <apex:inputField value="{!NewReferralInformation.Area__c}" styleClass="text" id="area" label="Area"/>
+                            <apex:inputField value="{!NewReferralInformation.Budget__c}"  id="budget" label="Budget"/>
+                            <apex:inputField value="{!NewReferralInformation.Location__c}" styleClass="text" id="location" label="Location"/>--> 
+                            <apex:inputField value="{!NewReferralInformation.Description__c}" styleClass="text" id="description" label="Remarks"/>                             
+                            <apex:pageBlockSectionItem >             
+                                <apex:outputLabel > Project Interested</apex:outputLabel>
+                                <apex:selectList value="{!selectPlant}" multiselect="false"  size="1" id="projectValu"  styleClass="text">                                            
+                                    <apex:selectOptions value="{!projectOption}"/>  
+                                </apex:selectList>   
+                            </apex:pageBlockSectionItem>
+                             </apex:pageBlockSection>
+                           <apex:pageBlockSection columns="1" title=" Your contact details" showHeader="true" id="pbsction2">      
+                            
+                             <apex:inputText value="{!usr.name}" styleClass="text" id="userName"/>
+                             <apex:inputText value="{!usr.MobilePhone}" styleClass="text" id="userMobile" title="Mobile Number"/>
+                             <apex:inputText value="{!usr.email}" styleClass="text" id="userEmail"/>
+                             <apex:inputText value="{!selectedcodenew}" label="Project Booked#" styleClass="text" id="userProject"/>
+                             <apex:inputText value="{!unitnumber}" label="Unit Number" styleClass="text" id="userUnit"/>
+                            <apex:inputField value="{!NewReferralInformation.Relation__c}" styleClass="text" id="relation" label="Relationship"/>        
+                        </apex:pageBlockSection>
+                        <center>
+                            <apex:commandButton value="Submit" action="{!SaveReferral}"  immediate="false" styleClass="referralButton1"/>
+                            <apex:commandButton value="Cancel" action="{!CancelReferral}" immediate="false" styleClass="referralButton1"/>
+                        </center> 
+                    </apex:pageBlock><br/>
+                </apex:outputLabel>
+            
+            </div> 
+        </body>
+        
+    </apex:form>
+</apex:page>

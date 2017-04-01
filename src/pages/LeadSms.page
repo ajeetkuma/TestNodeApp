@@ -1,0 +1,21 @@
+<apex:page standardController="Lead" extensions="LeadsController" recordSetVar="Leads" action="{!bumpLeads}" standardStylesheets="true">
+   <apex:form >
+   <apex:pageMessages ></apex:pageMessages>
+       <apex:pageBlock title="Selected Leads">
+           
+           
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!updateLeads}" value="Send SMS"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable value="{!selected}" var="Lead">
+                <apex:column value="{!Lead.LastName}"/>
+                <apex:column value="{!Lead.MobilePhone}"/>
+                <apex:column value="{!Lead.Phone}"/> 
+            </apex:pageBlockTable> 
+        <apex:pageBlockSection title="Send SMS" columns="1">
+            <apex:outputLabel title="SMS Text"/>
+            <apex:inputTextarea value="{!smsText}" label="SMS Text"/>
+        </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>

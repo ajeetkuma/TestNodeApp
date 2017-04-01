@@ -1,0 +1,240 @@
+<apex:page StandardController="Plant__c" Extensions="portalAccess"
+showHeader="true" >
+    
+    <apex:form id="theform">
+        <apex:pageBlock >
+            
+            <apex:actionFunction name="setProject" action="{!getPlantName}"
+            rerender="theform">
+                <apex:param name="firstParam" assignTo="{!selectedValue}" value="" />
+            </apex:actionFunction>
+            <apex:actionFunction name="selectAllRecord"  action="{!selectAllRecordToSeleted}" rerender="contBlock,contBlock2"  />
+            <apex:actionFunction name="setIsSelectFalse"
+            action="{!setIsSelectToFalse}" rerender="contBlock" />
+            
+            
+            
+            
+            <apex:pageBlockSection title="Portal Access Users"  Collapsible="false" columns="2" id="refreshvalue">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Project Name" />
+                    <apex:selectList value="{!selectedValue}" multiselect="false" size="1" onchange="setProject(this.value)">
+                        <apex:selectOptions value="{!Items}">
+                        </apex:selectOptions>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                
+                <apex:pageBlockSectionItem rendered="{!selectedValue<>null}">
+                    <apex:outputLabel value="Plant Name" />
+                    
+                    <apex:selectList value="{!selectedPlant}" Label="Plant Name"  multiselect="false" size="1">
+                        
+                        <apex:selectOptions value="{!plantOption}">
+                            <apex:actionSupport event="onchange" reRender="theform" />
+                        </apex:selectOptions>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                
+                
+                <apex:pageBlockSectionItem rendered="{!selectedValue<>null}">
+                    <apex:outputLabel value="Portal Access"></apex:outputLabel>
+                    
+                    <apex:selectList id="chooseColor" value="{!isPortalAcess}" size="1">
+                        <apex:selectOption itemValue="Yes" itemLabel="Yes" />
+                        <apex:selectOption itemValue="No" itemLabel="No" />
+                        
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:outputPanel ></apex:outputPanel>
+                <apex:outputPanel ></apex:outputPanel>
+                <apex:commandButton action="{!search}" value="Search" reRender="{!$Component.theform}" rendered="{!selectedValue<>null}" />
+                
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+        <apex:pageBlock id="SelectAllCont" rendered="{!if(isTrue==true,true,false)}">
+            <apex:pageBlock id="errorBlock" rendered="{!if(ConList.size==0 && isTrue==true,true,false)}">
+                <h1>There is no Contacts under the selected Project</h1>
+            </apex:pageBlock>
+            
+            
+            <apex:pageBlock id="contBlock" rendered="{!if(ConList.size>0 && (isPortalAcess == 'Yes'),true,false)}">
+                
+                
+                <table border="0">
+                    <tr>
+                        <apex:repeat value="{!SerchAlpabet}" var="nn">
+                            <td><apex:commandLink action="{!Search}" reRender="contBlock" ><apex:param value="{!nn}" name="sss"  assignTo="{!SearchVar}"/> {!nn}</apex:commandLink></td>
+                        </apex:repeat>
+                    </tr>
+                </table>
+                <!--- List of Contacts--->
+                <!--            
+                <table  width="100%" >
+                
+                <tr bgcolor="579CBC" abbr="B0B0B0" > 
+                <td width="5%" ><apex:inputCheckbox value="{!isAllSelect}" onchange="selectAllRecord()" /></td>
+                <td width="15%"><b><font color="white"><apex:commandLink value="First Name" action="{!sortlist}" reRender="contBlock" style="color:white;"/></font></b></td>
+                <td width="15%"><b><font color="white"><apex:outputLabel value="Last Name" /></font></b></td>
+                <td width="15%"><b><font color="white"><apex:outputLabel value="Mobile No." /></font></b></td>
+                <td width="15%"><b><font color="white"><apex:outputLabel value="Phone No." /></font></b></td>
+                <td width="15%"><b><font color="white"><apex:outputLabel value="Email" /></font></b></td>
+                <td width="20%"><b><font color="white"><apex:outputLabel value="Unit No." /></font></b></td>
+            </tr> 
+                
+                <apex:repeat value="{!contactPageList}" var="Con">
+                <tr bgcolor="F0EDF3" >
+                <td width="5%" ><apex:inputCheckbox value="{!Con.Portal_Access__c}" onchange="setIsSelectFalse()" /></td>
+                <td width="15%"><apex:outputLabel value="{!Con.FirstName}" /> </td>
+                <td width="15%"><apex:outputLabel value="{!Con.LastName}" /> </td>
+                <td width="15%"><apex:outputLabel value="{!Con.MobilePhone}" /> </td>
+                <td width="15%"><apex:outputLabel value="{!Con.Phone}" /> </td>
+                <td width="15%"><apex:outputLabel value="{!Con.email}" /> </td>
+                <apex:repeat value="{!oppList2}" var="opp">
+                <td width="20%"><apex:outputLabel value="{!opp.Unit__r.Name}" /> </td>
+            </apex:repeat>
+            </tr>
+            </apex:repeat>
+            </table>
+                
+                
+                
+                
+                
+                --------------->
+                <apex:inputText value="{!globalSearch}" html-placeholder="Search.." title="Search Unit no, Mobile, Name, Email "/>
+                <apex:commandButton action="{!search2}" value="Search" />
+                <table  width="100%" >
+                    
+                    <tr bgcolor="579CBC" abbr="B0B0B0" > 
+                        <td width="5%" ><apex:inputCheckbox value="{!isAllSelect}" onchange="selectAllRecord()" /></td>
+                        <td width="15%"><b><font color="white"><apex:commandLink value="First Name" action="{!sortlist}" reRender="contBlock" style="color:white;"/></font></b></td>
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Last Name" /></font></b></td>
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Mobile No." /></font></b></td>
+                        <!--td width="15%"><b><font color="white"><apex:outputLabel value="Phone No." /></font></b></td -->
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Income Tax/PAN/GIR No" /></font></b></td>
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Email" /></font></b></td>
+                        <td width="20%"><b><font color="white"><apex:outputLabel value="Unit No." /></font></b></td>
+                    </tr> 
+                    <apex:repeat value="{!bindedList}" var="bind">
+                        <tr bgcolor="F0EDF3" >
+                            <td width="5%" ><apex:inputCheckbox value="{!bind.Con.Portal_Access__c}" onchange="setIsSelectFalse()" /></td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.FirstName}" /> </td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.LastName}" /> </td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.MobilePhone}" /> </td>
+                            <!-- td width="15%"><apex:outputLabel value="{!bind.Con.Phone}" /> </td -->
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.Income_Tax_PAN_GIR_No__c}" /> </td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.email}" /> </td>
+                            <td width="20%"><apex:outputLabel value="{!bind.opp.Unit__r.Name}" /> </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <apex:pageBlockSection >
+                    
+                </apex:pageBlockSection>
+                <table  style="float:right">
+                    <tr>
+                        
+                        <td ><apex:commandLink action="{!Previous}" value="Previous Page" />
+                        </td>&nbsp;&nbsp;&nbsp;
+                        <td align="right">  {!PageNumber}/{!TotalPages}  </td>&nbsp;&nbsp;&nbsp;
+                        <td align="right"><apex:commandLink action="{!next}" value="Next Page" /></td>
+                    </tr>
+                    
+                </table>
+                <br/><br/> <center>
+                
+                <apex:commandButton action="{!Activate}"     value="De-activate Portal Access"      reRender="{!$Component.theform.SelectAllCont}" />
+                </center>
+                
+                <div id="nodata" style = "display:none;">
+                    <p><b>No record by selected letter.</b></p>
+                </div>  
+                <script>
+                var sze='{!sizee}';
+                sz=parseInt(sze);
+                //  alert(sz);
+                if(sz>0)
+                {
+                    document.getElementById('showdata').style.display="block";
+                    document.getElementById('nodata').style.display="none";
+                }
+                else
+                {
+                    document.getElementById('showdata').style.display="none";
+                    document.getElementById('nodata').style.display="block";
+                }
+                </script>   
+            </apex:pageBlock>
+            
+            <!-- Deactivated List of Contact-->
+            
+            <apex:pageBlock id="contBlock2" rendered="{!if(ConList.size>0 && (isPortalAcess == 'No'),true,false)}">
+                
+                <!--- List of Contacts--->
+                <apex:inputText value="{!globalSearch}" html-placeholder="Search.." title="Search Unit no, Mobile, Name, Email "/>
+                <apex:commandButton action="{!search2}" value="Search" />
+                <table  width="100%" >
+                    
+                    <tr bgcolor="579CBC" abbr="B0B0B0" > 
+                        <td width="5%" ><apex:inputCheckbox value="{!isAllSelect2}" onchange="selectAllRecord()" /></td>
+                        <td width="15%"><b><font color="white"><apex:commandLink value="First Name" action="{!sortlist}" reRender="contBlock" style="color:white;"/></font></b></td>
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Last Name" /></font></b></td>
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Mobile No." /></font></b></td>
+                        <!-- td width="15%"><b><font color="white"><apex:outputLabel value="Phone No." /></font></b></td -->
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Income Tax/PAN/GIR No" /></font></b></td>
+                        <td width="15%"><b><font color="white"><apex:outputLabel value="Email" /></font></b></td>
+                        <td width="20%"><b><font color="white"><apex:outputLabel value="Unit No." /></font></b></td>
+                    </tr> 
+                    <apex:repeat value="{!bindedList}" var="bind">
+                        <tr bgcolor="F0EDF3" >
+                            <td width="5%" ><apex:inputCheckbox value="{!bind.Con.Portal_Access__c}" onchange="setIsSelectFalse()" /></td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.FirstName}" /> </td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.LastName}" /> </td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.MobilePhone}" /> </td>
+                            <!-- td width="15%"><apex:outputLabel value="{!bind.Con.Phone}" /> </td -->
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.Income_Tax_PAN_GIR_No__c}" /> </td>
+                            <td width="15%"><apex:outputLabel value="{!bind.Con.email}" /> </td>
+                            <td width="20%"><apex:outputLabel value="{!bind.opp.Unit__r.Name}" /> </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+                
+                
+                <apex:pageBlockSection >
+                    
+                </apex:pageBlockSection>
+                <table  style="float:right">
+                    <tr>
+                        
+                        <td ><apex:commandLink action="{!Previous}" value="Previous Page" />
+                        </td>&nbsp;&nbsp;&nbsp;
+                        <td align="right">  {!PageNumber}/{!TotalPages}  </td>&nbsp;&nbsp;&nbsp;
+                        <td align="right"><apex:commandLink action="{!next}" value="Next Page" /></td>
+                    </tr>
+                    
+                </table>
+                <br/><br/> <center>
+                <apex:commandButton action="{!Activate}"  value="Activate Portal Access"   reRender="{!$Component.theform.SelectAllCont}"  />&nbsp; &nbsp;
+                
+                </center>
+            </apex:pageBlock>
+            
+            <!--<apex:commandButton action="{!Activate}"  value="Activate Portal Access"   reRender="{!$Component.theform.SelectAllCont}"  />&nbsp; &nbsp;-->
+        </apex:pageBlock>
+        
+        
+        
+    </apex:form>
+</apex:page>

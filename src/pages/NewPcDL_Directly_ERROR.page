@@ -1,0 +1,6 @@
+<apex:page standardController="Demand_Letter_Repository__c" standardStylesheets="true">
+  <apex:pageMessage severity="warning" strength="3" summary="Cannot create from here." 
+          detail="Either create from related list of an Opportunity or from Opportunity list view !!!"
+          title="Warning:">
+  </apex:pageMessage>
+</apex:page>

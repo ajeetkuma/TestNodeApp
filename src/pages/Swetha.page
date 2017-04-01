@@ -1,0 +1,35 @@
+<apex:page >
+
+<script>
+ function top() {
+    alert("hi");
+    document.getElementById( 'top' ).scrollIntoView();    
+}
+
+function bottom() {
+    document.getElementById( 'bottom' ).scrollIntoView();
+    window.setTimeout( function () { top(); }, 2000 );
+}
+
+
+</script>
+
+
+<style>
+  
+#top {
+    border: 1px solid black;
+    height: 3000px;
+}
+
+#bottom {
+    border: 1px solid red;
+}
+
+</style>
+ <div id="top">top</div>
+<div id="bottom">bottom</div>
+
+
+<input type="button" value="abbd" onclick="top();" />
+</apex:page>

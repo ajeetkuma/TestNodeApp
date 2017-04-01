@@ -1,0 +1,1594 @@
+<apex:page standardController="Opportunity"  sidebar="false" showHeader="false" standardStylesheets="false" extensions="CustomerApplicationController">
+    <c:Libraries />
+    <html   ng-app="app" ng-controller="Controller">
+    
+    <body data-spy="scroll" data-target=".navbar" data-offset="50" ng-cloak="true">  
+      <style>.row{margin-top: 6px !important;}</style>
+      <div >
+        <nav class="navbar navbar-default navbar-fixed-top" style="height: 40px;">
+            <div class="container-fluid">
+                    <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                              <span class="icon-bar"></span>
+                              <span class="icon-bar"></span>
+                              <span class="icon-bar"></span>
+                            </button>
+                            <a class="logo" href="http://www.brigadegroup.com/"><img src="https://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" style="height: 40px;"/></a>
+                    </div>
+                    <div>
+                          <div class="collapse navbar-collapse" id="myNavbar">
+                            <ul class="nav navbar-nav">
+                              <li class="active"><a href="#section1" >Project Details</a></li>
+                              <li><a href="#section2" >Applicant 1</a></li>
+                              <li><a href="#section3" >Applicant 2</a></li>
+                              <li><a href="#section4" >Applicant 3</a></li>
+                              <li><a href="#section5" >Address Details (Correspondence)</a></li>
+                              <li><a href="#section6" >Address Details (Permanent)</a></li>
+                              <li><a href="#section7" >General Power of Attorney</a></li>
+                              <li><a href="#section8" >Documents Checklist</a></li>
+                              <li><a href="#section9" >Downloads</a></li>
+                            </ul>
+                          </div>
+                    </div>
+            </div>
+        </nav>
+        <div class="container" style="margin-top: 90px;">
+            <div ng-hide="contactResponse=='sucess' || SubmitStatus=='Customer Submitted'">
+                <div id="section1" class="container-fluid" >
+                  <div class="panel panel-primary">
+                        <div class="panel-heading ">Project Details</div>
+                                <div class="panel-body">
+                                  <form name="ProjectForm" role="form">
+                                     <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Project</label>
+                                              <div class="left-inner-addon ">
+                                                    <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="Application_Form__c.Project__c"/>
+                                                    <!-- <select class="form-control" ng-model="Application_Form__c.Project__c" ng-options="type for type in ProjectTypes" ng-change="ChangePlant();ChangeProjectsDetails()"></select> -->
+                                                     <i class="glyphicon glyphicon-home"></i> 
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <div class="form-group">
+                                                  <label for="usr">Block</label>
+                                                <!-- <select class="form-control" ng-model="Application_Form__c.Plant__c" ng-options="type for type in PlantTypes" ng-change="ChangeUnit();ChangeProjectsDetails()"></select> -->
+                                                <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="Application_Form__c.Plant__c"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <div class="form-group">
+                                                <label for="usr">Apt / Unit No.</label>
+                                                <!-- <select class="form-control" ng-model="Application_Form__c.Unit__c" ng-options="type for type in UnitTypes" ng-change="ChangeProjectsDetails()"></select> -->
+
+                                                <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="Application_Form__c.Unit__c"/>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-4" >
+                                            <div class="form-group">
+                                                <label for="usr">Floor</label>
+                                                <input type="text" ng-disabled="true" class="form-control" id="usr" ng-model="FloorDescription"/>
+                                            </div>
+                                        </div>
+                                     
+                                        <div class="col-sm-4">
+                                             <label for="usr">Super-Built Area (In Sqft)</label>
+                                             <div >
+                                                    
+                                                    <input type="number" min="0" class="form-control" placeholder="" ng-model="Unit__c.Area__c"  ng-pattern="/^[0-9]{1,10}$/" name="Super_Built_Area" ng-disabled="true"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                                   <!--  <span ng-show="ProjectForm.Super_Built_Area.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                                    
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">PT / Unit Price Agreed (Per Sqft)</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Opportunity.PT_Unit_Price_Agreed__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Apt_Unit_Price_Agreed" ng-keyup="changeAggrement()" ng-disabled="true"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <!-- <span ng-show="ProjectForm.Apt_Unit_Price_Agreed.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                              </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Pvt. Terrace  Area (In Sqft)</label>
+                                             <div >
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Terrace_Area__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Area" ng-disabled="true"/>
+                                                   <!--  <span ng-show="ProjectForm.Pvt_Terrace_Garden_Area.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Pvt. Terrace Area Price Agreed(Per Sqft)</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Terrace_Area_Price__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Area" ng-keyup="changeAggrement()" ng-disabled="true"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                 <!-- <span ng-show="ProjectForm.Pvt_Terrace_Garden_Area.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         
+                                     
+                                         <div class="col-sm-4">
+                                             <label for="usr">No of Car Park(s)</label>
+                                             <div >
+                                                    
+                                                 <input type="number" class="form-control" placeholder="" ng-model="Opportunity.No_of_Car_Park_S__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="no_of_car_parks"  ng-keyup="changeCarPark();changeAggrement()" ng-disabled="true"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                                    <!-- <span ng-show="ProjectForm.no_of_car_parks.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                               </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                             <label for="usr">Pvt. Garden Area (In Sqft) </label>
+                                              <div >
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Garden_Area__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Price_Agreed" ng-disabled="true"/>
+                                                    
+                                                    <!-- <span ng-show="ProjectForm.Pvt_Terrace_Garden_Price_Agreed.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                              </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Pvt. Garden Area Price Agreed(Per Sqft) </label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="number" class="form-control" placeholder="" ng-model="Unit__c.Garden_Area_Price__c" min="0" ng-pattern="/^[0-9]{1,10}$/" name="Pvt_Terrace_Garden_Price_Agreed" ng-keyup="changeAggrement()" ng-disabled="true"/>
+                                                    <i class="fa fa-inr" style="margin-top: -30px;"></i>
+                                                    <!-- <span ng-show="ProjectForm.Pvt_Terrace_Garden_Price_Agreed.$error.pattern" style="color:red">Not a valid number!</span> -->
+                                              </div>
+                                         </div>
+                                        
+                                    </div>
+                                 </form>
+                            </div>
+                        </div>
+                </div>    
+                                                      
+            <div id="section2" class="container-fluid">
+                  <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details- First Applicant (As in the Proof)</div>
+                                <div class="panel-body">
+                                <form name="ContactForm0" role="form">
+                                     <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <select class="form-control" ng-model="Contact[0].Salutation" required="true"  >
+                                                     <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in SalutationTypes" value="{{type}}">{{type}}</option>
+                                                     </select>
+                                                 <!-- <select id="selectbasic" name="selectbasic" class="form-control">
+                                                          <option value="1">MR</option>
+                                                          <option value="2">MRS</option>
+                                                          <option value="3">MISS</option>
+                                                          <option value="1">DR</option>
+                                                         <option value="2">M/S</option>
+                                                          <option value="3">MASTER</option>
+                                                     </select> -->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">First Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].FirstName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Middle Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Middle_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                    </div> 
+                                    
+                                     <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Last Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[0].LastName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Date of Birth</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control "  ng-model="DateFields[0]" required="true" name="dob0" max="todayy | date:'yyyy-MM-dd'"/>
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    <span ng-show="ContactForm0.dob0.$error.required" style="color:red">DOB is mandatory !</span>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Wedding Anniversary</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[1]" required="true" name="wedding0"/>
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                   
+                                             </div>
+                                         </div>
+                                         
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Relation</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[0].Relation__c" >
+                                                         <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in RelationTypes" value="{{type}}">{{type}}</option>
+                                                     </select>
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Name</label>
+                                              <div class="left-inner-addon ">
+                                                  
+                                                <input type="text" class="form-control" ng-model="Contact[0].Relation_Name__c" />
+                                                <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                              
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Spouse's Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Spouse_s_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Industry</label>
+                                             <div>
+                                                    
+                                                    <!-- <input type="text" class="form-control" ng-model="Contact[0].Industry__c" /> -->
+                                                    <select class="form-control" ng-model="Contact[0].Industry__c" >
+                                                        <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in IndustryTypes" value="{{type}}">{{type}}</option>
+                                                     </select>
+                                                        <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Profession</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Profession" ng-model="Contact[0].Profession__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Company</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Company" ng-model="Contact[0].Company__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">Designation</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model="Contact[0].Designation__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Email" name="email0" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="ContactForm0.email0.$error.pattern" style="color:red">Enter Valid Email !</span>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Mobile</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="tel" class="form-control"  ng-model="Contact[0].MobilePhone" ng-pattern="/^[0-9]{10}$/" name="Phone0" ng-minlength="10" ng-maxlength="10"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="ContactForm0.Phone0.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">PAN No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[0].Income_Tax_PAN_GIR_No__c" required="true" name="pan0"/>
+                                                    <i class=""></i>
+                                                    <span ng-show="ContactForm0.pan0.$error.required" style="color:red">Pan No. is mandatory !</span>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Residence Status</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[0].Residency_Status__c" required="true" ng-options="type for type in ResidencyTypes" name="residencestatus"></select>
+                                               </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Nationality</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="Contact[0].Nationality__c"  required="true" name="Nationality0"/>
+                                                    <span ng-show="ContactForm0.Nationality0.$error.required" style="color:red">Nationality is mandatory !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Passport No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[0].Passport_No__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                     
+                                         
+                                         
+                                    </div>
+                                </form>
+                                    
+                    
+                                
+                                </div>
+                        
+                  </div>
+                </div>
+              <div id="section3" class="container-fluid" >
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details- Second Applicant (As in the Proof)</div>
+                                <div class="panel-body">
+                                  <form name="ContactForm1" role="form">
+                                    <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <select class="form-control" ng-model="Contact[1].Salutation" required="true"  >
+                                                     <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in SalutationTypes" >{{type}}</option>
+                                                     </select>
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">First Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].FirstName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Middle Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Middle_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                    </div> 
+                                    
+                                     <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Last Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[1].LastName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Date of Birth </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[2]" name="dob1" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    <!-- <span ng-show="ContactForm1.dob1.$error.required && ($scope.Contact[1] != undefined)" style="color:red">DOB is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Wedding Anniversary</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[3]" name="wedding1" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    
+                                             </div>
+                                         </div>
+                                         
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Relation</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[1].Relation__c" >
+                                                         <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in RelationTypes" value="{{type}}">{{type}}</option>
+                                                     </select>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Name</label>
+                                              <div class="left-inner-addon ">
+                                                  
+                                                <input type="text" class="form-control" ng-model="Contact[1].Relation_Name__c" />
+                                                <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                              
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Spouse's Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Spouse_s_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                         
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Industry</label>
+                                             <div>
+                                                    
+                                                    <select class="form-control" ng-model="Contact[1].Industry__c" >
+                                                        <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in IndustryTypes" value="{{type}}">{{type}}</option>
+                                                     </select>
+                                                 <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Profession</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Profession" ng-model="Contact[1].Profession__c" />
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Company</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Company" ng-model="Contact[1].Company__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">Designation</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model="Contact[1].Designation__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Email" name="email1" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="ContactForm1.email1.$error.pattern" style="color:red">Enter Valid Email !</span>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Mobile</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].MobilePhone" ng-pattern="/^[0-9]{10}$/" name="Phone1" ng-minlength="10" ng-maxlength="10"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="ContactForm1.Phone1.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">PAN No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[1].Income_Tax_PAN_GIR_No__c" name="pan1" required="true" />
+                                                    <i class=""></i>
+                                                  <!-- <span ng-show="ContactForm1.pan1.$error.required && ($scope.Contact[1].FirstName.length > 0)" style="color:red">Pan No. is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Residence Status</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[1].Residency_Status__c" required="true" ng-options="type for type in ResidencyTypes" name="residencestatus"></select>
+                                               </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Nationality</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Nationality__c" name="Nationality1" required="true" />
+                                                 <!--  <span ng-show="ContactForm1.Nationality1.$error.required && ($scope.Contact[1] != undefined)" style="color:red">Nationality is mandatory !</span> -->
+                                                    
+                                             </div>
+                                         </div>
+                                     </div>
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Passport No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[1].Passport_No__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                     
+                                         
+                                         
+                                    </div>
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                        
+                  </div>
+                </div>
+              <div id="section4" class="container-fluid" >
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details- Third Applicant (As in the Proof)</div>
+                                <div class="panel-body">
+                                  <form name="ContactForm" role="form">
+                                    <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <select class="form-control" ng-model="Contact[2].Salutation" required="true"  >
+                                                     <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in SalutationTypes" >{{type}}</option>
+                                                     </select>
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">First Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].FirstName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Middle Name</label>
+                                              <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Middle_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                        </div>
+                                    </div> 
+                                    
+                                     <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Last Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[2].LastName"/>
+                                                    <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Date of Birth </label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[4]" name="dob2" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    <!-- <span ng-show="ContactForm.dob2.$error.required && ($scope.Contact[4] != undefined)" style="color:red">DOB is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Wedding Anniversary</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="date" class="form-control"  ng-model="DateFields[5]" name="wedding2" required="true" />
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                    
+                                             </div>
+                                         </div>
+                                         
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Relation</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                <select class="form-control" ng-model="Contact[2].Relation__c" >
+                                                         <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in RelationTypes" value="{{type}}">{{type}}</option>
+                                                     </select>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Name</label>
+                                              <div class="left-inner-addon ">
+                                                  
+                                                <input type="text" class="form-control" ng-model="Contact[2].Relation_Name__c" />
+                                                <i class="glyphicon glyphicon-user "></i>
+                                             </div>
+                                              
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Spouse's Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Spouse_s_Name__c"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                         
+                                     </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">Industry</label>
+                                             <div>
+                                                    
+                                                    <select class="form-control" ng-model="Contact[2].Industry__c" >
+                                                        <option value=" " >---None---</option>
+                                                 	<option ng-repeat="type in IndustryTypes" value="{{type}}">{{type}}</option>
+                                                     </select><!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Profession</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Profession" ng-model="Contact[2].Profession__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                             <label for="usr">Company</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="Company" ng-model="Contact[2].Company__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">Designation</label>
+                                             <div>
+                                                    
+                                                    <input type="text" class="form-control" placeholder="" ng-model="Contact[2].Designation__c"/>
+                                                    <!--i class="glyphicon glyphicon-trash"></i-->
+                                               </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Email" name="email2" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="ContactForm.email2.$error.pattern" style="color:red">Enter Valid Email !</span>
+                                             </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Mobile</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].MobilePhone" ng-pattern="/^[0-9]{10}$/" name="Phone2"/>
+                                                    <i class="glyphicon glyphicon-phone" ng-minlength="10" ng-maxlength="10"></i>
+                                                    <span ng-show="ContactForm.Phone2.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    <div class="row">
+                                         
+                                        <div class="col-sm-4">
+                                             <label for="usr">PAN No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"   ng-model="Contact[2].Income_Tax_PAN_GIR_No__c" name="pan2" required="true" />
+                                                    <i class=""></i>
+                                                    <!-- <span ng-show="ContactForm.pan2.$error.required && ($scope.Contact[2] != undefined)" style="color:red">Pan No. is mandatory !</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Residence Status</label>
+                                             <div class="">
+                                                    
+                                                     <select class="form-control" ng-model="Contact[2].Residency_Status__c" required="true" ng-options="type for type in ResidencyTypes" name="residencestatus"></select>
+                                               </div>
+                                         </div>
+                                       
+                                         <div class="col-sm-4">
+                                             <label for="usr">Nationality</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Nationality__c" name="Nationality2" required="true"/>
+                                                    <!-- <span ng-show="ContactForm.Nationality2.$error.required && ($scope.Contact[2] != undefined)" style="color:red">Nationality is mandatory !</span> -->
+                                                    
+                                             </div>
+                                         </div>
+                                     </div>
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                             <label for="usr">Passport No.</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Contact[2].Passport_No__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                     
+                                         
+                                         
+                                    </div>
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                       
+                  </div>
+                </div>
+            <div id="section5" class="container-fluid" >
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Address Details (Correspondence Address)</div>
+                                <div class="panel-body">
+                                  <form name="CorrespondenceAddressDetails" role="form">
+                                     <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 1</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Street1__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 2</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Street2__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 3</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Street3__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">City / Town</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.City__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Pin</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text"  class="form-control"  ng-model="Account.Postal_Code__c" ng-pattern="/^[0-9]{6}$/" name="pin"/>
+                                                    <i class=""></i>
+                                                    <span ng-show="CorrespondenceAddressDetails.pin.$error.pattern" style="color:red">Postal Code / Pin must be of 6 digits !</span>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">District</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.District__c"/>
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="usr">Country</label>
+                                             <!-- <div class="left-inner-addon ">                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.RegionL__c"/>
+                                                    
+                                             </div> -->
+                                             <select class="form-control" ng-model="Country1" required="true" ng-options="type for type in CountryList" ng-change="changestate(Country1)"></select>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">State</label>
+                                             <!-- <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.CountryL__c"/>
+                                                    
+                                             </div> -->
+                                             <select class="form-control" ng-model="State1" required="true" ng-options="type for type in StateList"></select>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Mobile / Phone</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.MobilePhone__c" ng-pattern="/^[0-9]{10}$/" name="Phone" ng-minlength="10" ng-maxlength="10"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="CorrespondenceAddressDetails.Phone.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                       
+                                     </div>
+                                     
+                                    
+                                
+                                    
+                                </form>
+                                
+                                </div>
+                       
+                  </div>
+            </div>
+                <!-- </div>-->
+            <div id="section6" class="container-fluid" > 
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">Address Details (Permanent Address - For Documentation in agreement and registration. Address proof is required)</div>
+                                <div class="panel-body">
+                                <form name="ParmanentAddressDetails" role="form">
+                                 <div class="row">
+                                         <div class="col-sm-4">
+                                           <div class="checkbox">
+                                                  <label>
+                                                    <input type="checkbox" value="" ng-model="Account.Same_as_Correspondence_Address__c" ng-change="ChangeAddress()"/>Same as Correspondence Address
+                                                  </label>
+                                           </div>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 1</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_Street_1__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 2</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_Street_2__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 3</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_Street_3__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">City / Town</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_City__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Pin</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text"  class="form-control" ng-model="Account.A_Postal_Code__c"  ng-pattern="/^[0-9]{6}$/" name="pin"/>
+                                                    <i class=""></i>
+                                                    <span ng-show="ParmanentAddressDetails.pin.$error.pattern" style="color:red">Postal Code / Pin must be of 6 digits !</span>
+
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">District</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="Account.A_District__c" />
+                                                    <i class=""></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="usr">Country</label>
+                                             <!-- <div class="left-inner-addon ">                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.RegionL__c"/>
+                                                    
+                                             </div> -->
+                                             <select class="form-control" ng-model="Country2" required="true" ng-options="type for type in CountryList" ng-change="changestate2(Country2)"></select>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">State</label>
+                                             <!-- <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.CountryL__c"/>
+                                                    
+                                             </div> -->
+                                             <select class="form-control" ng-model="State2" required="true" ng-options="type for type in StateList2"></select>                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Mobile / Phone</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="Account.A_MobilePhone__c" ng-pattern="/^[0-9]{10}$/" name="Phone" ng-minlength="10" ng-maxlength="10"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="ParmanentAddressDetails.Phone.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                       
+                                     </div>
+                                     
+                                    
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                        
+                  </div>
+              </div>
+                <!-- </div>-->
+             <div id="section7" class="container-fluid" > 
+              <div class="panel panel-primary">
+                        <div class="panel-heading ">General Power of Attorney (Correspondence Address)</div>
+                                <div class="panel-body">
+                                <form name="GenralPowerOfAttorney" role="form">
+                                <div class="row">
+                                        <div class="col-sm-4" >
+                                            <label for="usr">Title</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                     <select class="form-control" ng-model="GenralPowerOfAttorneyy.Salutation" required="true" ng-options="type for type in SalutationTypes"></select>
+                                               </div>
+                                          </div>
+                                          <div class="col-sm-4">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-4">
+                                            <label for="usr">Mobile / Phone</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.MobilePhone" ng-pattern="/^[0-9]{10}$/" name="Phone" ng-minlength="10" ng-maxlength="10"/>
+                                                    <i class="glyphicon glyphicon-phone"></i>
+                                                    <span ng-show="GenralPowerOfAttorney.Phone.$error.pattern" style="color:red">Phone must be of 10 digits !</span>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                         <div class="col-sm-8">
+                                            <label for="usr">Full Name</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Name"/>
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                             </div>
+                                         </div>
+                                    </div> -->
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 1</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Street1__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 2</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Street2__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                         <div class="col-sm-12">
+                                            <label for="usr">Address Line 3</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Street3__c"/>
+                                                    <i class="glyphicon glyphicon-home"></i>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-sm-4">
+                                             <label for="usr">City / Town</label>
+                                             <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.MailingCity"/>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Pin</label>
+                                             <div class="">
+                                                    
+                                                    <input type="text"  class="form-control" ng-model="GenralPowerOfAttorneyy.MailingPostalCode" ng-pattern="/^[0-9]{6}$/" name="pin" />
+                                                    <i class=""></i>
+                                                    <span ng-show="GenralPowerOfAttorney.pin.$error.pattern" style="color:red">Postal Code / Pin must be of 6 digits !</span>
+                                             </div>
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">District</label>
+                                             <input type="text" class="form-control" ng-model="GenralPowerOfAttorneyy.District__c" />
+                                                    <i class=""></i>
+                                         </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="usr">State</label>
+                                              <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="GenralPowerOfAttorneyy.MailingState" />
+                                                    <i class=""></i>
+                                              </div>   
+                                         </div>
+                                        <div class="col-sm-4">
+                                            <label for="usr">Country</label>
+                                              <div class="">
+                                                    
+                                                    <input type="text" class="form-control" ng-model="GenralPowerOfAttorneyy.MailingCountry" />
+                                                    <i class=""></i>
+                                              </div>   
+                                         </div>
+                                         <div class="col-sm-4">
+                                             <label for="usr">Email Id</label>
+                                             <div class="left-inner-addon ">
+                                                    
+                                                    <input type="text" class="form-control"  ng-model="GenralPowerOfAttorneyy.Email" name="email" ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" />
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    <span ng-show="GenralPowerOfAttorney.email.$error.pattern" style="color:red">Enter a valid Email !</span>
+                                             </div>
+                                         </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                      
+                                        
+                                       
+                                     </div> -->
+                                     
+                                    
+                                
+                                    
+                    
+                                </form>
+                                </div>
+                        
+                  </div>
+                </div>
+                            
+                <div id="section8" class="container-fluid" > 
+                             <div class="panel panel-primary ">
+                               
+                                <div class="panel-heading ">Document Section</div>
+                                <form name="DocumentSection" role="form">
+                                <div class="panel-body">
+                                            <div class="row fileupload-buttonbar">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="col-sm-6">
+                                                        Choose First Applicant Photo<span ng-if="Contact[0]!=undefined" class=" starIcon">*</span>
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="contactonephoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*" required="Contact[0]!=undefined" name="abc"/>
+                                                    </span> 
+                                                    <button type="button" id="contactonephotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="contactonephotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                    
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                            <br/>
+                                            <div class="row fileupload-buttonbar" ng-if="Contact[1]!=undefined">
+                                                <div >
+                                                    <span class="col-sm-6">
+                                                        Choose Second Applicant Photo<span ng-if="Contact[1]!=undefined" class=" starIcon">*</span>
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="contacttwophoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="contacttwophotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="contacttwophotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)"> -->
+
+                                                    <button type="button" id="contacttwophotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="contacttwophotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                            </div>
+                                            <br/>
+                                            <div class="row fileupload-buttonbar" ng-if="Contact[2]!=undefined">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="col-sm-6">
+                                                        Choose Third Applicant Photo<span ng-if="Contact[2]!=undefined" class=" starIcon">*</span>
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="contactthreephoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="contactthreephotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button"  id="contactthreephotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                    </button> -->
+                                                    <button type="button" id="contactthreephotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="contactthreephotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                            </div>
+                                            <br/>
+                                            <div class="row fileupload-buttonbar" ng-if="Contact[0]!=undefined">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="col-sm-6">
+                                                        Choose First Applicant Pan<span ng-if="Contact[0]!=undefined" class=" starIcon">*</span>
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="contactonepan" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="contactonepanupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="contactonepanDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                        
+                                                    </button> -->
+                                                    <button type="button" id="contactonepanupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="contactonepanDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                            </div>
+                                            <br/>
+                                            <div class="row fileupload-buttonbar" ng-if="Contact[1]!=undefined">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="col-sm-6">
+                                                        Choose Second Applicant Pan <span ng-if="Contact[1]!=undefined" class=" starIcon">*</span>
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="contacttwopan" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="contacttwopanupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                      
+                                                    </button>
+                                                    <button type="button" id="contacttwopanDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                      
+                                                    </button> -->
+                                                    <button type="button" id="contacttwopanupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="contacttwopanDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                            </div>
+                                            <br/>
+                                            <div class="row fileupload-buttonbar" ng-if="Contact[2]!=undefined">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="col-sm-6">
+                                                        Choose Third Applicant Pan <span ng-if="Contact[2]!=undefined" class=" starIcon">*</span>
+                                                    </span >
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="contactthreepan" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="contactthreepanupload"  class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="contactthreepanDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                        
+                                                    </button> -->
+                                                    <button type="button" id="contactthreepanupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="contactthreepanDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                            </div>
+                                            <br/>
+
+                                            <!-- FOr All document checklist -->
+                                <div style="margin-left: 1%;">
+                                    <!-- <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Photographs_Received__c" ng-disabled="true" ng-checked="true"/>Two passport size photographs of each applicant.</label>
+                                       </div>
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Received_the_PAN_Card_Copy__c" ng-disabled="true" ng-checked="true"/>Photocopy of PAN card (mandatory) for each applicant</label>
+                                       </div>
+                                    </div>
+                                    <br/> -->
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Received_the_Address_Proof_Copy__c"/>One proof of correspondence address(acceptable documents are Driving License, Passport, Aadhar Card, Voter ID, Utility Bills, Authorized Bank Statements)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row fileupload-buttonbar" ng-if="Opportunity.Received_the_Address_Proof_Copy__c==true">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    
+                                                    <span class="col-sm-6">
+                                                         Choose One proof of correspondence address
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="correspondenceaddressphoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*" required="Opportunity.Received_the_Address_Proof_Copy__c==true"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="correspondenceaddressphotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="correspondenceaddressphotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                       
+                                                    </button> -->
+                                                    <button type="button" id="correspondenceaddressphotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="correspondenceaddressphotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Permanent_Address_Proof__c"/>One proof of permanent address(acceptable documents are Driving License, Passport, Aadhar Card, Voter ID, Utility Bills)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row fileupload-buttonbar" ng-if="Opportunity.Permanent_Address_Proof__c==true">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    
+                                                    <span class="col-sm-6">
+                                                         Choose One proof of permanent address
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="permanentaddressphoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="permanentaddressphotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="permanentaddressphotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                       
+                                                    </button> -->
+                                                    <button type="button" id="permanentaddressphotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="permanentaddressphotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Buisness_Card_Primary_Applicant__c"/>Business card of primary applicant</label>
+                                       </div>
+                                    </div>
+                                    <div class="row fileupload-buttonbar" ng-if="Opportunity.Buisness_Card_Primary_Applicant__c==true">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    
+                                                    <span class="col-sm-6">
+                                                         Choose Business card of primary applicant
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="buisnesscardphoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*" required="Opportunity.Buisness_Card_Primary_Applicant__c==true" />
+                                                    </span> 
+                                                    <!-- <button type="button" id="buisnesscardphotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="buisnesscardphotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                       
+                                                    </button> -->
+                                                    <button type="button" id="buisnesscardphotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="buisnesscardphotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Photocopy_Power_of_Attorney__c"/>Photocopy of power of Attorney(If Any)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row fileupload-buttonbar" ng-if="Opportunity.Photocopy_Power_of_Attorney__c==true">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    
+
+                                                    <span class="col-sm-6">
+                                                         Choose Photocopy of power of Attorney
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="powerofattorneyphoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*" required="Opportunity.Photocopy_Power_of_Attorney__c==true"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="powerofattorneyphotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="powerofattorneyphotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                       
+                                                    </button> -->
+                                                    <button type="button" id="powerofattorneyphotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="powerofattorneyphotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Received_the_Passport_Copy_for_NRI__c"/>For NRIs: Photocopy of first, last and Latest visa page of passport(to establish residency)</label>
+                                       </div>
+                                    </div>
+                                    <div class="row fileupload-buttonbar" ng-if="Opportunity.Received_the_Passport_Copy_for_NRI__c==true">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    
+                                                    <span class="col-sm-6">
+                                                        Choose Photocopy of first, last and Latest visa page of passport
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="nriphoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*" required="Opportunity.Received_the_Passport_Copy_for_NRI__c==true"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="nriphotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="nriphotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                       
+                                                    </button> -->
+                                                    <button type="button" id="nriphotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="nriphotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;"> 
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                    </div>
+                                    <br/>
+
+                                    <div class="row">
+                                       <div class="checkbox">
+                                           <label><input type="checkbox" value="" ng-model="Opportunity.Provisional_Allotment_letter__c"/>For Foreign Citizens: Photocopy of first, last and Latest visa page of passport(to establish residency) and copy of PIO card for each foreign applicant </label>
+                                       </div>
+                                    </div>
+                                    <div class="row fileupload-buttonbar" ng-if="Opportunity.Provisional_Allotment_letter__c==true">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    
+
+                                                    <span class="col-sm-6">
+                                                        Choose Photocopy of first, last and Latest visa page of passport
+                                                    </span>
+                                                     <span class="col-sm-2"> 
+                                                        <input type="file" id="foreignphoto" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="image/*" required="Opportunity.Provisional_Allotment_letter__c==true"/>
+                                                    </span> 
+                                                    <!-- <button type="button" id="foreignphotoupload" class="btn btn-primary start col-sm-1" ng-click="startUpload($event)">
+                                                        
+                                                    </button>
+                                                    <button type="button" id="foreignphotoDelete" class="btn btn-danger cancel col-sm-1" data-ng-click="cancel($event)">
+                                                       
+                                                    </button> -->
+                                                    <button type="button" id="foreignphotoupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-right:2% ! important , margin-left:2% ! important"><i class="fa fa-upload"></i> Upload</button>
+                                                   
+                                                   <button type="button" id="foreignphotoDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                </div>
+                                                
+                                    </div>
+                                    <br/>
+                                </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                            <div class="panel panel-primary no-border">
+                                <div class="panel-body">
+                                    <div class="row" >
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div class="col-sm-4">
+                                        </div>
+                                        
+                                        <div  style="float:right">
+                                                
+                                                 <button type="button" class="button btn btn-primary btn-sm" ng-click="Save('true')" >Submit</button>
+                                                  
+
+                                           
+
+                                        </div>
+                                    </div>
+
+                                </div>
+          
+                            </div>
+                    </div>    
+                        <div id="section9" class="container-fluid" ng-if="contactResponse=='sucess' || SubmitStatus=='Customer Submitted'"> 
+                            <div class="panel panel-primary ">
+                                <div class="panel-heading ">Download Section</div>
+                                    <div class="panel-body">
+                                        <div class="row" >
+                                            <div class="col-sm-6">
+                                            <h4>Please click on download button to download Application form.</h4>
+                                            </div>
+                                            
+                                            
+                                            <div class="col-sm-4" style="float:right">
+                                                    
+                                                     <!-- <button type="button" class="button btn btn-primary btn-sm" ng-click="DownloadPdf()" >Download</button> -->
+                                                     <a href="/CustomerApplication/CustomerApplicationFormPdf?id={!oppId}"  class="btn btn-primary btn-sm" download="Application Form.pdf" role="button"><i class="fa fa-download"></i>Download</a>
+                                                    
+                                                      
+
+                                               
+
+                                            </div>
+                                        </div>
+                                     </div>
+                            </div>
+                        </div>
+                        <div id="section10" class="container-fluid" ng-if="contactResponse=='sucess' || SubmitStatus=='Customer Submitted'"> 
+                            <div class="panel panel-primary ">
+                                <div class="panel-heading ">Upload Section</div>
+                                    <div class="panel-body">
+                                    
+                                        <div class="row fileupload-buttonbar">
+                                                <div >
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="col-sm-6">
+                                                        <h4 style="display:inline">Please upload signed Application form.</h4>
+                                                    </span>
+                                                    <span class="col-sm-2"> 
+                                                        <input type="file" id="finalAttacment" style="display:inline" onchange="angular.element(this).scope().check(this)" accept="application/pdf,image/*"/>
+                                                    </span> 
+                                                    <div class="col-sm-4" >
+                                                    <button type="button" id="finalAttacmentupload" class="button btn btn-primary btn-sm" ng-click="startUpload($event)" style="margin-left:2% ! important;width: 27%;"><i class="fa fa-upload"></i> Upload</button>
+                                                   	<button type="button" id="finalAttacmentDelete" class="button btn btn-danger btn-sm" data-ng-click="cancel($event)" style="display: none;margin-left:2% ! important;width: 27%;">
+                                                    <i class="fa fa-trash"></i>   Delete
+                                                    </button>
+                                                    </div>
+                                                    
+                                                    
+                                                   
+                                                    
+                                                    
+                                                </div>
+                                                
+                                            </div>
+
+                                    </div>
+                            </div>
+                        </div>
+    <script type="text/javascript">
+        var opp='{!oppId}';
+        var x='{!jsonstring}';
+        var sometext=JSON.parse(x);
+        
+        $('.li a').on('click', function(e) { 
+          var el = $( e.target.getAttribute('href') );
+          var elOffset = el.offset().top;
+          var elHeight = el.height();
+          var windowHeight = $(window).height();
+          var offset;
+
+          if (elHeight < windowHeight) {
+            offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+          }
+          else {
+            offset = elOffset;
+          }
+          var speed = 700;
+          $('html, body').animate({scrollTop:offset}, speed);
+        });
+        
+
+    </script>
+     </div>
+     </div>
+     </body>
+
+    </html>
+    
+</apex:page>

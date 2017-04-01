@@ -1,0 +1,791 @@
+<apex:page Controller="propertyExt" showHeader="false" sidebar="false" renderAs="{!RenderAs}" >
+    
+    
+    <apex:form rendered="{!if(isPDF==false,true,false)}" id="theform">  
+        <apex:variable value="{!0.00}" var="total1"/>
+        <apex:variable value="{!0.00}" var="total2"/>
+        <apex:variable value="{!0.00}" var="total3"/>
+        <apex:variable value="{!0.00}" var="total4"/>
+        <!----------------------------------Popup Starts----------------------------->    
+        
+        <apex:outputPanel id="intPop" >       
+            <apex:actionFunction name="setCountryOnTop" action="{!countryDetails}"  reRender="theform">
+                <apex:param name="parm3" assignTo="{!headerCountry1 }" value=""/>
+            </apex:actionFunction> 
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+                
+                <!--  <h3  style="background-color:#D4DBE1;">Select Project</h3>-->
+                
+                <center>  <div style="background-color:#0065b3;color:white;height:20px;padding:6px 0px;"> Select Project</div>     </center> 
+                <br/>  
+                <br/><br/><center style="bottom:0;"> 
+                <b style="top:52px">Select Project:</b>
+                <apex:selectList value="{!seletecedCity}" multiselect="false" size="1" onchange="setCountryOnTop( this.value);" >
+                    <apex:selectOptions value="{!Items}"/ > 
+                        <apex:actionSupport event="onchange" action="{!countryDetails}" reRender="theform" />                
+                    </apex:selectList></center><p/>                               
+                </apex:outputPanel>
+                
+                
+            </apex:outputPanel>
+            <apex:actionFunction name="generatedJs" action="{!getReopenPopup}" reRender="intPop,theform" />
+            
+            
+            
+            
+            <!-----------------------------------Popup Ends----------------------------------> 
+          
+            <apex:outputPanel styleClass="custPopup2"  style="text-align: right; margin-top: -5px;" id="fiedPopup1" > 
+                <div style="float:right; text-align:center; width:auto; line-height:10px; padding-right: 15px; position: absolute; right: -122px;">
+                    
+                    
+                    <apex:outputLink value="/apex/logoutPage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="caseButton" >&nbsp;Logout </apex:outputLink>  
+                </div> 
+            </apex:outputPanel>
+            
+           
+            <apex:outputPanel styleClass="custPopup3"   >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Project:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!selectedcodenew}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText><br/>
+             </apex:outputPanel>
+            
+            <apex:outputPanel styleClass="custPopup4"  id="fiedPopup2" >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Unit No:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!unitnumber}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText>
+                <br/><br/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopup5"  id="fiedPopup3" >
+                <apex:outputLabel rendered="{!OnlysingleProject}">
+                    <a href="#" onclick="generatedJs();" styleClass="btn" style="font-size: 9px;;text-decoration:none;color:#697a8c;background-color:#c4e0f8;padding:5px 5px;-moz-border-radius: 0px;-webkit-border-radius: 0px;border-radius: 0px;font: normal 11px/110% Arial,Times New Roman, Times, serif;">Select a different project&nbsp;&nbsp;&nbsp;&nbsp; <apex:image id="drop" value="{!$Resource.Drop}"  /></a>
+                </apex:outputLabel>
+            </apex:outputPanel>
+            <style type="text/css">
+                
+                .custPopup {
+                background-color: white;
+                border-width: 2px;
+                border-style: solid;
+                z-index: 100;
+                left: 45%;
+                padding: 5px;
+                position: absolute;
+                width:400px;
+                height:250px;
+                // margin-left: -250px;
+                margin-left: -146px;
+                // top: 100px;
+                top:249px
+                
+                }
+                .caseButton{
+                    width: 13%;
+                    padding: 5px 4px;
+                    background-color:#1797c0;
+                    //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+                    border-radius: 4px;
+                    border: 1px solid #4e3043;
+                    box-shadow:
+                    inset 0 1px rgba(255,255,255,0.4),
+                    0 2px 1px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: all 0.3s ease-out;
+                    color: white;
+                    align: center;
+                    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+                    font-size: 12px;
+                    font-weight: bold;
+                    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+                    }
+                
+                .custPopup1 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 30%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                .custPopup2 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 63%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                
+                }
+                .custPopup3 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 36%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup4 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 48%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup5 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 56%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                
+                .popupBackground {
+                //  background-color: red;
+                //  opacity: 0.10;
+                //  filter: alpha(opacity =   20);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                }
+                
+                .overlay {
+                background-color: #ffffff;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: 0.5;
+                filter: Alpha(opacity =     50); /* IE8 and earlier */
+                z-index: 12;
+                <!--background-image: url({!$Resource.loading1});-->
+                background-repeat: no-repeat;
+                background-position: center;
+                }
+                
+                .fontStyle {
+                font-weight: bold;
+                color: #95969b;
+                }
+                .fontButton{
+                text-align:center;
+                color: grey;
+                }
+            </style>
+            
+            <head>
+                
+                
+                
+                <script type="text/javascript">
+                function openWindow()
+                {
+                    window.open("https://c.cs16.visual.force.com/apex/myPayment_ext");
+                    
+                }
+                </script>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                
+                <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+                
+                <link href="{!URLFOR($Resource.brigadecss2)}" rel="stylesheet" media="screen"/ >
+                <style type="text/css" media="print">
+                    @page { size: landscape; }
+                </style>
+                
+                <script>
+                $( document ).ready(function() {
+                    
+                    setInterval("$('#blink').fadeOut(600).fadeIn(600);",600);
+                    
+                });
+                </script>
+                
+                <style>        
+                    #headcontainer {
+                    //background-image: url({!URLFOR($Resource.NavigatorBackground)});
+                    }
+                    .text {
+                    font-family: 'Lato', Calibri, Arial, sans-serif;
+                    font-size: 9px;
+                    font-weight: 400;
+                    display: block;
+                    width: 80%;
+                    padding: 3px;
+                    margin-bottom: 5px;
+                    border: 3px solid #ebe6e2;
+                    border-radius: 5px;
+                    transition: all 0.3s ease-out;
+                    }
+                    
+                </style>  
+                
+                <style>
+                    a.resi_button{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 11px;
+                    color: #ffffff;
+                    margin: 0px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    line-height: 0px;
+                    padding:14px;
+                    background-color:#0065b3;
+                    text-decoration:none;
+                    }
+                    a.resi_button2{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 11px;
+                    color: #0065b3;
+                    margin: 0px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    line-height: 0px;
+                    padding:10px;
+                    background-color:#ffffff;
+                    text-decoration:none;
+                    }  
+                    
+                    a.resi_button:hover{
+                    background-color:#ffc20f;
+                    }
+                    a.resi_button2:hover{
+                    background-color:#ffffe6;
+                    cursor: pointer;
+                    }
+                    td{
+                    min-width:1px;
+                    }
+                </style> 
+                
+                <style>
+                    .pbSubheader h3, .pbSubheader h3 a {
+                    color: #2F436F;
+                    font-family: Arial;
+                    font-weight:bold;
+                    font-size:120%;
+                    } 
+                    
+                    
+                    
+                </style>
+            </head>
+            <body>
+                <div id="page" align="center" background-color="white"  style="width:1005px">  
+                    
+                    <table width="1005px" border="0" align="center" cellpadding="0" cellspacing="0">         
+                        <tr>
+                            <td>
+                                <table width="100%" height="135px" border="0" cellpadding="0" cellspacing="0">                 
+                                    <tr>
+                                        <td height="117" id="headcontainer">
+                                            <table width="1005px" border="1" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td  height="117" align="left" valign="bottom">
+                                                    <table width="100%">
+                                                        <tr><td>
+                                                            <a href="http://www.brigadegroup.com/" target="brigadegroup">
+                                                    <img src="http://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" width="137" height="70" alt="Brigade Enterprises - 
+                                                                                                                                                                Leading Builders in Bangalore's Real Estate Industry" /></a>
+                                                            </td>
+                                                        <td valign="bottom" align="right" style="font-family: Arial;"><font size="2" color="black">Welcome</font>&nbsp;&nbsp;<font size="3" color="#0095ce"><b>{!user.Name}&nbsp;&nbsp;</b></font></td>
+                                                        </tr>
+                                                    </table>
+                                                    
+                                                 
+                                                </td>
+                                                
+                                                
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td align="left" valign="bottom">
+                                                    
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td align="left" valign="baseline"><table border="0" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    
+                                                                    <td width="187" align="left"><table width="187" border="0" align="left" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td width="170" align="center" valign="baseline"><div id="search2">
+                                                                                <!--search form need to build hers-->
+                                                                                </div></td> 
+                                                                            <td width="17" align="center" valign="baseline">&nbsp;</td>
+                                                                        </tr>
+                                                                        </table></td>
+                                                                </tr>
+                                                                </table>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td align="left"><table border="0" cellspacing="0" cellpadding="0" >
+                                                                <tr>   
+                                                                    
+                                                                    
+                                                                    <td><a href="/apex/BrigadeHomePage" >
+                                                                        
+                                                                        <apex:image id="theImage" value="{!$Resource.Home}" style="width:98%;margin-bottom:2px;"  /></a></td>
+                                                                    
+                                                                    <td></td><td></td>
+                                                                    <!--<td><a href="/apex/CPprofileCreationpage" class="resi_button" >
+MY PROFILE</a>
+</td>-->
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myPayment_ext" class="resi_button">MY PAYMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/MyDocuments" class="resi_button">MY DOCUMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myCase" class="resi_button">QUERIES</a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/BrigadeReferralpage" class="resi_button"  >REFERRAL</a></td>                             
+                                                                    <td></td>
+                                                                    <td ><apex:outputLabel rendered="{!Imagenew}"> <a href="/apex/FeedBack" class="resi_button" id="blink" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td ><apex:outputLabel rendered="{!ImagenewNoFeedBack}"><a href="/apex/FeedBack" class="resi_button" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td></td>
+                                                                    <td width="322" ><a class="resi_button"> </a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/CPprofileCreationpage" class="resi_button2"  >MY PROFILE</a></td>                                                                    
+                                                                </tr>
+                                                                </table>                           
+                                                            </td>
+                                                            
+                                                        </tr>                      
+                                                    </table>
+                                                </td>
+                                                
+                                            </tr>
+                                            </table>
+                                        </td>
+                                    </tr>          
+                                </table>
+                            </td>
+                        </tr>
+                    </table>        
+                    
+                    <apex:pageMessages />
+                    
+                    <apex:outputPanel id="test"></apex:outputPanel>
+                    <apex:outputPanel id="test1"></apex:outputPanel>
+                    
+                    <apex:pageBlock rendered="{!if(isTrue==true && listPayment.size>0,true,false)}" id="panelId" title="Payment Information" >
+                        
+                        <apex:pageBlockSection collapsible="false"></apex:pageBlockSection>
+                        
+                        <TABLE border="0" ALIGN="left" width="100%" bgcolor="white" style="border-spacing:4px;border-style: solid;border-color: #c8d7e3; font-family: Arial;" >
+                            <TR >
+                                <TD width="10%">
+                                    
+                                    <b><apex:outputLabel value="Project Name" /></b></TD>
+                                <TD width="10%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</TD>
+                                <TD width="80%"><apex:outputText value="{!plantName}" /></TD>
+                            </TR> 
+                            <br/>
+                            <TR>
+                                <TD width="10%">
+                                    <b><apex:outputLabel value="Unit Code" /></b></TD>
+                                <TD width="10%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</TD>
+                                <TD width="80%"> <apex:outputText value="{!unitName}" />
+                                    
+                                </TD>
+                            </TR>
+                            
+                            <TR>
+                                <TD >
+                                    <b><apex:outputLabel value="Area (Sq. Ft.)" /></b></TD>
+                                <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</TD>
+                                <TD > <apex:outputText value="{!areaSqft}" />
+                                    
+                                </TD>
+                            </TR> 
+                            
+                            <TR>
+                                <TD >
+                                    <b><apex:outputLabel value="Payment Plan" /></b></TD>
+                                <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;</TD>
+                                <TD > <apex:outputText value="{!PaymentPlan}" />
+                                    
+                                </TD>
+                            </TR> 
+                            <tr><td><br/></td></tr>
+
+                        </TABLE>
+                        
+                        
+                        
+
+                        
+                        <br/>
+                        <table width="100%"><tr style="background-color:#C8D7E3;padding-top:3px;padding-left:3px;font-family: Arial;" ><td><font color="black"> <b>To Be Received Payments</b></font></td></tr>
+                        </table>
+                        <br/>
+                        <!--<tr bgcolor="579CBC" abbr="B0B0B0" align="center">  -->
+                        <table  border="1" width="100%" style="border-spacing:4pxborder-style: solid;border-color: #c8d7e3;font-family: Arial;" bgcolor="white">   
+                            <tr >
+                                <td  bgcolor="#C8D7E3"><font color="black" ><b>Due date</b></font></td>
+                                <td bgcolor="#C8D7E3"><font color="black" ><b>Description</b></font></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:center;"><font color="black" ><b>On Miles Stone</b></font></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:center;"><font color="black" ><b>On Date</b></font></td>
+                                
+                                <td  bgcolor="#C8D7E3" style="text-align:right;"><font color="black" ><b>Bill Value(Rs.)</b></font></td>
+                                <td bgcolor="#C8D7E3" style="text-align:right;"><font color="black" ><b>Service Tax(Rs.)</b></font></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:right;"><font color="black" ><b>VAT(Rs.)</b></font></td>
+                                 <td bgcolor="#C8D7E3" style="text-align:right;"><font color="black" ><b>Swachh Bharath Cess</b></font></td>
+                                 <td bgcolor="#C8D7E3" style="text-align:right;"><font color="black" ><b>Krishi Kalyan Cess</b></font></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:right;"><font color="black" ><b>Total(incl. taxes)(Rs.)</b></font></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:center;"><font color="black" ><b>Payment Status</b></font></td>
+                                
+                            </tr> 
+                            
+                            <apex:repeat value="{!listPaymentWithDue }" var="paymentWD" >
+                                <tr >
+                                    <td > <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                                        <apex:param value="{!paymentWD.Billing_Date__c}" />
+                                        </apex:outputText></td>
+                                    <td ><apex:outputLink value="/apex/detailPayment?id={!paymentWD.id}" >{!paymentWD.Description__c}"</apex:outputLink></td>
+                                    
+                                    <td><apex:outputText value="{!paymentWD.Mile_Stone_Base_Description_1__c}"/></td>  
+                                     <td><apex:outputText value="{!paymentWD.Date_Base_Description__c}"/></td>  
+                                    
+                                    <td style="text-align:right;" ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Bill_Value__c}" /></apex:outputText></td>
+                                    <td style="text-align:right;" ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Service_Tax__c}"  /></apex:outputText></td>
+                                    <td style="text-align:right;" ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.VAT__c}"  /></apex:outputText></td>
+                                    <td style="text-align:right;" ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Swachh_Bharath_Cess__c}"/></apex:outputText></td>
+                                    <td style="text-align:right;" ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Krishi_Kalyan_Cess__c}"/></apex:outputText></td>
+
+                                    <td style="text-align:right;" ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Total__c}"  /></apex:outputText></td>
+                                    <td style="text-align:center;"><apex:outputText value="{!paymentWD.Status__c}" style="color:{!if(paymentWD.Status__c=='Not Due','#A207FC',
+                                                                                                                          if(paymentWD.Status__c=='Due','#FC9207',
+                                                                                                                          if(paymentWD.Status__c=='Overdue','Red',
+                                                                                                                          if(paymentWD.Status__c=='Received','Green',
+                                                                                                                          'White'))))}"/></td>
+                                    
+                                </tr>
+                            </apex:repeat>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><b>Grand Total:</b></td>
+                                    <td colspan="1" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentBillWithDueTotal}" /></apex:outputText></b></td>
+                                    <td colspan="5" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentWithDueTotal}" /></apex:outputText></b></td>
+                                    
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <br/>   
+                        
+                                                <table width="100%"><tr style="background-color:#C8D7E3;padding-top:3px;padding-left:3px; font-family: Arial;" ><td><font color="black"> <b>Received Payments</b></font></td></tr>
+                        </table>
+                        <br/>
+                        
+                        <table width="100%" border="1" style="border-spacing:4px;border-style: solid;border-color: #c8d7e3;font-family: Arial;" bgcolor="white">
+                            <!--td, th { border: 1px solid }-->
+                            
+                            <!--<tr bgcolor="579CBC" abbr="B0B0B0" align="center">  -->
+                            <tr >
+                                <td  bgcolor="#C8D7E3" style="text-align:left;"><b>Billing Date</b></td>
+                                <td  bgcolor="#C8D7E3" ><b>Description</b></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:center;"><b>Invoice Number</b></td>
+                                <td  bgcolor="#C8D7E3" ><b>Invoice Date</b></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:right;"><b>Bill Value(Rs.)</b></td>
+                                <td  bgcolor="#C8D7E3" style="text-align:right;"><b>Total (incl. taxes)(Rs.)</b></td>            
+                                <td  bgcolor="#C8D7E3" style="text-align:center;"><b>Payment Status</b></td>
+                                <td  bgcolor="#C8D7E3" ><b>Courier Doc No</b></td>
+                                <td  bgcolor="#C8D7E3" ><b>Courier Sent Date</b></td>
+                            </tr> 
+                            
+                            <apex:repeat value="{!listPaymentNoDue }" var="payment" >
+                                <tr >
+                                    <td   ><apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                                        <apex:param value="{!payment.Billing_Date__c}" />
+                                        </apex:outputText></td>
+                                    <td  ><apex:outputLink value="/apex/detailPayment?id={!payment.id}" > {!payment.Description__c} </apex:outputLink></td>  
+                                    
+                                    
+                                    <td  style="text-align:center;"><apex:outputLink value="/apex/detailPayment?id={!payment.id}" >{!payment.Invoice_No__c} </apex:outputLink> </td>
+                                    <td  ><apex:outputField value="{!payment.Invoice_date__c}" /> </td>
+                                    <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Bill_Value__c}"/></apex:outputText></td>
+                                    
+                                    <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Total__c}" /></apex:outputText></td>
+                                    
+                                    <td  style="text-align:center;"><apex:outputText value="{!payment.Status__c}" style="color:{!if(payment.Status__c=='Not Due','#A207FC',
+                                                                                                                         if(payment.Status__c=='Due','#FC9207',
+                                                                                                                         if(payment.Status__c=='Overdue','Red',
+                                                                                                                         if(payment.Status__c=='Received','Green',
+                                                                                                                         'White'))))}"/></td>
+                                    <td><apex:outputField value="{!payment.Courier_Doc_No__c}" /></td>
+                                    <td><apex:outputField value="{!payment.Courier_Sent_Date__c}" /></td>
+                                </tr>
+                            </apex:repeat>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><b>Grand Total:</b></td>
+                                    
+                                    <td colspan="1" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentBillNoDueTotal}" /></apex:outputText></b></td>
+                                    <td colspan="1" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentNoDueTotal}" /></apex:outputText></b></td>
+                                    
+                                    
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                        <br/>
+                        
+                                     
+                        <br/><br/><br/>
+                        
+                        <center><apex:commandLink action="{!getPDF}" target="_blank" styleClass="caseButton"><b><font color="white">Printable View</font></b></apex:commandLink>
+                        </center>
+                        <br/><br/>
+                        <!-- Disclaimer: All taxes as per prevailing rates -->
+                        <p>This is a system generated document on {!DAY(TODAY())}/{!MONTH(TODAY())}/{!YEAR(TODAY())} and doesn’t require a signature. Taxes as per prevailing rates. <apex:outputLabel value="E&OE" /></p>
+                        <p>{!footerPayment}</p>
+                    </apex:pageBlock>
+                    
+                </div>
+            </body>
+            
+            <script>
+            // Here we will set the generated subtotals to the footer cells
+            document.getElementsByClassName('t1')[0].innerHTML = '{!total1}';
+            document.getElementsByClassName('t2')[0].innerHTML = '{!total2}';
+            document.getElementsByClassName('t3')[0].innerHTML = '{!total3}';
+            document.getElementsByClassName('t4')[0].innerHTML = '{!total4}';            
+            </script>           
+        </apex:form>
+        
+        <!--------------------------------------------------------------   PDF Form Page  ------------------------------------------------------------------>  
+        
+        
+        <apex:form rendered="{!if(isPDF==true,true,false)}" >
+            <apex:variable value="{!10.00}" var="total1"/>
+            <apex:variable value="{!0.00}" var="total2"/>
+            <table  Id="header" style="width: 100%; " border ="0">     
+                <tr>
+                    <td style="width: 30%"><apex:image value="{!URLFOR($Resource.New_brigade_logo)}" height="100"/><br/><br/>
+                        
+                    </td>               
+                    
+                </tr>
+            </table>
+            
+            <table width="100%" border="0" style="font-family : Arial Narrow ; font-size:85%;border-spacing:0px">
+                <apex:repeat value="{!listProfile[0]}" var="pro" >
+                    <tr>
+                        <td width="20%">
+                            <b>Client Name:</b>
+                        </td>
+                        <td width="70%">
+                            <apex:outputField value="{!pro.Contact__r.Account.name}" />
+                        </td>
+                    </tr>
+                    <tr> 
+                        <td width="20%"><b>Date:</b></td>
+                        <td width="70%">{!DAY(TODAY())}/{!MONTH(TODAY())}/{!YEAR(TODAY())} </td>
+                    </tr> 
+                </apex:repeat>
+            </table>
+            
+            <!-- TABLE BORDER="0" Column="2" width="100%" class="gridtable" >
+<TR style="background-color:#C8D7E3;padding-top:3px;padding-left:3px">
+< TD ><b><font color="black">Project Information</font></b></TD >
+</TR>
+</TABLE -->
+            <TABLE border="0"  Column="2" width="100%" style="font-family : Arial Narrow ; font-size:85%;border-spacing:0px">
+                <apex:repeat value="{!listProperty1[0]}" var="listPro" > 
+                    <TR >
+                        <TD width="20%">
+                            
+                            <b><apex:outputLabel value="Project Name:" />&nbsp;</b></TD>
+                        
+                        <TD width="70%">  <apex:outputField value="{!listPro.Project_Name__c }" /></TD>
+                    </TR> 
+                    <TR>
+                        <TD width="20%">
+                            <b><apex:outputLabel value="Unit Code:" />&nbsp;</b></TD>
+                        
+                        <TD width="70%"> <apex:outputText value="{!listPro.Unit_Code__c}" />
+                            
+                        </TD>
+                    </TR>
+                </apex:repeat>
+            </TABLE>
+            
+            
+            
+            <!-- <br/>
+<table width="100%"><tr style="background-color:#C8D7E3;padding-top:3px;padding-center:3px" ><td><b><font color="black">Payment Schedules</font></b></td></tr></table>-->
+            <br/>
+            
+            <table width="700px"><tr style="background-color:#C8D7E3;padding-top:3px;padding-left:3px" ><td><font color="black"> <b>Received Payments</b></font></td></tr>
+            </table>
+            <br/>
+            
+            <table width="100%"  border="1" style="font-size:60%; border-spacing:0px">
+                <!--td, th { border: 1px solid }-->
+                
+                <!--<tr bgcolor="579CBC" abbr="B0B0B0" align="center">  -->
+                <tr >
+                    <td  bgcolor="#ECFDD4" ><font color="White"  size="1">Billing Date</font></td>
+                    <td  bgcolor="#ECFDD4" ><font color="White"  size="1">Description</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:right;"><font color="White"  size="1">Bill Value (Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:right;"><font color="White"  size="1">Service Tax (Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:right;"><font color="White"  size="1">VAT(Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:right;"><font color="White"  size="1">Education Cess(Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:right;"><font color="White"  size="1">Secondary Education Cess(Rs.)</font></td>
+                    
+                    <td  bgcolor="#ECFDD4" style="text-align:right;"><font color="White"  size="1">Total (incl. taxes)(Rs.)</font></td>
+                    <!--td  bgcolor="#ECFDD4" align="center"><font color="White"  size="1">Payment Received Date</font></td -->
+                    <td  bgcolor="#ECFDD4" align="center"><font color="White"  size="1">Invoice Number</font></td>
+                    <td  bgcolor="#ECFDD4" ><font color="White"  size="1">Invoice Date</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:center;"><font color="White"  size="1">Payment Status</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:center;"><font color="White"  size="1">Courier Doc No</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:center;"><font color="White"  size="1">Courier Sent Date</font></td>
+                </tr> 
+                
+                <apex:repeat value="{!listPaymentNoDue }" var="payment" >
+                    <tr >
+                        <td  ><apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                            <apex:param value="{!payment.Billing_Date__c}" />
+                            </apex:outputText></td>
+                        <td  ><apex:outputText value="{!payment.Description__c}" styleClass="companyName"/></td>  
+                        <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Bill_Value__c}"/></apex:outputText></td>
+                        <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Service_Tax__c}"/></apex:outputText></td>
+                        <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.VAT__c}"/></apex:outputText></td>
+                        <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Education_Cess__c}"/></apex:outputText></td>
+                        <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Secondary_Education_Cess__c}" /></apex:outputText> </td>
+                        <td  style="text-align:right;"><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!payment.Total__c}"/></apex:outputText></td>
+                        
+                        
+                        <td   align="center"><apex:outputField value="{!payment.Invoice_No__c}" /> </td>
+                        <td  ><apex:outputField value="{!payment.Invoice_date__c}" /> </td>
+                        <td  ><apex:outputText value="{!payment.Status__c}" style="color:{!if(payment.Status__c=='Not Due','#A207FC',
+                                                                                   if(payment.Status__c=='Due','#FC9207',
+                                                                                   if(payment.Status__c=='Overdue','Red',
+                                                                                   if(payment.Status__c=='Received','Green','White'))))}"/></td>
+                        <td><apex:outputField value="{!payment.Courier_Doc_No__c}" /></td>
+                        <td><apex:outputField value="{!payment.Courier_Sent_Date__c}" /></td>                                                                                                              
+                    </tr>
+                </apex:repeat>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><b>Grand Total:</b></td>
+                        
+                        <td colspan="1" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentBillNoDueTotal}"/></apex:outputText></b></td>
+                        <td colspan="5" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentNoDueTotal}"/></apex:outputText></b></td>
+                        <td colspan="5" style="text-align:right;"></td>
+                        
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <br/>
+            <table width="700px"><tr style="background-color:#C8D7E3;padding-top:3px;padding-left:3px" ><td><font color="black"> <b>To Be Received Payments</b></font></td></tr>
+            </table>
+            <br/>
+            <!--<tr bgcolor="579CBC" abbr="B0B0B0" align="center">  -->
+            <table  border="1" width="700px" style="font-size:60%; border-spacing:0px">   
+                <tr abbr="B0B0B0">
+                    <td  bgcolor="#ECFDD4"><font color="White" face="Arial Narrow">Due date</font></td>
+                    <td bgcolor="#ECFDD4" ><font color="White" face="Arial Narrow">Description</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:center;"><font color="White" face="Arial Narrow">On Mile Stone</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:center;"><font color="White" face="Arial Narrow">On Date</font></td>
+                    <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">Bill Value(Rs.)</font></td>
+                    <td bgcolor="#ECFDD4"  style="text-align:right;"><font color="White" >Service Tax(Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">VAT(Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">Education Cess(Rs.)</font></td>
+                    <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">Secondary Education Cess(Rs.)</font></td>
+                     <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">Swachh Bharath Cess</font></td>
+                     <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">Krishi Kalyan Cess</font></td>
+                    <td  bgcolor="#ECFDD4"  style="text-align:right;"><font color="White">Total (incl. taxes)(mmmmRs.)</font></td>
+                    <td  bgcolor="#ECFDD4" style="text-align:center;"><font color="White" face="Arial Narrow">Payment Status</font></td>
+                    
+                </tr> 
+                
+                <apex:repeat value="{!listPaymentWithDue }" var="paymentWD" >
+                    <tr >
+                        <td > <font ><apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                            <apex:param value="{!paymentWD.Billing_Date__c}" />
+                            </apex:outputText></font></td>
+                        <td ><font ><apex:outputText value="{!paymentWD.Description__c}" /></font></td> 
+                        <td style="text-align:center;"><apex:outputText value="{!paymentWD.Mile_Stone_Base_Description_1__c}"/></td> 
+                        <td style="text-align:center;"><apex:outputText value="{!paymentWD.Date_Base_Description__c}"/></td>
+                        
+                        <td style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Bill_Value__c}"/></apex:outputText> </font></td>
+                        <td  style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Service_Tax__c}"/></apex:outputText> </font></td>
+                        <td  style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.VAT__c}"/></apex:outputText> </font></td>
+                        <td style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Education_Cess__c}"/></apex:outputText> </font></td>
+                        <td style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Secondary_Education_Cess__c}"/></apex:outputText> </font></td>
+                        <td style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" >
+                            <apex:param value="{!paymentWD.Swachh_Bharath_Cess__c}"/></apex:outputText> </font>
+                        </td>
+                        <td style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" >
+                            <apex:param value="{!paymentWD.Krishi_Kalyan_Cess__c}"/></apex:outputText> </font>
+                        </td>
+                        <td style="text-align:right;"><font ><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!paymentWD.Total__c}"/></apex:outputText> </font></td>
+                        <td style="text-align:center;"><font ><apex:outputText value="{!paymentWD.Status__c}" style="color:{!if(paymentWD.Status__c=='Not Due','#A207FC',
+                                                                                                                     if(paymentWD.Status__c=='Due','#FC9207',
+                                                                                                                     if(paymentWD.Status__c=='Overdue','Red',
+                                                                                                                     if(paymentWD.Status__c=='Received','Green',
+                                                                                                                     'White'))))}"/></font></td>
+                        
+                        
+                    </tr>
+                </apex:repeat>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"><b>Grand Total:</b></td>
+                        <td colspan="1" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentBillWithDueTotal}"/></apex:outputText> </b></td>
+                        <td colspan="7" style="text-align:right;"><b><apex:outputText value="{0, number, ###,###,###,##0.00}" ><apex:param value="{!listPaymentWithDueTotal}"/></apex:outputText> </b></td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <br/>
+            <b>_________________________________________________________________________________________________________________________________________</b>
+            <br/>
+            <table style="font-size:80%;">
+                <tr>
+                    
+                    <td><!--This is a system generated document on {!DAY(TODAY())}/{!MONTH(TODAY())}/{!YEAR(TODAY())}. -->
+                        <p>This is a system generated document on {!DAY(TODAY())}/{!MONTH(TODAY())}/{!YEAR(TODAY())} and doesn't require a signature. Taxes as per prevailing rates. <apex:outputLabel value="E&OE" /></p>
+                        <p>*{!footerPayment}</p>        </td>    
+                </tr>
+            </table>
+            <script>
+            // Here we will set the generated subtotals to the footer cells
+            document.getElementsByClassName('t1')[0].innerHTML = '{!total1}';
+            document.getElementsByClassName('t2')[0].innerHTML = '{!total2}';
+            
+            </script>
+        </apex:form>
+    </apex:page>

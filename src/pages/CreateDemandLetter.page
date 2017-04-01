@@ -1,0 +1,29 @@
+<apex:page standardController="Demand_Letter_Repository__c" extensions="DemandLetterController" action="{!updateTotalDueOnOpportunity}">
+<apex:sectionHeader subtitle="New Progress-cum-Demand Letter" title="Demand Letter"/>
+<apex:pageMessages ></apex:pageMessages>
+  <apex:form >
+  <apex:pageBlock mode="edit">
+      <apex:pageBlockButtons >
+          <apex:commandButton value="Save" action="{!save}"/>
+          <apex:commandButton action="{!cancel}" value="Cancel"/>
+      </apex:pageBlockButtons>
+      <apex:pageBlockSection collapsible="false">
+          <apex:inputField value="{!dlObj.Name}" required="true"/>
+          <apex:outputField value="{!dlObj.Opportunity__c}"/>
+          <apex:inputField value="{!dlObj.Selection_Date__c}" required="true"/>
+           <apex:inputField value="{!dlObj.Subject__c}" required="true" />
+          
+      </apex:pageBlockSection>
+      <apex:pageBlockSection collapsible="false" columns="1">
+          <apex:pageBlockSectionItem > 
+              <b> Page 1 Content </b>
+              <apex:inputTextarea value="{!dlObj.Page1__c}" richText="true" required="true"/>
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem > 
+              <b> Page 2 Content </b>
+              <apex:inputTextarea value="{!dlObj.Page2__c}" richText="true"/>
+          </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+  </apex:pageBlock>
+  </apex:form>
+</apex:page>

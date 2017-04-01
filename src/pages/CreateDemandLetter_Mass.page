@@ -1,0 +1,28 @@
+<apex:page standardController="Opportunity" extensions="DemandLetterController" recordSetVar="DLR" action="{!updateTotalDueOnOpportunity}">
+<apex:sectionHeader subtitle="New Demand Letter" title="Demand Letter" rendered="{!noErr}"/>
+<apex:pageMessages />
+  <apex:form rendered="{!noErr}">
+  <apex:pageBlock mode="edit">
+      <apex:pageBlockButtons >
+          <apex:commandButton value="Save" action="{!saveM}"/>
+          <apex:commandButton value="Cancel" action="{!cancel}"/>
+      </apex:pageBlockButtons>
+      <apex:pageBlockSection collapsible="false" columns="1">
+          <apex:inputField value="{!dlrObj.Name}" required="true"/>
+          <apex:inputField value="{!dlrObj.Selection_Date__c}" required="true"/>
+          <apex:inputField value="{!dlrObj.Subject__c}" required="true"/>
+          <apex:pageBlockSectionItem >
+              <b> Page 1 Content </b>
+              <apex:inputTextarea value="{!dlrObj.Page1__c}" richText="true" required="true"/>
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem > 
+              <b> Page 2 Content </b>
+              <apex:inputTextarea value="{!dlrObj.Page2__c}" richText="true"/>
+          </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+  </apex:pageBlock>
+      
+      
+  </apex:form>
+    
+</apex:page>

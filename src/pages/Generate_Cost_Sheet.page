@@ -1,0 +1,330 @@
+<!--
+
+**    Description    :    This page will capture all the cost sheet Details in pdf form.
+*
+
+*    Created By     :   Shikha Devi 
+
+*
+
+*    Created Date   :    18/06/2014(V1.0)
+   
+    
+**
+-->
+<apex:page controller="Cost_Sheet_Controller" renderAs="pdf" >
+
+
+  <apex:form >
+  <!--<h4 style ="text-align :center;">BRIGADE PANORAMA<br><h1><center>Mysuru Road, Bengaluru</center></h1></br><br><center><b>TENTATIVE PAYMENT SCHEDULE</b></center></br></h4> -->
+   
+   <apex:pageBlock ><br/>
+            
+            <table style="background-color:#ffffff;padding-top:3px;padding-left:3px;font-size:120%;" width="100%"><tr><td><b></b></td></tr></table>
+            <table width="100%"  cellspacing="0">
+                     <tr>
+                    <td style ="text-align :center;"><b><h2><apex:outputfield value="{!costSheetDetails.Project_Name__c}" /></h2></b> </td>
+                </tr> 
+                 <tr>
+                         <td>
+                            <center> Provisional Cost Break-Up </center>
+                         </td>
+                  </tr>  
+            </table>
+            <table  width="100%"  style="border: 1px solid black;" cellspacing="0">
+                       
+                       
+                        <tr>
+                            <td style="border-spacing:10px;border: 1px solid black; vertical-align:middle;"><b>Plant Name.</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black; text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Plant__r.Name}"/></td>                            
+                        </tr>
+                         <tr>
+                            <td style="border-spacing:10px;border: 1px solid black; vertical-align:middle;"><b>Name of the client</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black; text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Opportunity__r.Contact_Name__c}"/></td>                            
+                        </tr>
+                         <tr>
+                            <td style="border-spacing:10px;border: 1px solid black; vertical-align:middle;"><b>Apartment No.</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black; text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Apartment_No__c}"/></td>                            
+                        </tr>
+                        <tr>
+                            <td style="border-spacing:10px;border: 1px solid black;">Apartment Type</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Apartment_Type__c}"/> </td>
+                        </tr>
+                        <tr>
+                            <td style="border-spacing:10px;border: 1px solid black;">Apartment area in sft</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Area_in_sq_ft__c}"/></td>                            
+                        </tr>
+                        <tr>
+                            <td style="border-spacing:10px;border: 1px solid black;">Base Price per sft</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Base_rate_Rs_Psf__c}"/> </td>
+                        </tr>
+                         <tr style="display: {!IF(OR((costSheetDetails.Floor_rise_Rs_Psf_per_floor__c== 0),(costSheetDetails.Floor_rise_Rs_Psf_per_floor__c== null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Floor rise charge per sft</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Floor_rise_Rs_Psf_per_floor__c}"/> </td>
+                        </tr>
+                        <tr style="display: {!IF(OR((costSheetDetails.Preferential_location_charge__c== 0),(costSheetDetails.Preferential_location_charge__c== null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Preferential location charges</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Preferential_location_charge__c}"/></td>                            
+                        </tr>
+                       <!-- <tr style="display: {!IF(OR((costSheetDetails.Premium_Rs_Psf__c== 0),(costSheetDetails.Premium_Rs_Psf__c== null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Premium Unit charges</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Premium_Rs_Psf__c}"/> </td>
+                        </tr>-->
+                        <tr style="display: {!IF(OR((costSheetDetails.Discount__c== 0),(costSheetDetails.Discount__c== null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Special Price Discount per sft</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Discount__c}"/></td>                            
+                        </tr>
+                        <tr>
+                            <td style="border-spacing:10px;border: 1px solid black;"><b>Final Rate per sft.</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Final_Rate_per_sft__c}"/></td>                            
+                        </tr>
+                      <!--  <tr>
+                            <td style="border-spacing:10px;border: 1px solid black;">Excluding Parking Charges</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Basic_cost_of_apartment__c}"/> </td>
+                        </tr> -->
+                        <tr style="display: {!IF((costSheetDetails.Covered_Car_parking_reservation_charges__c== 0), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Reservation charges for Parking </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Covered_Car_parking_reservation_charges__c}"/></td>                            
+                        </tr>
+                        <tr style="display: {!IF(OR((costSheetDetails.Less_Special_Discount__c== 0),(costSheetDetails.Less_Special_Discount__c== null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Special Price Discount (lump sum)</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Less_Special_Discount__c}"/> </td>
+                        </tr>
+                        <tr>
+                            <td style="border-spacing:10px;border: 1px solid black;"><b>Final Consideration including Car Park</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:right; vertical-align:middle;"> <apex:outputfield value="{!costSheetDetails.Agreement_Value_Rs__c}"/> </td>
+                        </tr>
+                        
+                        </table>  
+                      <table style="background-color:#ffffff;padding-top:3px;padding-left:3px;font-size:120%;" width="100%"><tr><td><b></b></td></tr></table>
+                      <table width="100%"  cellspacing="0">                        
+                        <tr>
+                            <td>
+                            <h4 style ="text-align :center;"><b>Payment Schedule</b></h4>
+                            </td>
+                        </tr> </table>
+                         <table  width="100%"  style="border: 1px solid black;" cellspacing="0">
+                
+                        <tr style="display: {!IF(OR((costSheetDetails.Prelaunched_Registeration__c== 0),(costSheetDetails.Prelaunched_Registeration__c== null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Prelaunched Registration Amount</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Prelaunched_Registeration__c}"/></td>
+                        </tr>
+                         <tr style="display: {!IF((costSheetDetails.Booking_amount_Rs__c== 0), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">On Booking</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Booking_amount__c}"/></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Booking_amount_Rs__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF(OR((costSheetDetails.Less_Registration_Amount__c== 0),(costSheetDetails.Less_Registration_Amount__c== Null)), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">Less Registration Amount</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Less_Registration_Amount__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF((costSheetDetails.X1st_installment_Rs__c== 0), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">1st Instalment</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X1st_installment__c}"/></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X1st_installment_Rs__c}"/></td>
+                        </tr>
+                         <tr style="display: {!IF((costSheetDetails.X2nd_installment_Rs__c== 0), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">2nd Instalment</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X2nd_installment__c}"/></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X2nd_installment_Rs__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF((costSheetDetails.X3rd_installment_Rs__c== 0), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;">3rd Instalment</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X3rd_installment__c}"/></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X3rd_installment_Rs__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF((costSheetDetails.X4th_installment_Rs__c== 0), 'none', 'table-row')};">
+                           <td style="border-spacing:10px;border: 1px solid black;">4th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X4th_installment__c}"/></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X4th_installment_Rs__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF((costSheetDetails.X5th_installment_Rs__c== 0), 'none', 'table-row')};">
+                            <td style="border-spacing:10px;border: 1px solid black;"> 5th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X5th_installment__c}"/></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X5th_installment_Rs__c}"/></td>
+                        </tr>
+                       <tr style="display: {!IF((costSheetDetails.X6th_installment_Rs__c == 0), 'none', 'table-row')};">
+                      
+                             <td style="border-spacing:10px;border: 1px solid black;">6th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X6th_installment__c }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X6th_installment_Rs__c}"/></td>
+                      
+                        </tr> 
+                        <tr style="display: {!IF((costSheetDetails.X7th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">7th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X7th_installment__c }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X7th_installment_Rs__c}"/></td>
+                        </tr>
+                       <tr style="display: {!IF((costSheetDetails.X8th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">8th Instalment</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X8th_installment__c }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X8th_installment_Rs__c}"/></td>
+                        </tr> 
+                        <tr style="display: {!IF((costSheetDetails.X9th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">9th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X9th_installment__c  }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X9th_installment_Rs__c}"/></td>
+                        </tr> 
+                         <tr style="display: {!IF((costSheetDetails.X10th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">10th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X10th_installment__c }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X10th_installment_Rs__c}"/></td>
+                        </tr> 
+                        <tr style="display: {!IF((costSheetDetails.X11th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">11th Instalment  </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X11th_installment__c  }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X11th_installment_Rs__c}"/></td>
+                        </tr> 
+                         <tr style="display: {!IF((costSheetDetails.X12th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">12th Instalment  </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X12th_installment__c }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X12th_installment_Rs__c}"/></td>
+                        </tr> 
+                        <tr style="display: {!IF((costSheetDetails.X13th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">13th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X13th_installment__c  }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X13th_installment_Rs__c}"/></td>
+                        </tr> 
+                         <tr style="display: {!IF((costSheetDetails.X14th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">14th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X14th_installment__c }"/></td>
+                              <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X14th_installment_Rs__c}"/></td>
+                        </tr> 
+                        <tr style="display: {!IF((costSheetDetails.X15th_installment_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">15th Instalment </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X15th_installment__c  }"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.X15th_installment_Rs__c}"/></td>
+                        </tr> 
+                         <tr style="display: {!IF((costSheetDetails.On_Possession_Registration_Rs__c== 0), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">On Possession</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.On_Possession_Registration__c}"/></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.On_Possession_Registration_Rs__c}"/></td>
+                        </tr>
+                        <!-- <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;"><b>Total Consideration including Parking</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.TOTAL_CONSIDERATION_INCLUDING_CAR_PARK__c}"/></td>
+                        </tr> -->
+                        
+                         <tr>
+                        <td  style="border-spacing:10px;border: 1px solid black;"> 1) Additional expenses (legal fee, external electrification, water and sanitary charges, reticulated gas connection, service charges towards property assessment and sub-numbering) are payable on demand</td>
+                            <!--<td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>-->
+                           <td colspan="2" style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.ADDITIONAL_EXPENSE_appro__c}"/></td>
+                        </tr> 
+                        
+                         <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;"> 2) VAT calculated at <apex:outputfield value="{!costSheetDetails.Project__r.VAT__c}"/> on 70% Construction Value (based on progress of construction) will be collected with every installment</td>
+                            <!--<td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> </td>-->
+                           <td  colspan="2" style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Total_VAT_Rs__c}"/></td>
+                        </tr>
+                          <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;"> 3) Service Tax calculated at <apex:outputfield value="{!costSheetDetails.Project__r.Service_Tax__c}"/> on 40% of Construction Value will be collected with every installment</td>
+                          <!--  <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> </td>-->
+                           <td  colspan="2" style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;">
+                           <apex:outputfield value="{!costSheetDetails.Total_Service_Tax_Rs__c}"/> </td>
+                        </tr>
+                        <tr>
+                         <td style="border-spacing:10px;border: 1px solid black;"> 4) Club Membership Fees including service tax at
+                         <apex:outputfield value="{!costSheetDetails.Project__r.VAT__c}"/></td>
+                        <!-- <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> </td>-->
+                           <td  colspan="2" style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;">
+                               <apex:outputfield value="{!costSheetDetails.Club_House_Fee_including_Service_Tax__c}"/>
+                           </td>
+                        </tr>
+                        <tr>
+                         <td style="border-spacing:10px;border: 1px solid black;"> Approximate Total additional expenses. </td>
+                        <!-- <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"> </td>-->
+                          <td  colspan="2" style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;">
+                               <apex:outputfield value="{!costSheetDetails.Total_additional_expenses_Rs__c}"/>
+                           </td>
+                        </tr>
+                        
+                            <tr><td colspan="3" style="border-spacing:10px;border: 1px solid black;">
+                          5) Tentative Building  Maintenance charges are currently estimated at &nbsp; <apex:outputfield value="{!costSheetDetails.Maintenance_rate_Rs_Psf_p_m__c}"/> per sft per month. One-time Corpus Fund equivalent to one year's building maintenance charges will be collected in advance. </td> </tr>
+                        <tr> 
+                        <td colspan="3" style="border-spacing:10px;border: 1px solid black;"> 6) Campus Corpus Fund is estimated at &nbsp; <apex:outputfield value="{!costSheetDetails.Plant__r.Corpus_Fund__c}"/> per sft per month.</td> </tr>
+                         <tr> 
+                        <td colspan="3" style="border-spacing:10px;border: 1px solid black;"> 7) Post Dated Cheques (PDC's) are to be provided in advance for all installments at the time of allotment.</td> </tr>
+                         <tr> 
+                        <td colspan="3" style="border-spacing:10px;border: 1px solid black;"> 8) Registration charges will calculated at actuals, depending on the Government provided guideline value at the time of registration, as well as apartment super built-up area, apartment floor type, and amenities in the project.</td> </tr>
+                         <tr> 
+                        <td colspan="3" style="border-spacing:10px;border: 1px solid black;"> 9) Payments can be made by way of DD / Local Cheque / EFT in favour of:<apex:outputfield value="{!costSheetDetails.DD_Cheque_in_favour__c}"/> </td> </tr>
+                         <tr> 
+                        <td colspan="3" style="border-spacing:10px;border: 1px solid black;"> 10) Price valid until : <apex:outputText value="{!valueinfo}"/> </td> </tr>
+                        <tr> 
+                        <td colspan="3" style="border-spacing:10px;border: 1px solid black;">E and O E (Errors and Omissions Excepted) </td> </tr>
+                       
+                       
+                       
+                        
+                          
+                        <!-- <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;"><b>Total Consideration Including Additional Expense</b></td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.TOTAL_CONSIDERATION__c }"/></td>
+                        </tr> 
+                       <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;">Club Membership</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Club_Membership__c}"/></td>
+                        </tr> 
+                         <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;">Club Membership including Service Tax</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Club_House_Fee_including_Service_Tax__c }"/></td>
+                        </tr>
+                        
+                        <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;">Registration charges</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Registration_Amount__c}"/></td>
+                        </tr>
+                        <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;">Tentative Building Maintenance</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Tentative_Building_Maintenance__c}"/></td>
+                        </tr> 
+                        
+                       
+                         <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;">Corpus fund<br>(equivalent to one year maintenance)</br> </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Corpus_fund_equivalent_to_one_year_main__c}"/></td>
+                        </tr> 
+                        <tr style="display: {!IF(OR((costSheetDetails.Reticulated_Gas_Connection_Charges__c== 0),(costSheetDetails.Reticulated_Gas_Connection_Charges__c== null)), 'none', 'table-row')};"> 
+                        <td style="border-spacing:10px;border: 1px solid black;">Reticulated Gas Connection Charges</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Reticulated_Gas_Connection_Charges__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF(OR((costSheetDetails.Generator_Charges__c== 0),(costSheetDetails.Generator_Charges__c== null)), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">Generator Charges</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Generator_Charges__c}"/></td>
+                        </tr>
+                        <tr style="display: {!IF(OR((costSheetDetails.Campus_Corpus_Fund_With_Service_Tax__c== 0),(costSheetDetails.Campus_Corpus_Fund_With_Service_Tax__c== null)), 'none', 'table-row')};">
+                        <td style="border-spacing:10px;border: 1px solid black;">Campus Corpus Fund With Service Tax</td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.Campus_Corpus_Fund_With_Service_Tax__c}"/></td>
+                        </tr>
+                         <tr>
+                        <td style="border-spacing:10px;border: 1px solid black;"><b>Approximate Total Cost</b> </td>
+                            <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"></td>
+                           <td style="border-spacing:10px;border: 1px solid black;text-align:center; vertical-align:middle;"><apex:outputfield value="{!costSheetDetails.APPROXIMATE_TOTAL_COST__c }"/></td>
+                        </tr>
+                        
+                        <tr>
+                        <td>
+                           1) Payment to be made by way of DD / Local Cheque in favour of : M/s. Brigade Enterprises Limited.<br></br>
+                            2) Club Membership to  be paid by separate cheque in favour of :  M/s. Brigade Enterprises Limited.<br></br>
+                            3) Payment Schedule indicated is Tentative and subject to change.<br></br>
+                            4) Additional expenses are payable on demand. VAT and Service tax will be apportioned to instalment payment. <br></br>
+                            5) Statutory charges are subject to change   
+                        </td>
+                      
+                        </tr> --> 
+                        </table> 
+    </apex:pageBlock>  
+  </apex:form>
+</apex:page>

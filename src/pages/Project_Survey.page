@@ -1,0 +1,120 @@
+<!--------------------------------------------------------------------------------------------------
+    Description : This Page is used for Public Site to get Survey for Existing Opportunity
+    Author      : Amritesh
+--------------------------------------------------------------------------------------------------->
+<apex:page sidebar="false" cache="false" showHeader="false" controller="ProjectServey_Controller" title="Projet Servey">
+
+    <style>
+        .panelCls{
+            font-size:12px
+        }
+        
+        .bPageBlock{
+           margin-top: 50px !important;
+           margin-left: 150px !important;
+           width: 75%;           
+           padding: 10px !important;
+           //background-color: #ffffff !important;           
+        }
+        
+        .errCls{
+            color: red;
+            padding: 0px;
+        }
+    </style>
+    <script type = "text/javascript" >
+       // alert("{!$CurrentPage.parameters.oppSurveyId}");
+      <!--For disabling back button functionality-->
+       function preventBack(){
+           window.history.forward();
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload=function(){
+           null
+        };
+              
+        if("{!survetStatus}" == "false"){            
+            window.parent.location.href='/apex/Thank_You';
+        }
+        // reset cookies                
+        function zeit()
+        {
+            if(document.cookie)
+            {
+                a = document.cookie;
+                cookiewert = "";
+                while(a.length > 0)
+                {
+                    cookiename = a.substring(0,a.indexOf('='));
+                    if(cookiename == "zeitstempel")
+                    {
+                        cookiewert = a.substring(a.indexOf('=')+1,a.indexOf(';'));
+                        break;
+                    }
+                    a = a.substring(a.indexOf(cookiewert)+cookiewert.length+1,a.length);
+                }
+                if(cookiewert.length > 0)
+                {
+                    alter = new Date().getTime() - cookiewert;
+        
+                    if(alter > 3600000)
+                    {   
+                        document.cookie = "zeitstempel=" + new Date().getTime() + ";";
+                        location.reload(true);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    document.cookie = "zeitstempel=" + new Date().getTime() + ";";
+                    location.reload(true);
+                }
+            }
+            else
+            {
+                document.cookie = "zeitstempel=" + new Date().getTime() + ";";
+                location.reload(true);
+            }
+        }
+        //zeit();
+    </script>
+<apex:form >
+    <apex:pageBlock id="pbBlockId" rendered="{!survetStatus}">      
+            <apex:outputPanel styleClass="panelCls" >
+               <a href="http://www.brigadegroup.com/" target="brigadegroup">
+                <img src="{!$Resource.New_brigade_logo}" width="100" height="100"/></a>  <br/><br/>             
+                Thank you for visiting us. Buying a home is one of the most important decisions of one’s lifetime and we are glad you have taken one step further in that direction.
+                We hope you could get the information you wanted on our property. It will really help if you could spare a few minutes to give us your quick feedback on the Brigade Experience:              
+               <p/>
+               <apex:pageBlockSection columns="1">
+               <apex:messages styleClass="errCls"/>
+                   <apex:dataTable value="{!questionWrapperList}" var="q">
+                     <apex:column > 
+                            <apex:outputText value="{!q.qsnName}"/>
+                                <apex:selectRadio value="{!q.selectedValue}">
+                                <apex:selectOptions value="{!q.ansList}"/>
+                            </apex:selectRadio>                            
+                    </apex:column>                     
+                   </apex:dataTable> 
+                  </apex:pageBlockSection>                  
+            </apex:outputPanel>
+            <apex:pageBlockButtons location="bottom">
+                      <apex:commandButton value="Submit" action="{!saveSurvey}"/> 
+            </apex:pageBlockButtons>        
+    </apex:pageBlock>
+    <apex:pageBlock rendered="{!!survetStatus}">
+        <apex:outputPanel style="font-size=16px">
+            Thank you for your time. It might interest you to know that you are now eligible for rewards under our program ‘Brigade Communities’ where you can refer your friends to a Brigade property and earn 0.5% of the value of the property they book. You needn’t have booked a Brigade property yourself to be eligible for this reward. This amount becomes 1% if you also have booked a Brigade property and you refer your friends to book one for themselves. Click here to refer!                                  
+            <br/><br/>Hoping to see you as a proud owner of a Brigade home soon!<br/><br/>
+            Warm Regards<br/><br/>            
+            Team Brigade<br/><br/>            
+            1800 102 9977<br/><br/> 
+                     
+            <a href="http://www.brigadegroup.com/" target="brigadegroup">www.brigadegroup.com</a>
+        </apex:outputPanel>
+    </apex:pageBlock>
+</apex:form> 
+</apex:page>

@@ -1,0 +1,9 @@
+<apex:page standardController="CostSheet__c" extensions="SendEmail_For_CostSheet_Controller" action="{!sendAndSaveAttchment}" sidebar="false" >
+<apex:form >
+<apex:pageBlock > 
+<apex:sectionHeader subtitle="Sending Cost Sheet" title="Cost Sheet"/>
+<h5><b><center> Mail has been sent</center></b></h5>
+
+</apex:pageBlock> 
+</apex:form>
+</apex:page>

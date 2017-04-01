@@ -1,0 +1,306 @@
+<apex:page controller="MyDocumentsUpdateCOntroller" showHeader="false" sidebar="false"> 
+    <apex:form >
+         <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap.css')}" rel="stylesheet" media="screen"/>
+            <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap-theme.css')}" rel="stylesheet" media="screen"/> 
+            <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+            <apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+            <link href="{!URLFOR($Resource.brigadecss)}" rel="stylesheet" media="screen"/>
+            <!-- css for to display header and body section of the page -->
+            <style>
+                #headcontainer {
+                    background-image: url({!URLFOR($Resource.NavigatorBackground)});
+                }
+                #news-events-cont {
+                    width: 650px;
+                    height: 200px;
+                    border: 1px solid #c0c2c4;
+                    background-color: #ffffff;
+                    margin: 0 4px 4px 0;
+                    overflow: hidden;
+                }      
+                h3{
+                    color: #536d8b;
+                    font: normal 14px/24px Verdana, Geneva, sans-serif;
+                    //text-align: center;
+                    margin:10px 10px 10px 65px;   
+                }      
+          
+                .nl {
+                      //background-image: url(https://ap1.salesforce.com/resource/1378908186000/NavigatorBackground);
+                      //width: 650px;
+                      //height: 200px;  
+                      background-repeat:repeat-x;
+                      //background-repeat:repeat-y;
+                      background-size: cover;
+                      //margin:13px 13px 13px 13px;
+                }
+                #news-events-cont ul.news-list {
+                    font: normal 14px/110% Georgia, "Times New Roman", Times, serif;
+                    color: #7086a0;
+                    margin:0 0 0 35px;
+                }
+                #news-events-cont ul.news-list li {
+                    width: 223;
+                    height: 25px;
+                }
+                #news-events-cont ul.news-list li a {
+                    color: #7086a0;
+                }
+                #cities {
+                    width: 278px;
+                    height: 200px;
+                    display: block;
+                    border: 1px solid #c2c4c5;
+                    background-color: #fbfbfb;
+                    padding: 0px 0 0 9px;
+                }
+                #cities h2 {
+                    //color: #536d8b;
+                    font: normal 14px/24px Verdana, Geneva, sans-serif;
+                    text-align: center;
+                    //margin:13px 13px 8px 65px;
+                    //font: normal 12px/100% Verdana, Geneva, sans-serif;
+                    color: #57718e;
+                    //margin: 0 0 8px 0;
+                }
+                #cities ul {
+                      //font: normal 10px/100% Arial, Helvetica, sans-serif;
+                      font: normal 14px/110% Georgia, "Times New Roman", Times, serif;
+                      color: #58595b;
+                      margin: 5px 5px 5px 38px;
+                      //align:center;
+                }
+                #cities ul li {
+                    list-style: disc;
+                    margin:0 0 0 35px;
+                }
+                #cities ul li a {
+                    color: #58595b;
+                } 
+            </style>
+        </head> 
+      <body>
+            <div id="page" align="center" background-color="white"> 
+                <table width="935" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <table width="935" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td height="117" id="headcontainer">
+                                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td width="198" height="117" align="center" valign="middle"><a href="http://www.brigadegroup.com/">
+                                                    <img src="http://www.brigadegroup.com/corporate/images/brigade_group_logo.png" width="137" height="94" alt="Brigade Enterprises - Leading Builders in Bangalore's Real Estate Industry" /></a>
+                                                </td>
+                                                <td align="right" valign="bottom">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td align="right" valign="baseline">
+                                                                <table border="0" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                       <!-- <td width="460" align="right">
+                                                                            <a href="" class="ContactLinks">HOME</a> | 
+                                                                            <a href="" class="ContactLinks">ABOUT US</a> | 
+                                                                            <a href="" class="ContactLinks">VENDOR</a> | 
+                                                                            <a href="" class="ContactLinks">CONTACT US</a> | 
+                                                                            <a href="" class="ContactLinks">RSS FEED</a> | <img src="{!URLFOR($Resource.RSSFeed)}" width="14" height="14" alt="RSS"/>
+                                                                            <a href="" class="ContactLinks">FAQs</a>&nbsp;&nbsp;&nbsp;
+                                                                        </td>-->
+                                                                        <td width="187" align="right"><table width="187" border="0" align="right" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td width="170" align="center" valign="baseline">
+                                                                            <div id="search2">
+                                                                            <!--search form need to build hers-->
+                                                                            </div>
+                                                                        </td> 
+                                                                        <td width="17" align="center" valign="baseline">&nbsp;</td> 
+                                                                    </tr>
+                                                                 </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="30" align="right" valign="top"><a href="" class="gotofooter"></a> <a href=""></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                           <!-- <td><a href="/apex/BrigadeHomePage" class="resi_button">HOME</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td><a href="/apex/Bridge_CPprofile_RD" class="resi_button">MY PROFILE</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td><a href="/apex/myPayment_ext" class="comm_button">MY PAYMENTS</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td><a href="/apex/MyDocuments" class="retail_button">MY DOCUMENTS</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td><a href="#" class="hosp_button">CASES</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td><a href="#" class="foun_button">REFERRAL</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td><a href="/apex/FeedBack" class="foun_button">Feed Back</a></td>
+                                                            <td>&nbsp; | &nbsp;</td>
+                                                            <td>
+                                                                <apex:outputLink value="http://brigadeforce.bgsandbox.cs16.force.com/loginpage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="hosp_button">Logout</apex:outputLink>
+                                                            </td>
+                                                            <td width="17">&nbsp;</td>-->
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br></br> &nbsp; 
+    <!-- the section dsiplay all documents -->
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:outputPanel rendered="{!if(docsSectionList.size>0,true,false)}" id="panelId">
+        <br/>
+        <TABLE BORDER="0" WIDTH="100%" Column="2">
+            <TR style="width:200px;height:17px;background-color:#0066B3;padding-top:3px;padding-left:3px">
+                <TD ><b><font color="white">Project Information</font></b></TD >
+            </TR>
+        </TABLE>
+        <TABLE border="0" ALIGN="center" >
+            <TR >
+                <TD ><apex:outputLabel value="Project Name:" /></TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD><apex:outputText value="{!plantName}" /></TD>
+            </TR> 
+            <br/>
+            <TR>
+                <TD ><apex:outputLabel value="Unit Code:" /></TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD > <apex:outputText value="{!unitName}" /></TD>
+            </TR>
+        </TABLE>
+        <br/>
+        <table width="100%"><tr style="width:200px;height:17px;background-color:#0066B3;padding-top:3px;padding-left:3px" ><td><b><font color="White">Project Documents</font></b></td></tr></table>
+        <br/>
+        <!-- first Applicant-->
+    <table  width="100%" border="0" cellpadding="3">
+        <apex:outputPanel rendered="{!if(docsSectionListFirst.size>0,true,false)}">
+            <tr>
+                <td width="6%" bgcolor="#0066B3"><h1><font color="White">Select</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Document Name</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Document URL</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Status</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact type</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Reason for Reject</font></h1></td>
+            </tr>
+        <apex:repeat value="{!docsSectionListFirst}" var="dsl" >
+            <tr abbr="B0B0B0">
+                <td width="6%"><apex:inputCheckbox value="{!dsl.selected}" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Name}" /> </td>
+                <td width="20%"><apex:outputField value="{!dsl.pdoc.Document_Url_link__c}" rendered="{!if(dsl.pdoc.Status__c=='Pending',false,true)}"/> </td>
+                <td width="15%"><apex:outputfield value="{!dsl.pdoc.Status__c}" style="color:{!if(dsl.pdoc.Status__c=='Pending','Red',if(dsl.pdoc.Status__c=='Submitted','Yellow',
+                                                 if(dsl.pdoc.Status__c=='SubmittedAccepted','Green','White')))}" /></td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact__r.name}" /> </td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact_type__c}" /> </td>
+                <td width="20%"><apex:inputField value="{!dsl.pdoc.Reason_for_Reject__c}" styleclass="rect" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>          
+            </tr>
+        </apex:repeat>
+        </apex:outputPanel>
+    </table>
+    <br/>
+    <!-- Second Applicant-->
+    <table width="100%" border="0" cellpadding="3">
+        <apex:outputPanel rendered="{!if(docsSectionListSecond.size>0,true,false)}">
+            <tr >
+                <td width="6%" bgcolor="#0066B3"><h1><font color="White">Select</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Document Name</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Document URL</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Status</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact type</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Reason for Reject</font></h1></td>
+            </tr>
+        <apex:repeat value="{!docsSectionListSecond}" var="dsl" >
+            <tr >
+                <td width="6%"><apex:inputCheckbox value="{!dsl.selected}" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Name}" /> </td>
+                <td width="20%"><apex:outputField value="{!dsl.pdoc.Document_Url_link__c}" rendered="{!if(dsl.pdoc.Status__c=='Pending',false,true)}"/> </td>
+                <td width="15%"><apex:outputfield value="{!dsl.pdoc.Status__c}" style="color:{!if(dsl.pdoc.Status__c=='Pending','Red',if(dsl.pdoc.Status__c=='Submitted','Yellow',
+                                     if(dsl.pdoc.Status__c=='SubmittedAccepted','Green','White')))}" /></td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact__r.name}" /> </td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact_type__c}" /> </td>
+                <td width="20%"><apex:inputField value="{!dsl.pdoc.Reason_for_Reject__c}" styleclass="rect"  rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+            </tr>
+       </apex:repeat>
+       </apex:outputPanel>
+    </table>
+    <br/>
+    <!--Third Applicant-->
+    <table width="100%" border="0" cellpadding="3">
+        <apex:outputPanel rendered="{!if(docsSectionListThird.size>0,true,false)}"> 
+            <tr abbr="B0B0B0">
+                <td width="6%" bgcolor="#0066B3"><h1><font color="White">Select</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Document Name</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Document URL</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Status</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact type</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Reason for Reject</font></h1></td>
+            </tr> 
+        <apex:repeat value="{!docsSectionListThird}" var="dsl" >
+            <tr >
+                <td width="6%"><apex:inputCheckbox value="{!dsl.selected}" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Name}" /> </td>
+                <td width="20%"><apex:outputField value="{!dsl.pdoc.Document_Url_link__c}" rendered="{!if(dsl.pdoc.Status__c=='Pending',false,true)}"/> </td>
+                <td width="15%"><apex:outputfield value="{!dsl.pdoc.Status__c}" style="color:{!if(dsl.pdoc.Status__c=='Pending','Red',if(dsl.pdoc.Status__c=='Submitted','Yellow',
+                            if(dsl.pdoc.Status__c=='SubmittedAccepted','Green','White')))}" /></td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact__r.name}" /> </td>
+                <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact_type__c}" /> </td>
+                <td width="20%"><apex:inputField value="{!dsl.pdoc.Reason_for_Reject__c}" styleclass="rect" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+            </tr>
+        </apex:repeat> 
+        </apex:outputPanel>
+    </table>
+    <br/>
+    <!--Fourth Applicant-->
+    <table width="100%" border="0" cellpadding="3">
+        <apex:outputPanel rendered="{!if(docsSectionListFourth.size>0,true,false)}"> 
+            <tr abbr="B0B0B0">
+                <td width="6%" bgcolor="#0066B3"><h1><font color="White">Select</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Document Name</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Document URL</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Status</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact</font></h1></td>
+                <td width="15%" bgcolor="#0066B3"><h1><font color="White">Contact type</font></h1></td>
+                <td width="20%" bgcolor="#0066B3"><h1><font color="White">Reason for Reject</font></h1></td>
+            </tr> 
+            <apex:repeat value="{!docsSectionListFourth }" var="dsl" >
+                <tr >
+                    <td width="6%"><apex:inputCheckbox value="{!dsl.selected}" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+                    <td width="15%"><apex:outputText value="{!dsl.pdoc.Name}" /> </td>
+                    <td width="20%"><apex:outputField value="{!dsl.pdoc.Document_Url_link__c}" rendered="{!if(dsl.pdoc.Status__c=='Pending',false,true)}" /> </td>
+                    <td width="15%"><apex:outputfield value="{!dsl.pdoc.Status__c}" style="color:{!if(dsl.pdoc.Status__c=='Pending','Red',if(dsl.pdoc.Status__c=='Submitted','Yellow',
+                            if(dsl.pdoc.Status__c=='SubmittedAccepted','Green','White')))}" /></td>
+                    <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact__r.name}" /> </td>
+                    <td width="15%"><apex:outputText value="{!dsl.pdoc.Contact_type__c}" /> </td>
+                    <td width="20%"><apex:inputField value="{!dsl.pdoc.Reason_for_Reject__c}" styleclass="rect" rendered="{!if(dsl.pdoc.Status__c=='Submitted',true,false)}"/> </td>
+                </tr>
+            </apex:repeat> 
+        </apex:outputPanel>
+    </table>
+    <center>
+        <apex:commandButton value="Accept" action="{!acceptDocuments}"/>
+        <apex:commandButton value="Reject" action="{!rejectDocuments}"/>
+    </center>
+    </apex:outputPanel>
+    </div>
+    </body>            
+    </apex:form>
+</apex:page>

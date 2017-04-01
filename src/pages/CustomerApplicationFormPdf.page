@@ -1,0 +1,503 @@
+<apex:page showHeader="false" standardStylesheets="false"
+    standardController="Opportunity" extensions="SaveAsPdfExtension"
+    applyHtmlTag="false" applyBodyTag="false"  renderAs="pdf" contentType="application/pdf" ><!-- renderAs="pdf" contentType="application/pdf" -->
+
+<head>
+
+
+<style>
+body {font-family: Arial Unicode MS;font-size:9pt;color: #333;background-color: #fff;}
+ h2, h3 {text-transform: capitalize;font-size:12px;}
+ th,td,.small {text-transform: capitalize; font-weight:normal;padding-left:10px; border-bottom:1px solid dotted; }
+ div { display: block !important;}
+.show{display:block !important;}
+.hide{display:none !important;}
+.small{font-size:10px;}
+.container {width:100%;font-family: Book Antiqua;}
+.container-fluid {padding-right: 1px;padding-left: 1px;margin-right: auto;margin-left: auto;}
+.panel-primary {border-color: #337ab7 !important;}
+.panel {margin-bottom: 20px;background-color: #fff;border: 1px solid transparent; border-radius: 4px;    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);box-shadow: 0 1px 1px rgba(0,0,0,.05);}
+.panel-primary>.panel-heading {color: #fff;background-color: #337ab7;border-color: #337ab7;text-transform: uppercase}
+.panel-heading {padding: 10px 15px;border-bottom: 1px solid transparent;border-top-left-radius: 3px;    border-top-right-radius: 3px;}
+.panel-body {padding: 15px;}
+.row {width:100%;float:left;}
+.col-sm-1 { width: 98%;float:left;position:relative;min-height:5px;padding-right:15px;padding-left:15px;text-transform: capitalize;}
+.col-sm-4 { width: 20%;float:left;position:relative;min-height:5px;padding-right:15px;padding-left:15px;text-transform: capitalize;}
+.col-sm-3 { width: 20%;float:left;position:relative;min-height:5px;padding-right:15px;padding-left:15px;text-transform: capitalize;color: #000000; font-weight: bold;}
+ol li{text-transform: none !important;}
+label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: 700;}
+.left-inner-addon {position: relative;}
+.fullfloat, .panel-primary {float:left;width:100%;}
+.row:after{clear:both}
+.fs-10{font-size:10px}
+.row-light-grey{
+        background-color: #eeeeee;
+}
+
+@page {margin:25px 5px ; @bottom-left{font-family:verdana;font-size:10px;padding:5px 30px;Content: "Signature: 1st Applicant ............................Signature: 2nd Applicant ............................Signature: 3rd Applicant ............................          Page " counter(page) " of " counter(pages);} }
+           
+
+</style>
+</head>
+
+<apex:form >
+
+   
+       
+        
+        <div class="container">
+        
+                <div id="section1" class="container-fluid">
+                
+                <div class="panel panel-primary">
+                        <div class="panel-heading ">APPLICATION FOR ALLOTMENT (RESIDENTIAL) </div>
+                        <div class="panel-body">
+                                 
+                        <div class="row">
+                         <div class="col-sm-1" > 
+                            <div style="float:left;width:160px;height:160px">
+                                 
+                            <apex:image value="{!$Resource.BrigadeLogo}" width="100%" height="90%"/>
+                            </div>
+                            <div style="float:right">
+                        <div style="float:left;width:160px;height:160px;border:1px solid #000;margin:5px;">
+                         <img src="{!applicant1}" width="100%" height="100%" /> 
+                         <!--<apex:image value="{!applicant1}" width="100%" height="100%"/>-->
+                        </div>
+                        <div style="float:left;width:160px;height:160px;border:1px solid #000;margin:5px;">
+                         <apex:image value="{!applicant2}" width="100%" height="100%"/>
+                        </div>
+                        <div style="float:left;width:160px;height:160px;border:1px solid #000;margin:5px;">
+                         <apex:image value="{!applicant3}" width="100%" height="100%"/>
+                        </div>
+                            </div>
+                        </div>
+                        </div>
+                                       <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                        </div>
+                </div>  
+                
+                
+                
+                
+                  <div class="panel panel-primary">
+                        <div class="panel-heading ">Project Details</div>
+                                <div class="panel-body">
+                                 
+                                     <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Project Name</div>
+                                        <div class="col-sm-4" >{! Opportunity.Project_Name__c}</div>
+                                        <div class="col-sm-3" >Block</div>
+                                        <div class="col-sm-4" >{! Opportunity.Plant2__r.Name}</div>
+                                         </div>
+                                         
+                                         
+                                     <div class="row ">
+                                        <div class="col-sm-3" >Apt / Unit No.</div>
+                                        <div class="col-sm-4" >{! Opportunity.Unit_No__c}</div>
+                                        <div class="col-sm-3" >Floor</div>
+                                        <div class="col-sm-4" >{! Opportunity.Unit__r.Floor_Description__c}</div>
+                                         </div>
+                                         
+                                          <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Super-Built Area</div>
+                                        <div class="col-sm-4" >{! Opportunity.Unit__r.Area__c}</div>
+                                        <div class="col-sm-3" >Apt / Unit Price Agreed</div>
+                                        <div class="col-sm-4" >{! Opportunity.PT_Unit_Price_Agreed__c}</div>
+                                         </div>
+                                         
+                                          <div class="row">
+                                        <div class="col-sm-3" >Pvt. Garden Area</div>
+                                        <div class="col-sm-4" >{!appForm.Garden_Area__c}</div>
+                                        <div class="col-sm-3" >Pvt Garden Price Agreed</div>
+                                        <div class="col-sm-4" >{!appForm.Garden_Area_Price__c}</div>
+                                         </div>
+                                         <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Pvt. Terrace Area</div>
+                                        <div class="col-sm-4" >{!appForm.Terrace_Area__c}</div>
+                                        <div class="col-sm-3" >Pvt Terrace Price Agreed</div>
+                                        <div class="col-sm-4" >{!appForm.Terrace_Area_Price__c}</div>
+                                         </div>
+                                         
+                                          <div class="row">
+                                        <div class="col-sm-3" >No of Car Park(s)</div>
+                                        <div class="col-sm-4" >{! Opportunity.No_of_Car_Park_S__c}</div>
+                                       <div class="col-sm-3" >Car Park Charges</div>
+                                        <div class="col-sm-4" >{! Opportunity.Car_park_reservation_Charges__c}</div>
+                                      
+                                         </div>
+                                         
+                                         <div class="row row-light-grey">
+                                           <div class="col-sm-3" >Agreement Value</div>
+                                        <div class="col-sm-4" >{! appForm.AGREEMENT_VALUE__c}</div>
+                                        
+                                       
+                                        <div class="col-sm-3" >Club House Fee</div>
+                                        <div class="col-sm-4" >{! Opportunity.Unit__r.Plant__r.Club_Membership__c}</div>
+                                         </div>
+                                         <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                        
+                                         
+                                        </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                        
+                                         <div class="panel panel-primary">
+                        <div class="panel-heading ">Applicant Details</div>
+                                <div class="panel-body">
+                                 <apex:repeat value="{!contacts}" var="contact" >
+                               <div class="row"><div class="col-sm-1">  <h2>{!contact.Contact_Type__c} (As in the ID Proof)</h2></div></div>
+                                 
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Name</div>
+                                        <div class="col-sm-4" >{!Contact.Salutation & ' ' & contact.FirstName & ' ' & contact.Middle_Name__c & ' ' & contact.LastName}</div>
+                                        <div class="col-sm-3" >Date of Birth</div>
+                                        <div class="col-sm-4" ><apex:outputField value="{!contact.Birthdate}" /></div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Relation</div>
+                                        <div class="col-sm-4" >{!contact.Relation__c} - {!contact.Relation_Name__c}</div>
+                                        <div class="col-sm-3" >Industry</div>
+                                        <div class="col-sm-4" >{! contact.Industry__c}</div>
+                                 </div>
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Profession</div>
+                                        <div class="col-sm-4" >{!contact.Profession__c}</div>
+                                        <div class="col-sm-3" >Company</div>
+                                        <div class="col-sm-4" >{! contact.Company__c}</div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Designation</div>
+                                        <div class="col-sm-4" >{!contact.Designation__c}</div>
+                                        <div class="col-sm-3" >Email</div>
+                                        <div class="col-sm-4" >{! contact.email}</div>
+                                 </div> 
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Country Code for Mobile</div>
+                                        <div class="col-sm-4" >{!contact.Country_Code_for_Mobile__c}</div>
+                                        <div class="col-sm-3" >PAN No.</div>
+                                        <div class="col-sm-4" >{!contact.Income_Tax_PAN_GIR_No__c}</div>
+                                 </div>  
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >MobilePhone</div>
+                                        <div class="col-sm-4" >{!contact.MobilePhone}</div>
+                                        <div class="col-sm-3" >Nationality</div>
+                                        <div class="col-sm-4" >{! contact.Nationality__c}</div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Residence Status</div>
+                                        <div class="col-sm-4" >{!contact.Residency_Status__c}</div>
+                                        <div class="col-sm-3" >Spouse's Name</div>
+                                        <div class="col-sm-4" >{! contact.Spouse_s_Name__c}</div>
+                                 </div>  
+                                  <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Passport No.</div>
+                                        <div class="col-sm-4" >{!contact.Passport_No__c}</div>
+                                        <div class="col-sm-3" >Wedding Anniversary</div>
+                                        <div class="col-sm-4" > <apex:outputField value="{!contact.Wedding_Anniversary__c}"/></div>
+                                 </div>  
+                                
+                           
+                                 </apex:repeat>
+                                  <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                  
+                                    <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                    
+                                    <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                 </div>
+                                 </div>
+                                  
+
+                                        
+                                        <div class="panel panel-primary">
+                        <div class="panel-heading ">Address Details</div>
+                                <div class="panel-body">
+                              <div class="row"><div class="col-sm-1"> <h2> 4A) Address Details (Correspondence Address,Address Proof Required) </h2></div></div>
+                               
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Full Name</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.Name}</div>
+                                       
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Address Line 1</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.Street1__c}</div>
+                                 </div>
+                                  <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Address Line 2</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.Street2__c}</div>
+                                 </div>
+                                   <div class="row">
+                                        <div class="col-sm-3" >Address Line 3</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.Street3__c}</div>
+                                 </div>
+                                  <div class="row row-light-grey">
+                                        <div class="col-sm-3" >City / Town</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.City__c}</div>
+                                        <div class="col-sm-3" >Pin</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.Postal_Code__c}</div>
+                                 </div>
+                                  <div class="row">
+                                        <div class="col-sm-3" >District</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.District__c}</div>
+                                        <div class="col-sm-3" >State</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.Region__c}</div>
+                                 </div>
+                                <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Country</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.CountryL__c}</div>
+                                        <div class="col-sm-3" >Mobile/Phone</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.MobilePhone__c}</div>
+                                 </div>
+                                <hr/>
+                                
+                               
+                                <div class="row"><div class="col-sm-1"> <h2> 4B) Address Details (Permanent Address - For Documentation in agreement and registration.Address proof required)</h2></div></div>
+                               
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Full Name</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.Name}</div>
+                                       
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Address Line 1</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.A_Street_1__c}</div>
+                                 </div>
+                                  <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Address Line 2</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.A_Street_2__c}</div>
+                                 </div>
+                                   <div class="row">
+                                        <div class="col-sm-3" >Address Line 3</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.A_Street_3__c}</div>
+                                 </div>
+                                  <div class="row row-light-grey">
+                                        <div class="col-sm-3" >City / Town</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.A_City__c}</div>
+                                        <div class="col-sm-3" >Pin</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.A_Postal_Code__c}</div>
+                                 </div>
+                                  <div class="row">
+                                        <div class="col-sm-3" >District</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.A_District__c}</div>
+                                        <div class="col-sm-3" >State</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.A_Region__c}</div>
+                                 </div>
+                                <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Country</div>
+                                        <div class="col-sm-4" >{!Opportunity.Account.A_Country__c}</div>
+                                        <div class="col-sm-3" >Mobile/Phone</div>
+                                        <div class="col-sm-4" >{! Opportunity.Account.A_MobilePhone__c}</div>
+                                 </div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                                       
+                                        </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                        
+                                         <div class="panel panel-primary">
+                                <div class="panel-heading ">General Power of Attorney (Correspondence Address)</div>
+                                <div class="panel-body">
+                                
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Title</div>
+                                        <div class="col-sm-4" >{!Contact.Salutation}</div>
+                                        <div class="col-sm-3" >Name</div>
+                                        <div class="col-sm-4" >{!contact.Name}</div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Address Line 1</div>
+                                        <div class="col-sm-4" >{!Contact.Street1__c}</div>
+                                      
+                                 </div>
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Address Line 2</div>
+                                        <div class="col-sm-4" >{!contact.Street2__c}</div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Address Line 3</div>
+                                        <div class="col-sm-4" >{!contact.Street3__c}</div>
+                                 </div>
+                                  <div class="row row-light-grey">
+                                        <div class="col-sm-3" >City / Town</div>
+                                        <div class="col-sm-4" >{!Contact.MailingCity}</div>
+                                        <div class="col-sm-3" >Pin</div>
+                                        <div class="col-sm-4" >{!contact.MailingPostalCode}</div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >District</div>
+                                        <div class="col-sm-4" >{!Contact.District__c}</div>
+                                        <div class="col-sm-3" >State</div>
+                                        <div class="col-sm-4" >{!contact.MailingState}</div>
+                                 </div>
+                                 <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Country</div>
+                                        <div class="col-sm-4" >{!Contact.MailingCountry}</div>
+                                        <div class="col-sm-3" >Email</div>
+                                        <div class="col-sm-4" >{!contact.Email}</div>
+                                 </div>
+                                 <div class="row">
+                                        <div class="col-sm-3" >Mobile/Phone</div>
+                                        <div class="col-sm-4" >{!Contact.MobilePhone}</div>
+                                 </div>
+                                               <div class="row"><div class="col-sm-1">&nbsp;</div></div>                
+                                        </div>
+                                        </div>
+                                        
+                                        
+                                        
+
+                                        <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                       
+                                        
+                                        
+                                        
+                                          
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          
+                        <div class="panel panel-primary nocaptalize">
+                                <div class="panel-heading ">TERMS AND CONDITIONS</div>
+                                <div class="panel-body fs-10">
+                                <div class="row">
+                                 <div class="col-sm-1">
+                                 <b>FORMING PART OF THIS APPLICATION FOR ALLOTMENT OF A RESIDENTIAL APARTMENT.</b>
+                                 </div>
+                                 </div>
+                                
+                                 <div class="row">
+                                 <div class="col-sm-1">
+                                 The broad terms and conditions for allotment of the residential Apartment(“Residential Apartment”) is as mentioned below:
+                                 </div>
+                                 </div> 
+                                  <div class="row">
+                                 <div class="col-sm-1">
+                                <ol>
+<li>The Applicant has applied for the allotment of a Residential Apartment by paying the booking amount after reading and understanding the Terms and Conditions of this Application. Subscribing to the application by the
+ Applicant/s amounts to deemed acceptance of all the terms and conditions specified herein.</li>
+<li>The booking amount constitutes a minimum of 20% of the prevailing basic sale price of the Residential Apartment.</li>
+ <li>The Applicant cannot claim any right or interest in the Residential Apartment merely by subscribing to the application for allotment. The allotment of the Residential Apartment is entirely at the discretion of Brigade Group of Companies (“Company”) and the Company may at its sole discretion decide not to allot any or all of the Residential Apartments and/or keep the project in abeyance without assigning any reasons thereof and refund the amounts received from the Applicant without any interest thereon.</li>
+<li>The acceptance of this Application for Allotment by the Company is subject to the receipt and realization of the entire booking amount as in #2 above.</li>
+<li>The Applicant shall enter into definitive agreements with the Company within 60 (sixty) days from the date of Allotment Letter. In case this is not done, the allotment of the Residential Apartment will be deemed as cancelled without any further notice unless the Company agrees to extend the timeline for execution of the definitive agreements at its sole discretion.</li>
+<li>Withdrawal and/or cancellation of the booking by the Applicant for whatever reason before the signing of the definitive agreements entitles the Company to forfeit a sum equivalent to 20% of the booking amount, and the balance sum, if any, will be refunded to the Applicant within 60 days without any interest thereon. The Applicant has given his/her/their consent for such forfeiture.</li>
+<li>The super built-up area of the Residential Apartment, its specifications, sale plan, handing over date, facilities, rights and obligations of the purchaser etc., shall be more clearly defined in the definitive agreements.</li>
+<li>The Company reserves the right to cancel the booking and forfeit a sum equivalent to 20% of the booking amount if the amounts are not paid by the Applicant as per the terms of booking and/or if the amounts paid by cheque is dishonored for non-availability of funds or for any other reasons, and/or suppression of information/wrong information of any information which is required to be provided at the time of booking resulting in a violation by the Applicant. The balance amount if any will be refunded to the applicant within 60 days without any interest thereon. The Applicant has given his/her/their consent for such forfeiture.</li>
+<li>The Applicant confirms and represents that he/she/they has made payment to the Company only towards the Residential Apartment and that he/she/they shall not have any claim of any kind whatsoever in any other development
+ undertaken by the Company within the project.</li>
+<li>The price list is subject to change from time to time at the sole discretion of the Company and the price as prevalent on the date of submitting the Application along with the booking amount shall prevail. The price shall be confirmed by
+ the Company when the allotment letter is issued.</li>
+ <li>Any cancellation/termination subsequent to entering into definitive agreements entails payment of damages by the applicant/s to the company at the rates provided in the Agreements.</li>
+ <li>The Applicant cannot claim shifting of the booking with in the project/any other project of the company, unless the Company specifically agrees for the same, and subject to such charges as may be leviable in this regard.</li>
+ <li>The transfer of the booking to a third party can be allowed only after the Applicant enters into the definitive agreements. The transfer will be allowed solely at the discretion of the company subject to a transfer fee payable based on the prevailing rates as prescribed by the company and as defined in the
+ definitive agreements.</li>
+ <li>The car park(s) will be allotted only at a later point in time by the company by drawing lots after completion of the project. Allotment of additional car parks space in restricted common area other than the regular car parking is subject to availability and will be done on first come first served basis.</li>
+ <li>A lterations to the building plan: The Applicant has seen and accepted the plans, design and specifications and the Applicant authorizes the Company to effect suitable and necessary alterations/modifications in the layout plan/ building plans, designs and specifications as the Company may deem fit or as may be directed by any competent authority/(ies).</li>
+ <li>Dimensions and details provided in the accompanying literature are approximate and are subject to alternation without notice.</li>
+ <li>This booking is subject to acceptance by Company in writing, and the receipt passed for money received is tentative.</li>
+ <li>The courts at Bangalore shall have the exclusive jurisdiction in all matters arising from this application.</li>
+ </ol>
+ </div></div> 
+ <div class="row"><div class="col-sm-1"><hr/></div></div>
+<div class="row"><div class="col-sm-1"><span style="padding-right:10px"><apex:image value="{!$Resource.Checbox}" width="15" height="15"/></span>
+I/We confirm all the information given above are true to my/our knoweledge and I/We have gone through the condition stated above and agree to the same.
+</div></div>
+
+
+
+<div class="row"><div class="col-sm-1"> <span style="padding-right:10px"> <apex:image value="{!$Resource.Checbox}" width="15" height="15"/></span>
+I/We also hereby undertake to promptly notify you of any change in my/our residential address and/or details for communication.
+</div></div>  
+
+<div class="row"><div class="col-sm-1"> &nbsp;</div></div> 
+
+                                        
+                                        </div>
+                                        </div>
+
+<!-- Changing terms and condition panel -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading ">TERMS AND CONDITIONS</div>
+                            <div class="panel-body fs-10">
+                                    <div class="row"><div class="col-sm-1" ><b> NRI / PIO / OCI Declaration:</b></div></div>                                                                
+                                            <div class="row"><div class="col-sm-1"> <apex:image value="{!$Resource.Checbox}" width="15" height="15"/>
+                                            I/We do hereby declare that I am/we are a NRI/PIO/OCI as on date and affirm that the payment of the sale consideration to the Company for the
+                                                            purchase of immovable property in India will be made by me/us through normal banking channels by way of inward remittance from any place outside
+                                                            India or from my/our Non Resident External (NRE)/Non Resident Ordinary (NRO) bank account, the details of which are mentioned above. I/we declare
+                                                            that I am/we are in due compliance/will duly comply with the Foreign Exchange Management Act, 1999 as amended from time to time relating to
+                                                            purchase of the aforesaid immovable property in India.
+                                            </div></div>    
+                                            <div class="row"><div class="col-sm-1"> <apex:image value="{!$Resource.ApplicantSignature}" width="100%" height="100%"/></div></div> 
+                                            <div class="row"><div class="col-sm-1"> &nbsp;</div></div> 
+                                            <div class="row"><div class="col-sm-1"> &nbsp;</div></div> 
+                                            <div class="row"><div class="col-sm-1">FOR BRIGADE’S USE</div></div> 
+                                            <div class="row"><div class="col-sm-1"><apex:image value="{!$Resource.Attendedby}" width="100%" height="100%"/></div></div> 
+
+                                            <div class="row"><div class="col-sm-1"> &nbsp;</div></div>
+                            </div>
+                </div>
+
+                                        
+                                        
+                                        
+                                        <div class="panel panel-primary">
+                                <div class="panel-heading ">APPLICATION FOR ALLOTMENT (RESIDENTIAL)</div>
+                                <div class="panel-body">
+                                <div class="row"><div class="col-sm-1"> <apex:image value="{!$Resource.DocumentCheck}" width="100%" height="100%"/></div></div> 
+                                 <div class="row"><div class="col-sm-1"> Please ensure you have submitted self-attested copies of the following documents along with the Application form (tick the ones submitted):  </div> </div>
+                                 
+                                <div class="row"><div class="col-sm-1"> <apex:outputField value="{!Opportunity.Photographs_Received__c}" label="Two passport size photographs of each applicant." >Two passport size photographs of each applicant.</apex:outputField>  </div> </div>
+                                 <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Received_the_PAN_Card_Copy__c}" label="Photocopy of PAN card (mandatory) for each applicant" >Photocopy of PAN card (mandatory) for each applicant</apex:outputField>  </div> </div>
+                                  <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Received_the_Address_Proof_Copy__c}"  >One proof of correspondence address(acceptable documents are Driving License, Passport, Aadhar Card, Voter ID, Utility Bills, Authorized Bank Statements) </apex:outputField> </div> </div>
+                                   <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Permanent_Address_Proof__c}"  >One proof of permanent address(acceptable documents are Driving License, Passport, Aadhar Card, Voter ID, Utility Bills)  </apex:outputField></div> </div>
+                                    <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Photocopy_Power_of_Attorney__c}"  > Photocopy of power of Attorney(If Any) </apex:outputField></div> </div>
+                                     <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Received_the_Passport_Copy_for_NRI__c}" >For NRIs: Photocopy of first, last and Latest visa page of passport(to establish residency)</apex:outputField> </div> </div>
+                                      <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Provisional_Allotment_letter__c}" > For Foreign Citizens: Photocopy of first, last and Latest visa page of passport(to establish residency) and copy of PIO/OCI card </apex:outputField></div> </div>
+                                       <div class="row"><div class="col-sm-1"><apex:outputField value="{!Opportunity.Buisness_Card_Primary_Applicant__c}" > Business card of primary applicant. </apex:outputField></div> </div>
+                                        <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                        <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                        <div class="row"><div class="col-sm-1"><span style="padding-right:10px"> <apex:image value="{!$Resource.Checbox}" width="15" height="15"/></span>I have submitted self-attested copies of all the required documents AND/OR will email scanned self-attested copies of all the pending documents within 2 working days  </div> </div>
+                                         <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                           <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                         <div class="row"><div class="col-sm-1"> <span >1st Applicant`s Signature: .......................................................</span> </div> </div>
+                                           <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                           <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                          <div class="row"><div class="col-sm-1"> Brigade Sales Representative: ........................................................  </div> </div>                                        
+                                        <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                        </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                           <div class="row">
+                                        <div class="col-sm-1" align="center" > 
+                                        <img src="{!$Resource.Guide}"  width="85%" height="85%" />
+                                       <!-- <apex:image value="{!$Resource.Guide}" width="85%" height="85%" /> -->
+                                        
+                                        </div>
+                                       </div>
+                                        
+                                        
+                                        
+                                        
+                                    
+                                        <!--EOD-->
+                                        </div>
+                                        </div>
+                                
+    
+   
+    
+          
+    </apex:form>
+    
+    
+</apex:page>

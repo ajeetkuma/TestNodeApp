@@ -1,0 +1,144 @@
+<apex:page StandardController="Offer__c" Extensions="Offer_Page_Controller" showHeader="true">
+      <apex:form id="theform" >
+            <apex:actionFunction name="setProject" action="{!selectedPlant}"
+                                 rerender="theform">
+                <apex:param name="firstParam" assignTo="{!selectedValue}" value="" />
+            </apex:actionFunction>
+            <apex:pageBlock title="My Offers" >
+           <apex:pageMessages ></apex:pageMessages>
+                <apex:pageBlockButtons >
+                    <apex:commandButton action="{!doSave}" value="Save"/>
+                    <apex:commandButton action="{!Cancel}" value="Cancel"/>
+                    
+                </apex:pageBlockButtons>
+                <apex:pageBlockSection title="My Offer Section" columns="2" id="tabPO">
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.name.label}"/> 
+        <apex:inputField value="{!offer1.name}" required="true"/>
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Code__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Code__c}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Type__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Type__c}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Partner__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Partner__c}" />
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Duration_start_Date__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Duration_start_Date__c}" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Duration_End_Date__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Duration_End_Date__c}" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Given_on__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Given_on__c}" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Cost_PSFt__c.label}"/> 
+        <apex:inputField value="{!offer1.Cost_PSFt__c}" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Approved_BY_HOD__c.label}"/> 
+        <apex:inputField value="{!offer1.Approved_BY_HOD__c}" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Offer_Details__c.label}"/> 
+        <apex:inputField value="{!offer1.Offer_Details__c}" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel value="{!$ObjectType.Offer__c.fields.Comments__c.label}"/> 
+        <apex:inputField value="{!offer1.Comments__c}" />
+    </apex:pageBlockSectionItem>
+    
+                     <div id="multBlock">
+                        <apex:pageBlockSectionItem id="firstMtSlt">
+                            <apex:outputLabel >Project Included</apex:outputLabel>
+                            <apex:panelGrid columns="3" id="abcd">
+                                <apex:selectList id="sel1" value="{!leftselected}" multiselect="true" style="width:100px" size="5">
+                                    <apex:selectOptions value="{!unselectedvalues}" />
+                                    
+                                </apex:selectList>
+                                <apex:panelGroup >
+                                    <br/>
+                                    <apex:image value="{!$Resource.multiselected}">
+                                       <apex:actionSupport event="onclick" action="{!selectclick}" rerender="{!$Component.multBlock}"/>
+                                    </apex:image>
+                                    <br/><br/>
+                                    <apex:image value="{!$Resource.multiunselected}">
+                                        <apex:actionSupport event="onclick" action="{!unselectclick}" reRender="abcd"/>
+                                    </apex:image>
+                                </apex:panelGroup>
+                                <apex:selectList id="sel2" value="{!rightselected}" multiselect="true" style="width:100px" size="5" >
+                                    <apex:selectOptions value="{!SelectedValues}"  />
+                                    <apex:actionSupport event="onchange" rerender="{!$Component.multBlock}"/>
+                                </apex:selectList>
+                            </apex:panelGrid>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem id="myFields"  rendered="{!selectedValue<>null}"> 
+                            <apex:outputLabel >Block on Offer</apex:outputLabel>
+                            <apex:panelGrid columns="3" id="abcde">
+                                <apex:selectList id="sel3" value="{!leftselected1}" multiselect="true" style="width:100px" size="5">
+                                    <apex:selectOptions value="{!unselectedvalues1}" />
+                                </apex:selectList>
+                                <apex:panelGroup >
+                                    <br/>
+                                    <apex:image value="{!$Resource.multiselected}">
+                                        <apex:actionSupport event="onclick" action="{!selectclick1}" rerender="{!$Component.multBlock}"/>
+                                    </apex:image>
+                                    <br/><br/>
+                                    <apex:image value="{!$Resource.multiunselected}">
+                                        <apex:actionSupport event="onclick" action="{!unselectclick1}" reRender="abcde"/>
+                                    </apex:image>
+                                </apex:panelGroup>
+                                <apex:selectList id="sel4" value="{!rightselected1}" multiselect="true" style="width:100px" size="5" >
+                                    <apex:selectOptions value="{!SelectedValues1}" />
+                                    <apex:actionSupport event="onchange" rerender="{!$Component.multBlock}" />
+                                </apex:selectList>
+                            </apex:panelGrid>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem id="myFieldsforUnit"  rendered="{!selectedValue<>null}"> 
+                            <apex:outputLabel >Unit</apex:outputLabel>
+                            <apex:panelGrid columns="3" id="abcde">
+                                <apex:selectList id="sel3" value="{!leftselectedforUnit}" multiselect="true" style="width:100px" size="5">
+                                    <apex:selectOptions value="{!unSelectedValuesforUnit}" />
+                                </apex:selectList>
+                                <apex:panelGroup >
+                                    <br/>
+                                    <apex:image value="{!$Resource.multiselected}">
+                                        <apex:actionSupport event="onclick" action="{!selectclickforUnit}" rerender="{!$Component.multBlock}"/>
+                                    </apex:image>
+                                    <br/><br/>
+                                    <apex:image value="{!$Resource.multiunselected}">
+                                        <apex:actionSupport event="onclick" action="{!unselectclickforUnit}" reRender="abcde"/>
+                                    </apex:image>
+                                </apex:panelGroup>
+                                <apex:selectList id="sel4" value="{!rightselectedforUnit}" multiselect="true" style="width:100px" size="5" >
+                                    <apex:selectOptions value="{!SelectedValuesForUnit}" />
+                                    
+                                </apex:selectList>
+                            </apex:panelGrid>
+                        </apex:pageBlockSectionItem>
+                     </div>
+                    </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <apex:pageblock >
+              <apex:pageblocksection columns="1">
+               <apex:pageblockSection columns="1"  title="Upload Information" >
+                            <apex:inputFile value="{!Attach.body}" filename="{!Attach.name}" id="file4" />       
+                        </apex:pageblockSection>
+          </apex:pageblocksection>
+      </apex:pageblock> 
+            </apex:form>
+    </apex:page>

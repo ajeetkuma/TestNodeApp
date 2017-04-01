@@ -1,0 +1,45 @@
+<apex:page sidebar="false" tabStyle="user" Controller="userAvailableForLeadAssignement">
+    <apex:sectionHeader title="{!ussr.Name}"  subtitle="List of User Available for Lead Assignment"/>
+    <apex:outputPanel rendered="{!Not(displayPage)}">
+    	<apex:pageMessage summary="InSufficent Privilage : You are not authorized to Edit Lead Assignment For this Particular User" severity="warning" strength="3" /><apex:pageMessages />
+
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!displayPage}">
+    <apex:form >
+    <apex:pageBlock >
+    	<apex:pageBlockSection title="My Details">
+        	<apex:outputField value="{!ussr.name}" />
+            <apex:outputField value="{!ussr.username}" />
+            <apex:inputfield value="{!ussr.Available_for_Lead_Assignment__c}" />
+        </apex:pageBlockSection>
+        
+            
+        <apex:pageBlockSection title="Subordinate Details" columns="1">
+            
+        	<apex:pageBlockTable value="{!userList}" var="usr">
+                <apex:column headerValue="Name" >
+                    <apex:outputLink value="/apex/userAvailableForLeadAssignment?id={!usr.usrId+'&noredirect=1'}" target="_parent">{!usr.name}</apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="Role" >
+                    <apex:outputLabel value="{!usr.role}"></apex:outputLabel>
+                </apex:column>
+                <apex:column headerValue="Available for Lead Assignment" >
+                    <apex:selectRadio value="{!usr.availableforAssignment}" > 
+                         <apex:selectOption itemLabel="Yes" itemValue="true" ></apex:selectOption>  
+                        <apex:selectOption itemLabel="No" itemValue="false"></apex:selectOption>
+                    </apex:selectRadio>
+                </apex:column>
+            
+            </apex:pageBlockTable>
+            
+            <apex:pageMessage strength="3" severity="info" title="There is no Subordinate Available " rendered="{!NOT(renderSaveBTN)}"></apex:pageMessage>
+        
+        </apex:pageBlockSection>
+    
+        <apex:pageBlockButtons >
+            	<apex:commandButton value="Save Assignment" action="{!saveAssignment}"  />
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+    </apex:form>
+   </apex:outputPanel>
+</apex:page>

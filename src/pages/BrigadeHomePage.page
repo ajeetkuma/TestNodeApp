@@ -1,0 +1,828 @@
+<!----------------------------------------------------------------------------------------------------
+Created by:
+Author Name:
+purpose:Brigade Home page.
+1.Notification_Documents__c getting the data by notificationdocument 
+object display the news and events and document information
+2.Plant__c,Depending on select plantproject, display the project specific document information.
+
+Modified by:
+Lastmodified by:
+Purpose:
+------------------------------------------------------------------------------------------------------->
+
+<!--------------------------------------------page---------------------------------------------------->
+<apex:page sidebar="false" showheader="false" controller="BrigadeHomePageControllerv1" standardStylesheets="false" >
+    <!--------------------------------------------Form-----------------------------------------------------> 
+    
+    <!----------------------------------Popup Starts----------------------------->
+    <style>
+        .blink {
+        text-decoration: blink;color :white
+        }
+        .custPopup {
+        background-color: white;
+        border-width: 2px;
+        border-style: solid;
+        z-index: 100;
+        left: 45%;
+        padding: 5px;
+        position: absolute;
+        width:400px;
+        height:250px;
+        // margin-left: -250px;
+        margin-left: -146px;
+        // top: 100px;
+        top:249px;   
+        }
+       .custPopup2 {
+        z-index: 15;
+        left: 60%;
+        padding: 1px;
+        position: absolute;
+        width: 206px;
+        margin-left: -5px;
+        top: 10px;
+        }
+        
+        .custPopup3 {
+        background-color: white;
+        border-width: 2px;
+        border-style: solid;
+        z-index: 99;
+        left: 45%;
+        padding: 20px;
+        position: absolute;
+        width: 450px;    
+        //margin-left: -250px;
+        margin-left: -232px;
+        top: 100px;
+        //top:27px;        
+        }
+        .custPopup4 {
+        
+        border-width: 0px;
+        border-style: solid;
+        z-index: 15;
+        left: 48%;
+        padding: 1px;
+        position: absolute;
+        width:206px;
+        margin-left: -5px;
+        top: 10px;
+        background-color:#ffffff;
+        }
+        .custPopup5 {
+        
+        border-width: 0px;
+        border-style: solid;
+        z-index: 15;
+        left: 56%;
+        padding: 1px;
+        position: absolute;
+        width:206px;
+        margin-left: -5px;
+        top: 10px;
+        background-color:#ffffff;
+        }    
+        .custPopup6 {
+        
+        border-width: 0px;
+        border-style: solid;
+        z-index: 15;
+        left: 36%;
+        padding: 1px;
+        position: absolute;
+        width:206px;
+        margin-left: -5px;
+        top: 10px;
+        background-color:#ffffff;
+        }            
+        
+        .popupBackground {
+        //  background-color: red;
+        //  opacity: 0.10;
+        //   filter: alpha(opacity =   20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 450px;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        }
+        
+        .fontStyle {
+        // font-weight: bold;
+        font-size: 9px;
+        color: #95969b;
+        }
+        
+        .caseButton{
+        width: 13%;
+        padding: 5px 4px;
+        background-color:#1797c0;
+        //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+        border-radius: 4px;
+        border: 1px solid #4e3043;
+        box-shadow:
+        inset 0 1px rgba(255,255,255,0.4),
+        0 2px 1px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+        color: white;
+        align: center;
+        text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+        font-size: 12px;
+        font-weight: bold;
+        font-family: 'Raleway', 'Lato', Arial, sans-serif;
+        }
+        
+    </style>
+    <!-----------------------------------Popup Ends---------------------------------->
+    <!----------------------------------------Uploading bootstarp paths Information in staticresource------->
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap.css')}" rel="stylesheet" media="screen"/>
+        <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap-theme.css')}" rel="stylesheet" media="screen"/> 
+        <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+        <apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+        <link href="{!URLFOR($Resource.brigadecss)}" rel="stylesheet" media="screen"/> 
+        <apex:includeScript value="{!$Resource.vTicker}"/>
+        
+        <script>
+        $( document ).ready(function() {  
+            
+            
+            //$('#example').vTicker('init',{showItems:6, margin: 10, padding: 5, pause:1000, speed:1000 });  
+            
+            setInterval("$('#blink').fadeOut(600).fadeIn(600);",600);
+            
+            //var browsermode=navigator.appCodeName;          
+            
+            //if(browsermode == 'Mozilla'){              
+                
+                //$('#allied-cities1').css('top', 624);          
+                
+            //}
+            
+            
+            
+        });
+        function setCountryOnTop1(vale)
+        {
+            setCountryOnTop(vale);
+            setInterval(function(){$('#example').vTicker('init',{showItems:6, margin: 10, padding: 1, pause:1000, speed:1000 })},1000);
+            
+        }
+        
+        </script>
+        
+        
+        
+        <apex:outputPanel id="forCSS">  
+            
+            <style>
+                @-moz-document url-prefix() {
+                #allied-cities1{top: 638px !important; right: 210px !important;}
+                //#genaraldocument{padding:-2px 0 0 -3px}
+                }
+                
+                @media screen and (-webkit-min-device-pixel-ratio:0) { 
+                #allied-cities1{top: 634px !important; right: 210px !important;}
+                }
+                @media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) {
+                #allied-cities1{top: 619px !important; right: 206px !important;}
+                }
+                
+                
+                label{width:100%;}
+                #headcontainer {
+                //background-image: url({!URLFOR($Resource.NavigatorBackground)});
+                }
+                #news-events-cont {
+                width: 310px;
+                height: 256px;
+                border: 1px solid #c0c2c4;
+                background-color: #ffffff;
+                margin: 4px 0px 0px 4px;
+                overflow: hidden;
+                }
+                
+                #news-events-cont1 {
+                width: 301px;
+                height: 256px;
+                border: 1px solid #c0c2c4;
+                background-color: #ffffff;
+                margin: 4px 0px 0px 4px;
+                overflow: hidden;
+                }
+                
+                #projectdocumnetsec{
+                
+                width: 650px;
+                height: 250px;
+                border: 1px solid #c0c2c4;
+                background-color: #ffffff;
+                margin: 0 0px 0px 0;
+                // overflow: hidden;
+                
+                
+                }
+                #news-events-Imagesec{
+                width: 518px;
+                height: 242px;
+                border: 0px solid #c0c2c4;
+                background-color: #ffffff;
+                margin: 9px 0px 0px 0;
+                overflow: hidden;
+                background-color: white;
+                
+                }
+                
+                
+                #news-events-cont2 {
+                width: 390px;
+                height: 255px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                padding: 0px 0 0 0px;
+                }
+                
+                #news-events-cont6 {
+                width: 542px;
+                height: 265px;
+                display: block;
+                border: 1px solid #c2c4c5;   
+                background-color: #ffffff;
+                padding: 0px 0 0 0px;
+                }
+                #news-events-cont7 {
+                width: 309px;
+                height: 260px;
+                display: block;
+                font: normal 14px/110% Arial;
+                color: #7086a0;
+                border: 1px solid #c0c2c4;
+                background-color: #ffffff;
+                margin: 0 0px 0px 0;
+                overflow: hidden;
+                padding: 0px 0 0 0px;  
+                margin-right: 6px; 
+                }
+                #news-events-cont4 {
+                width: 541px;
+                height: 255px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                line-height: 0;
+                padding: 0px 0 0 0px;    
+                padding-right-value: 4px;
+                padding-left-value: 4px;   
+                padding-bottom: 4px;
+                }
+                
+                h3{
+                color: #536d8b;
+                font: normal 14px/24px Verdana, Geneva, sans-serif;
+                text-align: center;
+                margin:0px 0px 0px 0px;   
+                //height: 24px;
+                border-bottom: 1px solid #c0c2c4;
+                
+                //background: url(../images/home-images/news-events-heading-bg.gif) repeat-x left top;
+                
+                font: normal 10px/24px Verdana, Geneva, sans-serif;
+                color: #536d8b;
+                }      
+                .h3news{
+                
+                background-color:red;
+                
+                } 
+                .nl {
+                //background-image: url(https://ap1.salesforce.com/resource/1378908186000/NavigatorBackground);
+                //width: 650px;
+                //height: 200px;  
+                background-repeat:repeat-x;
+                background-repeat:repeat-y;
+                background-size: cover;
+                // margin:16px 16px 16px 16px;
+                background-color: #ffffff;
+                }
+                #h3news{
+                background-color: #ffffff;        
+                
+                }
+                #news-events-cont ul.news-list {
+                font: normal 14px/110% Arial;
+                color:  #536d8b;
+                margin:0 0 0 11px;
+                }
+                #news-events-cont ul.news-list li {
+                width: 223;
+                height: 30px;
+                }
+                #news-events-cont ul.news-list li a {
+                
+                color: #536d8b;
+                }
+                
+                #news-events-cont1 ul.news-list {
+                font: normal 14px/110% Arial;
+                color:  #536d8b;
+                margin:0 0 0 11px;
+                }
+                #news-events-cont1 ul.news-list li {
+                width: 223;
+                height:32px;
+                }
+                #news-events-cont1 ul.news-list li a {
+                
+                color: #536d8b;
+                }
+                
+                
+                
+                
+                #cities {
+                width: 402px;
+                // height: 245px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                padding: 0px 0 0 1px;
+                //overflow:auto;
+                }
+                
+                #genareldocumnet{
+                width: 616px;
+                height: 129px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                padding: 0px 0 0 0px;
+                //overflow:auto;
+                }
+                
+                #genareldocumnet ul {
+                //font: normal 10px/100% Arial, Helvetica, sans-serif;
+                font: normal 14px/110% Arial;
+                color: #536d8b;
+                background-color: #ffffff;
+                margin: 0px 0px 0px 10px;
+                //align:center;
+                }
+                
+                #genareldocumnet ul li {
+                //list-style: disc;
+                margin:0 0 0 2px;
+                //background-color: #ffffff;
+                }
+                #genareldocumnet ul li a {
+                color: #536d8b;
+                background-color: #ffffff;
+                }   
+                
+                
+                
+                #Documents{
+                width: 418px;
+                height: 245px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                padding: 0px 0 0 1px;
+                }
+                
+                #newsandevents{
+                width: 416px;
+                height: 250px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                
+                }
+                
+                #cities1 {
+                width: 287px;
+                height: 250px;
+                display: block;
+                border: 1px solid #c2c4c5;
+                background-color: #ffffff;
+                padding: 0px 0 0 0px;
+                
+                }
+                
+                #cities h2 {
+                //color: #536d8b;
+                font: normal 14px/24px Verdana, Geneva, sans-serif;
+                text-align: center;
+                //margin:13px 13px 8px 65px;
+                //font: normal 12px/100% Verdana, Geneva, sans-serif;
+                color: #7086a0;
+                //margin: 0 0 8px 0;
+                }
+                #cities ul {
+                //font: normal 10px/100% Arial, Helvetica, sans-serif;
+                font: normal 14px/110% Arial;
+                color: #536d8b;
+                background-color: #ffffff;
+                margin: 0px 0px 0px 10px;
+                //align:center;
+                }
+                #cities ul li {
+                //list-style: disc;
+                margin:0 0 0 2px;
+                //background-color: #ffffff;
+                }
+                #cities ul li a {
+                color: #536d8b;
+                background-color: #ffffff;
+                }        
+                #cities1 ul {
+                //font: normal 10px/100% Arial, Helvetica, sans-serif;
+                font: normal 14px/110% Arial;
+                color: #536d8b;
+                background-color: #ffffff;
+                margin: 0px 0px 0px 10px;
+                //align:center;
+                }
+                #cities1 ul li {
+                //list-style: disc;
+                margin:0 0 0 -3px;
+                //background-color: #ffffff;
+                }
+                #cities1 ul li a {
+                color: #536d8b;
+                background-color: #ffffff;
+                }
+                
+                //Flash css
+                
+                #WTC-flash-cont {
+                padding: 2px 0;
+                background-color: #ffffff;
+                line-height:0;
+                }
+                #flash {
+                line-height:0;
+                height: 258px;
+                }
+                #flash_margin {
+                line-height:0;
+                }
+                
+                .tableContainer{
+                height:200px; 
+                width:100%;
+                overflow: auto;
+                }       
+                .floatingStyle{ 
+                position:relative; 
+                } 
+                thead { position:fixed; }
+                
+                #footer{left: 100px !important;}
+                }
+            </style>
+            <script>
+            
+            </script>
+        </apex:outputPanel> 
+        <!--<script>
+        
+        
+        function stopRunning() {
+            document.getElementById('myMarquee').stop();
+            setInterval("startRunning()", 2000);
+        }
+        function startRunning() {
+            document.getElementById('myMarquee').start();
+            setInterval("stopRunning()", 3000);
+        }
+        startRunning();
+        
+        
+        </script>-->
+        
+        <style>
+        a.resi_button{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #ffffff;
+        margin: 0px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        line-height: 0px;
+        padding:15px;
+        background-color:#0065b3;
+        text-decoration:none;
+        }
+        a.resi_button2{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #0065b3;
+        margin: 0px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        line-height: 0px;
+        padding:10px;
+        background-color:#ffffff;
+        text-decoration:none;
+        }
+        a.resi_button:hover{
+        background-color:#ffc20f;
+        }
+        td{
+            min-width:1px;
+        }
+        </style>
+        
+        <!-------------------------------------------------Home page staring--------------------------------------->
+    </head>
+    <body onload="stopRunning()">
+        <div id="page" align="center" background-color="white"  style="width:1005px">  
+            <apex:form id="theform" >      
+                    <table width="1005px" border="0" align="center" cellpadding="0" cellspacing="0">         
+                        <tr>
+                            <td>
+                                <table width="100%" height="135px" border="0" cellpadding="0" cellspacing="0">                 
+                                    <tr>
+                                        <td height="117" id="headcontainer">
+                                            <table width="1005px" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td  height="117" align="left" valign="bottom">
+                                                    <table width="100%">
+                                                        <tr><td>
+                                                            <a href="http://www.brigadegroup.com/" target="brigadegroup">
+                                                    <img src="http://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" width="137" height="70" alt="Brigade Enterprises - 
+                                                                                                                                                                Leading Builders in Bangalore's Real Estate Industry" /></a>
+                                                            </td>
+                                                        <td valign="bottom" align="right" style="font-family: Arial;"><font size="2" color="black">Welcome</font>&nbsp;&nbsp;<font size="3" color="#0095ce"><b>{!user.Name}&nbsp;&nbsp;</b></font></td>
+                                                        </tr>
+                                                    </table>
+                                                    
+                                                 
+                                                </td>
+                                                
+                                                
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td align="left" valign="bottom">
+                                                    
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td align="left" valign="baseline"><table border="0" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    
+                                                                    <td width="187" align="left"><table width="187" border="0" align="left" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td width="170" align="center" valign="baseline"><div id="search2">
+                                                                                <!--search form need to build hers-->
+                                                                                </div></td> 
+                                                                            <td width="17" align="center" valign="baseline">&nbsp;</td>
+                                                                        </tr>
+                                                                        </table></td>
+                                                                </tr>
+                                                                </table>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td align="left"><table border="0" cellspacing="0" cellpadding="0" >
+                                                                <tr>   
+                                                                    
+                                                                    
+                                                                    <td><a href="/apex/BrigadeHomePage" >
+                                                                        
+                                                                        <apex:image id="theImage" value="{!$Resource.Home}" style="width:98%;margin-bottom:2px;"  /></a></td>
+                                                                    
+                                                                    <td></td><td></td>
+                                                                    <!--<td><a href="/apex/CPprofileCreationpage" class="resi_button" >
+MY PROFILE</a>
+</td>-->
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myPayment_ext" class="resi_button">MY PAYMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/MyDocuments" class="resi_button">MY DOCUMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myCase" class="resi_button">QUERIES</a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/BrigadeReferralpage" class="resi_button"  >REFERRAL</a></td>                             
+                                                                    <td></td>
+                                                                    <td ><apex:outputLabel rendered="{!Imagenew}"> <a href="/apex/FeedBack" class="resi_button" id="blink" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td ><apex:outputLabel rendered="{!ImagenewNoFeedBack}"><a href="/apex/FeedBack" class="resi_button" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td></td>
+                                                                    <td width="322" ><a class="resi_button"> </a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/CPprofileCreationpage" class="resi_button2"  >MY PROFILE</a></td>                                                                    
+                                                                </tr>
+                                                                </table>                           
+                                                            </td>
+                                                            
+                                                        </tr>                      
+                                                    </table>
+                                                </td>
+                                                
+                                            </tr>
+                                            </table>
+                                        </td>
+                                    </tr>          
+                                </table>
+                            </td>
+                        </tr>
+                    </table>         
+                
+                <apex:pageMessages />
+                <apex:outputLabel rendered="{!not(homepageall)}" >
+                    <div style="padding: 4px 0 0px 4px;background-color: white; ">
+                        <!-----------------------------------------------News and events section,Getting the data by Notification_Documents__c   -->             
+                        <div id="news-events-cont7" class="float-left">
+                            <h3  style="background-color:#c5e0f5;color:#527da0;font-family: Arial;font-size: 85%;"><b>NEWS &amp; EVENTS</b></h3>
+                            <div class="nl" id="det" > 
+                                <ul class="news-list" >
+                                    <marquee direction="up" ONMOUSEOVER="this.stop();" ONMOUSEOUT="this.start();" SCROLLAMOUNT="1" height="180px" >
+                                        <li style="top: 0px;"> 
+                                            <apex:outputLabel id="myMarquee">
+                                                <apex:dataList value="{!notificationdocument}" var="notificationdocuments"  >                                                                                  
+                                                    <table style=" padding-left: 30px; margin-left: 30px;">
+                                                        <th style="font-weight: normal;margin-left:8px">
+                                                            <apex:outputlink value="{!notificationdocuments.News_URL__c}" target="_blank" style="color: #7086a0;">{!notificationdocuments.Notifications__c }</apex:outputlink>                                                     
+                                                            <!--<apex:outputText value="{!notificationdocuments.Notifications__c }"  /> -->
+                                                        </th><tr><br/> </tr> 
+                                                    </table> 
+                                                </apex:dataList>                                 
+                                            </apex:outputLabel>                                                
+                                        </li> 
+                                    </marquee>
+                                </ul>
+                            </div>                
+                        </div>
+                        
+                        
+                        <!------------------------------------------ close news event section------------------------------------------------------ -->
+                        <!----Flash Image Imformation by static resouces--------------------------------------------------------------------------- -->
+                    
+                            <!--  <embed src="{!NotificationImagesFlashfirstsection[0].Document_URL_ImagesLink__c}" quality="high" bgcolor="#ffffff" height="258px" width="616px" wmode="opaque"   />-->
+                          <!-- <apex:image id="theImag" value="https://cs16.salesforce.com/resource/1394107703000/Brigade_Referral_logo" width="200" height="130"/>
+                            <apex:image id="theIm" value="https://cs16.salesforce.com/resource/1394107949000/Brigade_Referral_text" width="415" height="130"/>
+                          -->   
+                        <div >                      
+                      <!--  <embed src="{!URLFOR($Resource.FirstSection)}" wmode="opaque"   /> -->
+                      
+                      <apex:image id="theImagefirst" value="{!$Resource.FirstSection}" style="width:685px;height:130px;"  />
+                        
+                        </div>
+                      
+                        <div style="background-color:white;height:130px;">
+                            <div  class="float-left" style="background-color:white;padding:1px 0 0 0px; width:675px" id="genaraldocument"  >
+                                <div id="genareldocumnet">
+                                    <h3 style="background-color:#c5e0f5;color:#527da0;width:685px;font-family: Arial;font-size: 85%;"><b>GENERAL DOCUMENTS</b></h3>                                                
+                                    
+                                    <apex:dataList value="{!notificationdocument1}" var="notificationdocuments" style="overflow:auto; width:675px;height: 101px;">                                                      
+                                    <div style="float:left; position:relative; width:33%; padding:6px 0px;">
+                                         &#8226;&nbsp;&nbsp;<apex:outputfield value="{!notificationdocuments.Document_URL_link__c  }" style="Margin-right:320px"/>  
+                                          </div>                                                           
+                                                                              
+                                        
+                                   </apex:dataList>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </apex:outputLabel>
+            </apex:form>            
+            <apex:form id="lastForm"> 
+                <!--<apex:outputPanel rendered="{!if(listProperty.size == 2,true,false)}">--> 
+                
+                <apex:outputLabel rendered="{!not(homepageall)}" >
+                    
+                    <div>
+                        <div  class="float-left"   >
+                               <embed src="{!URLFOR($Resource.SecondSection)}" wmode="opaque"  style=" margin: 4px 0px 0px 4px; background-color:white;height:257px;width:312px" />
+                            <!--   <apex:image id="theImagefirst" value="{!$Resource.SecondSection}"    /> -->
+                        </div>                           
+                       <div style="width:1005px; background-color:white; height:260px;">  
+                        
+                            <div style="background-color:white;height:265px; ">
+                                <div id="news-events-cont" class="float-left"    >
+                                    <label style="width:100%">
+                                        <h3 style="background-color:#c5e0f5;color:#527da0;font-family: Arial;font-size: 85%;"><b>PROJECT SPECIFIC UPDATES</b></h3></label>
+                                    <ul class="news-list">
+                                        <!--  <marquee direction="up" ONMOUSEOVER="this.stop();"  ONMOUSEOUT="this.start();" SCROLLAMOUNT="1" height="150px"  > -->
+                                        <li style="font-weight: normal;">  
+                                            <apex:outputPanel id="doctable">                                                                                                                              
+                                                <apex:dataList value="{!SelectprojectDeatils}" var="projectNotification" style="overflow:auto; width: 100%;height: 222px;" > <br/>                                                      
+                                                    
+                                                   &#8226;&nbsp;&nbsp; <apex:outputLink value="{!projectNotification.News_URL__c}" target="_blank" style="color: #7086a0;"> {!projectNotification.Notifications__c} </apex:outputLink> <br/>  
+                                                    
+                                                </apex:dataList> 
+                                            </apex:outputPanel>
+                                        </li> 
+                                        <!-- </marquee>-->
+                                    </ul>
+                                </div> 
+                                
+                                <div id="news-events-cont1" class="float-right" style="width:370px">
+                                    <label style="width:100%">
+                                        <h3 style="background-color:#c5e0f5;color:#527da0; font-family: Arial;font-size: 85%;"><b>PROJECT SPECIFIC DOCUMENTS</b></h3></label>
+                                    <ul class="news-list">                                     
+                                        <li>
+                                            <apex:outputPanel id="docuploadtable1"  >                                                                                  
+                                                <apex:dataList value="{!NotificationDocUpolad}" var="projectDocs" style="overflow:auto; width: 100%;height: 222px;"  ><br/>
+                                                    &#8226;&nbsp;&nbsp;<apex:outputfield value="{!projectDocs.Document_URL_link__c }" style="Top:0px;"/>
+                                                </apex:dataList> 
+                                            </apex:outputPanel> 
+                                        </li>
+                                        
+                                    </ul>
+                                </div> 
+                                
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                    </div>
+                  
+                </apex:outputLabel>      
+                <apex:outputPanel >
+                        <apex:outputText > </apex:outputText>   
+                    </apex:outputPanel> 
+                <apex:outputPanel id="subas">       
+                    <apex:actionFunction name="setCountryOnTop" action="{!countryDetails}"  reRender="lastForm">
+                        <apex:param name="parm3" assignTo="{!headerCountry1 }" value=""/>
+                    </apex:actionFunction> 
+                    <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" id="dis" />
+                    <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+                        <center>  <div style="background-color:#0065b3;color:white;height:28px;padding:6px 0px;"> Select Project</div>     </center>   
+                        <br/><br/> <center style="bottom:0;"> <b style="top:52px">Select Project:</b>
+                        <apex:selectList value="{!seletecedCity}" multiselect="false" size="1" onchange="setCountryOnTop1( this.value);" >
+                            <apex:selectOptions value="{!Items}"/ > 
+                                <apex:actionSupport event="onchange" action="{!countryDetails}" reRender="theform.fiedPopup,theform.forCSS,theform.doctable,theform.docuploadtable" />               
+                            </apex:selectList></center>
+                        <p/>                               
+                        </apex:outputPanel>                    
+                        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayfeedPopup}" />
+                        <apex:outputPanel styleClass="custPopup3" layout="block" rendered="{!displayfeedPopup}">                        
+                            <b><!--Please give Feedback for Brigade. Click on the below button.-->
+                                You have a feedback pending. It will just take a minute!
+                            </b>
+                            <br/>               
+                            <apex:commandButton action="{!Feedback1}" value="Give Feedback" styleClass="btn btn-primary"/>
+                            <br/><br/><br/><br/><br/><br/>
+                            <apex:commandLink action="{!skipFeedback}" value="Skip" style="float:right;right:0px;" rendered="{!displaySkip}" styleClass="btn btn-primary"/>      
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <!--<apex:actionFunction name="sayHello" action="{!countryDetails}" rendered="if(listProperty==1,true,false)" />-->
+                    
+            <apex:outputPanel styleClass="custPopup2"  style="text-align: right; margin-top: -5px;" id="fiedPopup1" > 
+                <div style="float:right; text-align:center; width:auto; line-height:10px; padding-right: 15px; position: absolute; right: -122px;">
+                    
+                    
+                    <apex:outputLink value="/apex/logoutPage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="caseButton" >&nbsp;Logout </apex:outputLink>  
+                </div> 
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="custPopup6"   rendered="true">
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Project:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!headerCountry2}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText><br/>
+             </apex:outputPanel>
+            
+            <apex:outputPanel styleClass="custPopup4"  id="fiedPopup2" >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Unit No:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!unitnumber}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText>
+                <br/><br/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopup5"  id="fiedPopup3" >
+                <apex:outputLabel rendered="{!OnlysingleProject}">
+                    <a href="/apex/BrigadeHomePage" onclick="generatedJs();" styleClass="btn" style="font-size: 9px;;text-decoration:none;color:#697a8c;background-color:#c4e0f8;padding:5px 5px;-moz-border-radius: 0px;-webkit-border-radius: 0px;border-radius: 0px;font: normal 11px/110% Arial,Times New Roman, Times, serif;">Select a different project&nbsp;&nbsp;&nbsp;&nbsp; <apex:image id="drop" value="{!$Resource.Drop}"  /></a>
+                </apex:outputLabel>
+            </apex:outputPanel>
+                    
+                </apex:form>
+
+            </div>
+              
+                    <!-- footer page -->
+
+                      <table style="font-size:80%;width:1005px;" align="center" background-color="white">
+                            <tr>   <td style="font-family: Arial;">                  
+                                       <p> <b>*Note:</b> {!dispFooter }</p>
+                                   </td>
+                           </tr>    
+                       </table>         
+
+                
+        </body>
+        
+    </apex:page>

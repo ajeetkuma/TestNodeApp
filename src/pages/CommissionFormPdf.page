@@ -1,0 +1,288 @@
+<apex:page extensions="CommissionPDF" standardController="Opportunity"  showHeader="false" docType="html-5.0" applyBodyTag="false" standardStylesheets="false" applyHtmlTag="false"  renderAs="pdf" contentType="application/pdf">
+
+
+  
+<head>
+
+ <style type="text/css">
+ body {font-family: Arial Unicode MS;font-size:9.5pt;color: #333;background-color: #fff;}
+ h2, h3 {font-size:12px;}
+ th,td,.small { font-weight:normal;padding-left:10px; border-bottom:1px solid dotted; }
+ div { display: block !important;}
+.small{font-size:10px;}
+.container {width:100%;font-family: Book Antiqua;}
+.container-fluid {padding-right: 1px;padding-left: 1px;margin-right: auto;margin-left: auto;}
+.panel-primary {border-color: #337ab7 !important;}
+.panel {margin-bottom: 20px;background-color: #fff;border: 1px solid transparent; border-radius: 4px;    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);box-shadow: 0 1px 1px rgba(0,0,0,.05);}
+.panel-primary>.panel-heading {color: #fff;background-color: #337ab7;border-color: #337ab7;text-transform: uppercase}
+.panel-heading {padding: 10px 15px;border-bottom: 1px solid transparent;border-top-left-radius: 3px;    border-top-right-radius: 3px;}
+.panel-body {padding: 15px;}
+.row {width:100%;float:left;}
+.col-sm-1 { width: 98%;float:left;position:relative;min-height:18px;padding-right:15px;padding-left:15px;}
+/* .col-sm-4 { width: 26%;float:left;position:relative;min-height:18px;padding-right:15px;padding-left:15px;}
+.col-sm-3 { width: 50%;float:left;position:relative;min-height:18px;padding-right:15px;padding-left:15px;}
+
+ */
+ .col-sm-4 { width: 20%;float:left;position:relative;min-height:5px;padding-right:10px;padding-left:10px;text-transform: capitalize;padding-top: 5px;}
+.col-sm-3 { width: 22%;float:left;position:relative;min-height:5px;padding-right:10px;padding-left:10px;text-transform: capitalize;color: #000000; font-weight: bold;padding-top: 5px;}
+label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: 700;}
+.left-inner-addon {position: relative;}
+.fullfloat, .panel-primary {float:left;width:100%;}
+.row:after{clear:both}
+.fs-10{font-size:10px}
+.row-light-grey{
+        background-color: #eeeeee;
+}
+td, tr, th{border:1px solid #222;}
+.show{display:block !important;}
+.hide{display:none !important;}
+@page {margin:10px; @bottom-left{font-family:verdana;font-size:11px;padding:5px 20px;padding-top: 5px;padding-bottom: 5px;} }
+           
+</style>
+  
+</head>
+
+ <div class="container">
+        
+                <div id="section1" class="container-fluid">
+                  <div class="row">
+                                        <div  style="float:right" > <apex:image value="{!$Resource.BrigadeLogo}" width="116px" height="70px"/></div>
+                                       </div>
+                                       
+                 <div class="panel panel-primary">
+                  <div class="panel-heading " style="font-size:13px;"><span class="{! If(afc.isAgent ==false ,'show','hide') }">BRIGADE REFERRAL PAYABLE CONFIRMATION FORM</span> <span class="{! If(afc.isAgent ==true,'show','hide') }">BRIGADE BROKERAGE PAYABLE CONFIRMATION FORM</span>
+                  <div class=" " style="color: white"><h2><span class="{! If(afc.isAgent ==false ,'show','hide') }">FOR EMPLOYEES/EXISTING CUSTOMERS/WALKINS</span> <span class="{! If(afc.isAgent ==true,'show','hide') }">FOR REGISTERED CHANNEL PARTNERS</span> </h2></div>
+                   </div>
+                                <div class="panel-body">
+                                 
+                                     <div class="row">
+                                        
+                                       </div>
+                                       
+                                       
+                                       <div class="row"><div class="col-sm-1"> Please submit this document along with the copy of Allotment notice, copy of Application form and Service Tax Exemption Declaration (if applicable) to enable payment of brokerage</div></div>
+                                       <div class="row"><div class="col-sm-1">&nbsp;</div></div>
+                                       
+                                       <div class="row">
+                                        <div class="col-sm-3" >To</div>
+                                        <div class="col-sm-4" >Internal Audit / Accounts Department</div>
+                                        <div class="col-sm-3" >From</div>
+                                        <div class="col-sm-4" >{!afc.ProjectName}</div>
+                                        
+                                         </div>
+                                          <div class="row">
+                                          <hr/>
+                                        </div>
+                                          <div class="row row-light-grey">
+                                          
+                                        <div class="col-sm-3 " >First Applicant Name:</div>
+                                        <div class="col-sm-4" >{!afc.FirstApplicantName}</div>
+                                        </div>
+                                        
+                                          <div class="row">
+                                        <div class="col-sm-3" >Building / Wing Name :</div>
+                                        <div class="col-sm-4" >{!afc.PlantName}</div>
+                                        </div>
+                                        
+                                          <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Apartment Number</div>
+                                        <div class="col-sm-4" >{!afc.opport.Unit_No__c}</div>
+                                        </div>
+                                        
+                                          <div class="row">
+                                        <div class="col-sm-3" >Date Of Booking</div>
+                                        <div class="col-sm-4" ><apex:outputField value="{!afc.opport.Sale_Order_Date__c}" /></div>
+                                        </div>
+                                        
+                                        <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Unit Cost (Agreement Value)</div>
+                                        <div class="col-sm-4" >{!afc.opport.For_ROI__c}</div>
+                                        </div>
+                                        
+                                          <div class="row">
+                                        <div class="col-sm-3" >Amount Received (Till Date)</div>
+                                        <div class="col-sm-4" >{!afc.opport.Bill_Value__c}</div>
+                                        <!-- Changed coe to bring in single line as per confirmaton pdf -->
+                                        <div class="col-sm-3" >% of Amount Received (As on Date)</div>
+                                        <div class="col-sm-4" >{!afc.opport.of_Amount_Received__c}</div>
+                                        </div>
+                                        
+                                        
+                                        
+                                          <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Sale Agreement Done</div>
+                                        <div class="col-sm-4" >{!afc.opport.Sale_agreement_done__c}</div>
+                                        <div class="col-sm-3" >Agreement Date </div>
+                                        <div class="col-sm-4" ><apex:outputField value="{!afc.opport.Agreement_Date__c}" /></div>
+                                        </div>
+                                        
+                                        
+                                        
+                                          <div class="row" >
+                                        <div class="col-sm-3" ><span class="{! If(afc.isAgent ==true ,'show','hide')}">Channel partner Name On Booking Form</span><span class="{! If(afc.isAgent ==false ,'show','hide')}">Referrer Name On the Booking Form</span> </div>
+                                        <div class="col-sm-4" >{!afc.opport.Reffered_Agent__c}</div>
+                                        <div class="col-sm-3" >Mobile No.</div>
+                                        <div class="col-sm-4" >{!afc.refferedByPhone}</div>
+                                        </div>
+                                        
+                                        
+                                        
+                                          <div class="{! If(afc.isAgent ==true ,'row hide row-light-grey',' row show row-light-grey')}">
+                                        <div class="col-sm-3" >Type of Referrer Employee</div>
+                                        <div class="col-sm-4" >{!afc.opport.Referrer_is_a__c}</div>
+                                        </div>
+                                        
+                                        <div class="row  row-light-grey">
+                                        <div class="col-sm-3" >Date Of Site Visit</div>
+                                        <div class="col-sm-4" >
+                                        <apex:outputText value="{0,date,dd/MM/yy}"> <apex:param value="{!afc.opport.Date_of_Site_Visit__c}" /> </apex:outputText>
+                                       </div>
+                                        </div>
+                                        
+                                         <div class="{! If(afc.isAgent ==false ,'row ',' row hide')}">
+                                        <div class="col-sm-3" >Employee Id</div>
+                                        <div class="col-sm-4" >{!afc.EmployeeId}</div>
+                                        </div>
+                                        
+                                         <div class="{! If(afc.isAgent ==false ,'row show','row hide')}">
+                                        <div class="col-sm-3" >Existing customer unit ID</div>
+                                        <div class="col-sm-4" >{!afc.ExistingCustomerUnitID}</div>
+                                        </div>
+                                        
+                                        
+                                        
+                                         <div  class="{! If(afc.isAgent ==true ,'row show',' row hide')}">
+                                        <div class="col-sm-3" >Channel Partner Registered with Brigade Group</div>
+                                        <div class="col-sm-4" >{!afc.Channel_Partner_Registered_With_Brigade}</div>
+                                        <div class="{! If(afc.Channel_Partner_Registered_With_Brigade ==true ,'show','hide')}">
+                                        <div class="col-sm-3" >Registration No. / Vendor No</div>
+                                        <div class="col-sm-4" >{!afc.Vendor_Number}</div>
+                                        </div>
+                                        </div>
+                                        
+                                         
+                                        
+                                        
+                                        
+                                        <div class="row row-light-grey">
+                                        <div class="col-sm-3" ><span class="{! If(afc.isAgent ==true && afc.isAgent ==true,'show','hide')}">Channel Partner Tax Residence (Country)</span><span class="{! If(afc.isAgent ==false ,'show','hide')}"> Referrer Tax Residence (Country)</span></div>
+                                        <div class="col-sm-4" >{!afc.ReferrerTaxResidence}</div>
+                                        <div class="col-sm-3" >Currency to be used for payment</div>
+                                        <div class="col-sm-4" >{!afc.CurrencyName}</div>
+                                        </div>
+                                        
+                                         <div class="row">
+                                         <div class="col-sm-3" ><span class="{! If(afc.isAgent ==true ,'show','hide')}">Brokerage Commission Payable %</span><span class="{! If(afc.isAgent ==false ,'show','hide')}"> Referral Commission Payable %</span></div>
+                                        <div class="col-sm-4" >{!afc.ReferralCommission}</div>
+                                        <div class="col-sm-3" >Amount Payable on Agreement Value (INR)</div>
+                                        <div class="col-sm-4" >{!afc.AmountPayableonAggrement}</div>
+                                        </div>
+                                         
+                                       
+                                        <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Service Tax Applicable</div>
+                                        <div class="col-sm-4" >{!afc.ServiceTaxApplicable}</div>
+                                       
+                                        <div class="col-sm-3" >Total Payable Amount (INR)</div>
+                                        <div class="col-sm-4" >{!afc.TotalPayableAmount}</div>
+                                        </div>    
+                                        
+                                        
+                                        
+                                         <div class="row">
+                                        <div class="col-sm-3" ><span class="{! If(afc.ServiceTaxApplicable ==true ,'show','hide')}">Service Tax (If Any)</span></div>
+                                        <div class="col-sm-4" ><span class="{! If(afc.ServiceTaxApplicable ==true ,'show','hide')}">{!afc.ServiceTax}</span></div>
+                                        <div class="col-sm-3" >SFDC Offer code for promotional schemes(if Any)</div>
+                                        <div class="col-sm-4" >{!afc.SFDCOfferCode}</div>
+                                        </div>  
+                                        
+                                         <div class="row row-light-grey">
+                                        <div class="col-sm-3" >Prepared By SalesPerson:</div>
+                                        <div class="col-sm-4" >{!afc.opport.Sales_Person_1__r.Name}</div>
+                                        <div class="col-sm-3" >Signature</div>
+                                        <div class="col-sm-4" > __________________________ </div>
+                                        </div> 
+                                        <div class="row">    <div class="col-sm-1">&nbsp;</div></div> 
+                                            
+                                       </div>
+                                      </div>  
+                                      
+                                      <div class="row">
+                                      <div class="col-sm-1" ><b>Project head Confirmation for payment approval:</b></div>
+                                      
+                                      </div>
+                                      <div class="{! If(afc.isAgent ==true ,'row hide',' row show')}"> <div class="col-sm-1"><apex:outputText ></apex:outputText>I hereby confirm that the above mentioned booking was closed/referred by said Referrer</div></div>
+                                      <div class="{! If(afc.isAgent ==true ,'row hide',' row show')}"> <div class="col-sm-1">I hereby also confirm the name of the Referrer has been captured in the Application Form</div></div>
+                                      
+
+
+                                      <div class="{! If(afc.isAgent ==true ,'row show',' row hide')}"> <div class="col-sm-1"> <apex:outputText >&#9744;</apex:outputText> I hereby confirm that the above mentioned booking was closed/referred by said Channel Partner</div></div>
+                                      <div class="{! If(afc.isAgent ==true ,'row show',' row hide')}"> <div class="col-sm-1">I hereby also confirm the name of the Channel Partner has been captured in the Application Form</div></div>
+                                      <div class="row">   <div class="col-sm-1">I hereby also confirm that the there is no overwriting/white-ink/change of booking source on the application form</div></div>
+
+                                      <div class="row">    <div class="col-sm-1">I have done validation of the booking source and confirm that the above points are correct</div></div>
+                                     <div class="row">    <div class="col-sm-1">&nbsp;</div></div>
+                                       <div class="row">
+                                      <div class="col-sm-1">Kindly process the attached invoice for payment as per agreed TATs</div>
+                                      </div>
+                                      
+                                         <div class="row">    <div class="col-sm-1">&nbsp;</div></div>
+                                           <div class="row">    <div class="col-sm-1">Date: ________________ Project/Office Head Name: ____________________________Project/Office Head Signature _____________________</div></div>
+                                             <div class="row">    <div class="col-sm-1">&nbsp;</div></div>
+                                     
+                                     
+                                      
+                                       <div class="row">
+                                              <div class="col-sm-1">
+                                                <table style="border:1px solid #222; border-spacing:0px;width:100%">
+                                                      <thead>
+                                                              <tr>
+                                                                      <th style="width: 15%;">Department / Recepient</th>
+                                                                      <th style="width: 15%;">Signature / Approval for Processing</th>
+                                                                      <th style="width: 15%;">Date</th>
+                                                                      <th>Remarks</th>
+                                                              </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                              <tr class="success">
+                                                                        <td>Project Head</td>
+                                                                        <td>{!afc.Approved_By_Project_head}</td>
+                                                                        <td><apex:outputText value="{0,date,dd/MM/yy}"> <apex:param value="{!afc.Approved_By_Project_head_DateTime}" /> </apex:outputText> </td>
+                                                                        <td>{!afc.Project_Head_Comment}</td>
+                                                              </tr>
+                                                              <tr class="success">
+                                                                        <td>Sales HOD</td>
+                                                                        <td>{!afc.Approved_By_HOD}</td>
+                                                                        <td><apex:outputText value="{0,date,dd/MM/yy}"> <apex:param value="{!afc.Approved_By_HOD_DateTime}" /> </apex:outputText></td>
+                                                                        <td>{!afc.Hod_Comment}</td>
+                                                              </tr>
+                                                              <tr class="danger">
+                                                                        <td>Accounts</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                              </tr>
+                                                               <tr class="danger">
+                                                                        <td>Internal Audit</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                               </tr>
+                                                                <tr class="danger">
+                                                                        <td>Payments Details</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                  </div>
+                                             </div>
+                                      
+                                      <!-- EOF-->
+                                      </div></div>
+                                      
+                                      
+                                      
+
+</apex:page>

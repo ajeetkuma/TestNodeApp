@@ -1,0 +1,245 @@
+<apex:page standardController="Demand_Letter_Repository__c" extensions="DemandLetterController" renderAs="PDF">
+    <head>
+        <style type="text/css">
+            @page {
+              @top-right {
+                    content: element(header);
+                }
+             <!---  @bottom-right {
+                 content: element(footer);
+                }-->
+                margin-top:50px;
+                margin-bottom:180px;
+                margin-right:0px;
+                margin-left:0px;
+            }
+            body {
+                margin-right:80px;
+                margin-left:80px;
+                font-size:15px;
+            }
+            div.header {
+                padding: 0.5px;
+                position: running(header);
+                margin-right:80px;
+                margin-left:80px;
+                margin-bottom: 570px;
+                color: black;
+                text-align: center;
+                
+            }
+            @page { margin-top: 113px }
+        </style>
+    </head>
+    <!--
+    <div class="header">
+        <table border="1" width="100%" style="font-size:10px">
+            <tr> 
+                <td width="50%" align="right"> <apex:outputText value="*E&OE" /> </td>
+                <td align="right"> End of page. </td>
+             
+            </tr>
+        </table>
+    </div>
+    -->
+    <div class="header">
+        <br/>
+        <br/>
+    <table border="0" width="100%" style="font-size:10px">
+        <tr> 
+            <td><P><apex:image value="{!$Resource.Brigade_Addr_Logo}" /></p></td>
+            </tr>
+        
+    </table>
+    
+    </div>
+    <body>
+        <apex:outputPanel >
+            <font style="font-size:10px;"> 
+            <!--<table width="100%">
+            <tr><td align="left" width="50%"><P ><apex:image value="https://cs16.salesforce.com/resource/1398104074000/Brigade_Address" height="100" width="280"/></p></td>
+            <td align="right" width="50%"><P align="right"><apex:image value="https://cs16.salesforce.com/resource/1398151098000/New_brigade_logo" height="110" width="110"/></p></td>
+           </tr></table>-->             
+            
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                Ref. No. {!Demand_Letter_Repository__c.Opportunity__r.Unit__r.Name} <br/>
+                Date : <apex:outputText value="{0,date,dd.MM.yyyy}">
+                           <apex:param value="{!Today()}"/> 
+                       </apex:outputText>
+            </font>
+            
+            <br/> <br/>
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Primary_Contact_s_Name__c}"/> <br/>
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Second_Applicant_Name__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Second_Applicant_Name__c!=null, TRUE,FALSE)}" /> <br/>
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Third_Applicant_Name__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Third_Applicant_Name__c!=null, TRUE,FALSE)}" /> <br/>
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.House_number__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.House_number__c!=null, TRUE,FALSE)}" />
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Street1__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Street1__c!=null, TRUE,FALSE)}" /> <br/>
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Street2__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Street2__c!=null, TRUE,FALSE)}" /> &nbsp;
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Street3__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Street3__c!=null, TRUE,FALSE)}" /> <br/>
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.City__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.City__c!=null, TRUE,FALSE)}" /> &nbsp;
+            <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.Account.Postal_Code__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Postal_Code__c!=null, TRUE,FALSE)}" /> &nbsp;
+            <apex:outputText value="{!region}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.RegionL__c!=null, TRUE,FALSE)}" /> &nbsp;
+            <apex:outputText value="{!country}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.CountryL__c!=null, TRUE,FALSE)}" /> <br/>
+            <apex:outputText rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Primary_Contact_s_Tel_Mob__c!=null,TRUE,FALSE)}">
+                <b> Tel/Mob: </b> &nbsp;
+                {!Demand_Letter_Repository__c.Opportunity__r.Account.Primary_Contact_s_Tel_Mob__c}
+            </apex:outputText><br/>
+            <apex:outputText rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.Primary_Contact_s_Email__c!=null,TRUE,FALSE)}">
+                <b> E-mail: </b> &nbsp;
+                {!Demand_Letter_Repository__c.Opportunity__r.Account.Primary_Contact_s_Email__c}
+            </apex:outputText>
+        </apex:outputPanel>
+        <br/> <br/>
+        <b> Sub: </b> {!Demand_Letter_Repository__c.Subject__c} with reference to your <b> Apartment/Unit No. {!unitNo} </b>
+            in <b> {!plantObj.Name} </b> of <b> {!plantObj.Project__c}</b>.
+        <br/> <br/>
+        <!-- This is page 1 content --><br/><br/>
+        <div class="header">
+    <table border="0" width="100%" style="font-size:10px">
+        <tr> 
+           <!-- <td width="50%" align="left"> <apex:outputText value="*E&OE" /> </td>
+            <td align="right"> End of page. </td>-->
+            </tr><tr><td></td>
+            <td><P align="right"><apex:image value="https://cs16.salesforce.com/resource/1398151098000/New_brigade_logo" height="100" width="100"/></p></td>
+            </tr>
+        
+    </table>
+    
+</div>
+        <apex:outputField value="{!dlObj.Page1__c}"/>
+        <apex:outputText rendered="{!IF(dlObj.CC__c != null && page2==false,TRUE,FALSE)}">
+            <br/>
+            CC to : <apex:outputText value=" {!Demand_Letter_Repository__c.Opportunity__r.Account.GPA_Name__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.GPA_Name__c!=null, TRUE,FALSE)}" />
+                    <apex:outputText value=" , " rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.GPA_Name__c!=null && Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c != null, TRUE,FALSE)}"/>
+                    <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c != null, TRUE,FALSE)}"/>
+                    <!-- <br/> </apex:outputText> -->
+                    <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Name}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c != null, TRUE,FALSE)}">
+                    <br/> </apex:outputText>
+                    <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Street__c}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Street__c != null, TRUE,FALSE)}">
+                    <br/> </apex:outputText>
+                    <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.City__c}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.City__c != null, TRUE,FALSE)}">
+                    <br/> </apex:outputText>
+                    <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.State__c}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.State__c != null, TRUE,FALSE)}">
+                    <br/> </apex:outputText>
+                    <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Country__c}." rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Country__c != null, TRUE,FALSE)}"/>          
+        </apex:outputText>
+        <!-- Page 1 content ends -->
+    
+
+   <br/><br/>     <!-- This is page 2 content -->
+        <apex:outputPanel rendered="{!page2}">
+            <p clear="all" style="page-break-after:always;"/>
+            <apex:outputField value="{!dlObj.Page2__c}" rendered="{!page2}"/>
+            <apex:outputText rendered="{!IF(dlObj.CC__c != null,TRUE,FALSE)}">
+                <br/>
+                CC to : <apex:outputText value=" {!Demand_Letter_Repository__c.Opportunity__r.Account.GPA_Name__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.Account.GPA_Name__c!=null, TRUE,FALSE)}" />
+                        <apex:outputText value=" , {!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c}" rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c != null, TRUE,FALSE)}">
+                        <br/> </apex:outputText>
+                        <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Name}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Contact_Person__c != null, TRUE,FALSE)}">
+                        <br/> </apex:outputText>
+                        <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Street__c}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Street__c != null, TRUE,FALSE)}">
+                        <br/> </apex:outputText>
+                        <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.City__c}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.City__c != null, TRUE,FALSE)}">
+                        <br/> </apex:outputText>
+                        <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.State__c}," rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.State__c != null, TRUE,FALSE)}">
+                        <br/> </apex:outputText>
+                        <apex:outputText value="{!Demand_Letter_Repository__c.Opportunity__r.HFI__r.Country__c}." rendered="{!IF(Demand_Letter_Repository__c.Opportunity__r.HFI__r.Country__c != null, TRUE,FALSE)}"/>
+           </apex:outputText>           
+        </apex:outputPanel>
+        
+        <!-- Page 2 content ends -->
+        <!-- Pending Payments starts... -->
+        <apex:outputPanel rendered="{!page3}">
+        <p clear="all" style="page-break-after:always;"/>      
+        <center>
+            <font style="font-weight:bold; font-size:20px;"> PENDING PAYMENT STATEMENT </font>
+        </center>
+        <br/><br/><br/><br/>
+        <table width="100%">
+            <tr style="font-weight:bold;">
+                <td width="50%" align="center"> Sales Order No. {!Demand_Letter_Repository__c.Opportunity__r.Sale_Order_No__c} </td>
+                <td align="center"> Apartment/Unit No. {!unitNo} </td>
+            </tr>
+        </table>
+        <br/>
+        <table border="1" cellpadding="3" width="100%" cellspacing="0" style="font-size:12px;">
+            <tr style="font-weight:bold;">
+                <td align="center"> Item </td>
+                <td align="center"> MileStone Base </td>
+                <td align="center"> Date </td>
+                <td align="center"> Amount </td>
+                <td align="center"> VAT </td>
+                <td align="center"> Service Tax </td>
+                <td align="center"> Education Cess </td>
+                <td align="center"> Secondary Education Cess </td>
+                 <td align="center"> Swachh Bharath Cess </td>
+                <td align="center">Krishi Kalyan Cess</td>
+                <td align="center"> Total </td>
+            </tr>
+            <apex:variable value="{!0}" var="gross"/>
+            <apex:repeat value="{!listPS}" var="ps">
+            
+                <tr>                  
+                    <td> <apex:outputField value="{!ps.Description__c}"/> </td>
+                    <td> <apex:outputField value="{!ps.Mile_Stone_Base_Description_1__c}"/> </td>
+                    <td> <apex:outputField value="{!ps.Billing_Date__c}"/> </td>
+                    <td align="right"> 
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Bill_Value__c}"/> 
+                        </apex:outputText>
+                    </td>
+                    <td align="right"> 
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.VAT__c}"/>
+                        </apex:outputText>        
+                    </td>
+                    <td align="right">
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Service_Tax__c}"/>
+                        </apex:outputText>    
+                    </td>
+                    <td align="right">
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Education_Cess__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <td align="right">
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Secondary_Education_Cess__c}"/>
+                        </apex:outputText>    
+                    </td>
+                    <td align="right">
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Swachh_Bharath_Cess__c}"/>
+                        </apex:outputText>    
+                    </td>
+                    <td align="right"> 
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Krishi_Kalyan_Cess__c}"/>
+                        </apex:outputText>    
+                    </td>
+                   
+                    <td align="right"> 
+                        <apex:outputText value="{0,number,###,###,###,##0.00}">
+                            <apex:param value="{!ps.Total__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <apex:variable value="{!gross + ps.Total__c}" var="gross"/>
+                </tr>
+            </apex:repeat>
+            <tr>
+                <td colspan="10" align="center" style="font-size:12px;font-weight:bold;">
+                    Gross Total &nbsp; : &nbsp;&nbsp;
+                    <apex:outputText value="{0,number,###,###,###,##0.00}">
+                        <apex:param value="{!gross}"/>
+                    </apex:outputText>
+                </td>
+            </tr>
+        </table>
+        </apex:outputPanel>
+        <h6><center><apex:outputText rendered="{!page3}"> This is computer generated document hence Signature Not Required</apex:outputText></center></h6>
+    </body>
+</apex:page>

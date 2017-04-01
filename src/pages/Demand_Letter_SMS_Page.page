@@ -1,0 +1,31 @@
+<apex:page standardController="Opportunity" extensions="OpportunityControllerForSMS" recordSetVar="Opportunity" action="{!bulkOpportunity}" standardStylesheets="true">
+        <apex:sectionHeader subtitle=" Demand Letter SMS" title="Contacts" rendered="{!noErr}"/>
+       <apex:form >
+            <apex:pageMessages ></apex:pageMessages>
+                <apex:pageBlock title="SMS Page Alert" rendered="{!errorDisp}" >
+                   
+                         <apex:pageBlockButtons location="bottom">
+                         <apex:commandButton value="Send SMS" action="{!updateOpportunities}" disabled="{!disabl}" />
+                         <apex:commandButton value="Cancel" action="{!URLFOR($Action.Opportunity.List, $ObjectType.Opportunity)}"/>
+                         </apex:pageBlockButtons>
+                             
+                              <apex:pageBlockSection rendered="{!sendSMSCon}">
+                             <b> Alert !!!!!
+                                 Are you sure you want to send sms?
+                             </b>
+                              </apex:pageBlockSection>
+                               <apex:pageBlockSection rendered="{!Successfull}" >
+                             <b> 
+                                 SMS / Email sent successfully!!
+                             </b>
+                              </apex:pageBlockSection>
+
+                       
+                             
+                             
+                </apex:pageBlock>
+       
+    
+        
+    </apex:form>
+</apex:page>

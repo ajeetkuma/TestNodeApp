@@ -1,0 +1,424 @@
+<apex:page controller="propertyExt" showHeader="false" sidebar="false">
+    
+    <apex:form >
+            <apex:outputPanel styleClass="custPopup2"  style="text-align: right; margin-top: -5px;" id="fiedPopup1" > 
+                <div style="float:right; text-align:center; width:auto; line-height:10px; padding-right: 15px; position: absolute; right: -122px;">
+                    
+                    
+                    <apex:outputLink value="/apex/logoutPage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="caseButton" >&nbsp;Logout </apex:outputLink>  
+                </div> 
+            </apex:outputPanel>
+            
+           
+            <apex:outputPanel styleClass="custPopup3"   >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Project:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!selectedcodenew}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText><br/>
+             </apex:outputPanel>
+            
+            <apex:outputPanel styleClass="custPopup4"  id="fiedPopup2" >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Unit No:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!unitnumber}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText>
+                <br/><br/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopup5"  id="fiedPopup3" >
+                <apex:outputLabel rendered="{!OnlysingleProject}">
+                    <a href="#" onclick="generatedJs();" styleClass="btn" style="font-size: 9px;;text-decoration:none;color:#697a8c;background-color:#c4e0f8;padding:5px 5px;-moz-border-radius: 0px;-webkit-border-radius: 0px;border-radius: 0px;font: normal 11px/110% Arial,Times New Roman, Times, serif;">Select a different project&nbsp;&nbsp;&nbsp;&nbsp; <apex:image id="drop" value="{!$Resource.Drop}"  /></a>
+                </apex:outputLabel>
+            </apex:outputPanel>
+            <style>
+            .caseButton1{
+            width: 9%;
+            padding: 5px 5px;
+            background-color:#fff;
+            //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+            border-radius: 4px;
+            border: 1px solid #4e3043;
+            box-shadow:
+            inset 0 1px rgba(255,255,255,0.4),
+            0 2px 1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            color: white;
+            align: center;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Raleway', 'Lato', Arial, sans-serif;
+            }
+            .fontStyle {
+            font-weight: bold;
+            color: #95969b;
+            }
+            </style>
+            <style type="text/css">
+                
+                .custPopup {
+                background-color: white;
+                border-width: 2px;
+                border-style: solid;
+                z-index: 100;
+                left: 45%;
+                padding: 5px;
+                position: absolute;
+                width:400px;
+                height:250px;
+                // margin-left: -250px;
+                margin-left: -146px;
+                // top: 100px;
+                top:249px
+                
+                }
+                .caseButton{
+                    width: 13%;
+                    padding: 5px 4px;
+                    background-color:#1797c0;
+                    //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+                    border-radius: 4px;
+                    border: 1px solid #4e3043;
+                    box-shadow:
+                    inset 0 1px rgba(255,255,255,0.4),
+                    0 2px 1px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: all 0.3s ease-out;
+                    color: white;
+                    align: center;
+                    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+                    font-size: 12px;
+                    font-weight: bold;
+                    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+                    }
+                
+                .custPopup1 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 30%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                .custPopup2 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 63%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                
+                }
+                .custPopup3 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 36%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup4 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 48%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup5 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 56%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                
+                .popupBackground {
+                //  background-color: red;
+                //  opacity: 0.10;
+                //  filter: alpha(opacity =   20);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                }
+                
+                .overlay {
+                background-color: #ffffff;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: 0.5;
+                filter: Alpha(opacity =     50); /* IE8 and earlier */
+                z-index: 12;
+                <!--background-image: url({!$Resource.loading1});-->
+                background-repeat: no-repeat;
+                background-position: center;
+                }
+                
+                .fontStyle {
+                font-weight: bold;
+                color: #95969b;
+                }
+                .fontButton{
+                text-align:center;
+                color: grey;
+                }
+            </style>
+            
+            <head>
+                
+                
+                
+                <script type="text/javascript">
+                function openWindow()
+                {
+                    window.open("https://bgproduction-brigadeforce-na19--c.na19.visual.force.com/apex/myPayment_ext");
+                    
+                }
+                </script>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                
+                <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+                
+                <link href="{!URLFOR($Resource.brigadecss2)}" rel="stylesheet" media="screen"/ >
+                <style type="text/css" media="print">
+                    @page { size: landscape; }
+                </style>
+                
+                <script>
+                $( document ).ready(function() {
+                    
+                    setInterval("$('#blink').fadeOut(600).fadeIn(600);",600);
+                    
+                });
+                </script>
+                
+                <style>        
+                    #headcontainer {
+                    //background-image: url({!URLFOR($Resource.NavigatorBackground)});
+                    }
+                    .text {
+                    font-family: 'Lato', Calibri, Arial, sans-serif;
+                    font-size: 9px;
+                    font-weight: 400;
+                    display: block;
+                    width: 80%;
+                    padding: 3px;
+                    margin-bottom: 5px;
+                    border: 3px solid #ebe6e2;
+                    border-radius: 5px;
+                    transition: all 0.3s ease-out;
+                    }
+                    
+                </style>  
+                
+                <style>
+                    a.resi_button{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 11px;
+                    color: #ffffff;
+                    margin: 0px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    line-height: 0px;
+                    padding:14px;
+                    background-color:#0065b3;
+                    text-decoration:none;
+                    }
+                    a.resi_button2{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 11px;
+                    color: #0065b3;
+                    margin: 0px;
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    line-height: 0px;
+                    padding:10px;
+                    background-color:#ffffff;
+                    text-decoration:none;
+                    }  
+                    
+                    a.resi_button:hover{
+                    background-color:#ffc20f;
+                    }
+                    a.resi_button2:hover{
+                    background-color:#ffffe6;
+                    cursor: pointer;
+                    }
+                    td{
+                    min-width:1px;
+                    }
+                </style> 
+                
+                <style>
+                    .pbSubheader h3, .pbSubheader h3 a {
+                    color: #2F436F;
+                    font-family: Arial;
+                    font-weight:bold;
+                    font-size:120%;
+                    } 
+                    
+                    
+                    
+                </style>
+            </head>
+            <body>
+                <div id="page" align="center" background-color="white"  style="width:1005px">  
+                    
+                    <table width="1005px" border="0" align="center" cellpadding="0" cellspacing="0">         
+                        <tr>
+                            <td>
+                                <table width="100%" height="135px" border="0" cellpadding="0" cellspacing="0">                 
+                                    <tr>
+                                        <td height="117" id="headcontainer">
+                                            <table width="1005px" border="1" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td  height="117" align="left" valign="bottom">
+                                                    <table width="100%">
+                                                        <tr><td>
+                                                            <a href="http://www.brigadegroup.com/" target="brigadegroup">
+                                                    <img src="http://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" width="137" height="70" alt="Brigade Enterprises - 
+                                                                                                                                                                Leading Builders in Bangalore's Real Estate Industry" /></a>
+                                                            </td>
+                                                        <td valign="bottom" align="right" style="font-family: Arial;"><font size="2" color="black">Welcome</font>&nbsp;&nbsp;<font size="3" color="#0095ce"><b>{!user.Name}&nbsp;&nbsp;</b></font></td>
+                                                        </tr>
+                                                    </table>
+                                                    
+                                                 
+                                                </td>
+                                                
+                                                
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td align="left" valign="bottom">
+                                                    
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td align="left" valign="baseline"><table border="0" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    
+                                                                    <td width="187" align="left"><table width="187" border="0" align="left" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td width="170" align="center" valign="baseline"><div id="search2">
+                                                                                <!--search form need to build hers-->
+                                                                                </div></td> 
+                                                                            <td width="17" align="center" valign="baseline">&nbsp;</td>
+                                                                        </tr>
+                                                                        </table></td>
+                                                                </tr>
+                                                                </table>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td align="left"><table border="0" cellspacing="0" cellpadding="0" >
+                                                                <tr>   
+                                                                    
+                                                                    
+                                                                    <td><a href="/apex/BrigadeHomePage" >
+                                                                        
+                                                                        <apex:image id="theImage" value="{!$Resource.Home}" style="width:98%;margin-bottom:2px;"  /></a></td>
+                                                                    
+                                                                    <td></td><td></td>
+                                                                    <!--<td><a href="/apex/CPprofileCreationpage" class="resi_button" >
+MY PROFILE</a>
+</td>-->
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myPayment_ext" class="resi_button">MY PAYMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/MyDocuments" class="resi_button">MY DOCUMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myCase" class="resi_button">QUERIES</a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/BrigadeReferralpage" class="resi_button"  >REFERRAL</a></td>                             
+                                                                    <td></td>
+                                                                    <td ><apex:outputLabel rendered="{!Imagenew}"> <a href="/apex/FeedBack" class="resi_button" id="blink" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td ><apex:outputLabel rendered="{!ImagenewNoFeedBack}"><a href="/apex/FeedBack" class="resi_button" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td></td>
+                                                                    <td width="322" ><a class="resi_button"> </a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/CPprofileCreationpage" class="resi_button2"  >MY PROFILE</a></td>                                                                    
+                                                                </tr>
+                                                                </table>                           
+                                                            </td>
+                                                            
+                                                        </tr>                      
+                                                    </table>
+                                                </td>
+                                                
+                                            </tr>
+                                            </table>
+                                        </td>
+                                    </tr>          
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+   <apex:pageBlock mode="Detail" title="Payment Details" >
+        <!--<table width="100%"><tr style="width:200px;height:19px;background-color:#0066B3;padding-top:3px;padding-left:3px" ><td><b><font color="White">Case Details</font></b></td></tr></table>-->
+
+    <br/>
+    <apex:pageBlockSection columns="2" title="Payment Information" collapsible="true">
+    
+    <apex:outputField value="{!paymentDetail.Invoice_No__c}" style="border: 1px solid #c2c4c5;font-family: Arial;"/>
+    <apex:outputField value="{!paymentDetail.Invoice_date__c}" style="border: 1px solid #c2c4c5;"/>
+    
+    <apex:outputField value="{!paymentDetail.Description__c}" style="border: 1px solid #c2c4c5;"/>
+    
+    <apex:outputField value="{!paymentDetail.Status__c}" style="border: 1px solid #c2c4c5;"/>
+    
+    <apex:outputField value="{!paymentDetail.Education_Cess__c}" style="border: 1px solid #c2c4c5;"/>
+    
+    <apex:outputField value="{!paymentDetail.Bill_Value__c}" style="border: 1px solid #c2c4c5;"/>
+    
+    <apex:outputField value="{!paymentDetail.Payment_Received_Date__c}" style="border: 1px solid #c2c4c5;"/>
+    <apex:outputField value="{!paymentDetail.Total__c}" style="border: 1px solid #c2c4c5;" label="Total (incl. taxes)"/>
+    
+
+    <apex:outputField value="{!paymentDetail.Service_Tax__c}" style="border: 1px solid #c2c4c5;"/>
+
+    <apex:outputField value="{!paymentDetail.VAT__c}" style="border: 1px solid #c2c4c5;"/>
+    <apex:outputField value="{!paymentDetail.Secondary_Education_Cess__c}" style="border: 1px solid #c2c4c5;"/>
+    <apex:outputField value="{!paymentDetail.Krishi_Kalyan_Cess__c}" style="border: 1px solid #c2c4c5;"/>
+  
+    <br/>
+            </apex:pageBlockSection>
+            <center>
+            <apex:commandButton action="{!CancelPayment}" value="Back" styleClass="caseButton1"/>
+            
+            </center>
+        </apex:pageBlock>
+    
+    
+    </div>
+   </body>
+    </apex:form>
+</apex:page>

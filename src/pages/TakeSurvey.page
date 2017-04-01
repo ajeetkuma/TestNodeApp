@@ -1,0 +1,108 @@
+<apex:page standardcontroller="Survey__c" extensions="ViewSurveyController" cache="false" sidebar="false" showheader="false">
+
+
+<style>
+    <apex:outputText value="{!surveyContainerCss}" />
+</style>
+
+
+<style>
+.referralButton1{
+                width: 10%;
+                padding: 5px 5px;
+                background-color:#fff;
+                //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+                border-radius: 4px;
+                border: 1px solid #4e3043;
+                box-shadow:
+                  inset 0 1px rgba(255,255,255,0.4),
+                  0 2px 1px rgba(0,0,0,0.1);
+                cursor: pointer;
+                transition: all 0.3s ease-out;
+                color: white;
+                align: center;
+                text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+                font-size: 14px;
+                font-weight: bold;
+                font-family: 'Raleway', 'Lato', Arial, sans-serif;
+            } 
+
+</style>
+<div id="survey_container">   
+    <apex:form id="theForm"   >
+    <apex:outputPanel id="seeSurvey" rendered="{!thankYouRendered == false}" >
+        <apex:outputField value="{!Survey__c.Survey_Header__c}"/>
+        <h1><apex:outputField value="{!Survey__c.Name}" rendered="{!Survey__c.Hide_Survey_Name__c == false}"  /></h1>
+        
+    </apex:outputPanel>
+
+    <apex:pageMessages />
+    <apex:pageBlock rendered="{!thankYouRendered == false}" > 
+        <div id="qList">
+            
+            <apex:repeat value="{!allQuestions}" var="qPreview" id="aQPreview">
+    
+            <div id="{!qPreview.id}" >
+        
+                    <apex:pageBlock id="pblock"> 
+                        <h1 class="question">
+                            <span class="questionNumber">{!qPreview.orderNumber}.</span>
+                            {!qPreview.question}
+                            <apex:outputPanel rendered="{!qPreview.required}" styleClass="requiredText">
+                                ({!$Label.LABS_SF_Required})
+                            </apex:outputPanel>
+                        </h1>
+                     <div id="radio"> 
+                      <apex:selectRadio layout="pageDirection" rendered="{!qPreview.renderSelectRadio}" value="{!qPreview.selectedOption}" >
+                        <apex:selectOptions value="{!qPreview.singleOptions}"/>
+                      </apex:selectRadio>
+                    </div>
+                    <div id="checkbox">           
+                      <apex:selectCheckboxes layout="pageDirection" rendered="{!qPreview.renderSelectCheckboxes}" value="{!qPreview.selectedOptions}" >
+                        <apex:selectOptions value="{!qPreview.multiOptions}"/>
+                      </apex:selectCheckboxes> 
+                    </div>
+                    <div id="text"> 
+                       <apex:inputTextArea cols="50" rows="10" rendered="{!qPreview.renderFreeText}" value="{!qPreview.choices}"/>  
+                    </div>
+                    <div id="row">
+                      <apex:selectRadio rendered="{!qPreview.renderSelectRow}" value="{!qPreview.selectedOption}">
+                        <apex:selectOptions value="{!qPreview.rowOptions}"/>
+                      </apex:selectRadio>
+                    </div>            
+                    <!-- IN ORDER TO ADD A QUESTION TYPE YOU MUST CHANG THE JAVASCRIPT BELOW AS WELL -->
+                    </apex:pageBlock>   
+              
+            </div>  <!-- qPreview.id -->
+            
+            </apex:repeat>
+                         
+        </div> <!-- qList -->
+        <apex:pageMessages />
+            
+    </apex:pageBlock>
+        <apex:outputPanel rendered="{!thankYouRendered == false}">
+          <!--<apex:outputPanel rendered="{!isInternal}" >
+            {!$Label.LABS_SF_Answer_as}: 
+            <apex:selectRadio value="{!anonymousAnswer}">
+                <apex:selectOptions value="{!anonymousOrUser}" />
+                <apex:actionSupport event="onchange" rerender="hiddenAnonymousAnswer"/>
+            </apex:selectRadio>
+            <apex:inputHidden value="{!anonymousAnswer}" id="hiddenAnonymousAnswer"/>
+            <BR />
+        </apex:outputPanel>-->
+       <center> <apex:commandButton action="{!submitResults}" value="{!$Label.LABS_SF_SubmitSurvey}" rerender="theForm,seeSurvey" styleClass="referralButton1" /></center>
+    </apex:outputPanel>
+        <apex:outputPanel rendered="{!thankYouRendered == true}">
+       <center>
+       <apex:outputText value="{!surveyThankYouText}"  escape="false"  />
+       <br/>
+       <br/>
+       <apex:outputLink value="https://bgproduction-brigadeforce-na19.my.salesforce.com/apex/FeedBack" id="theLink"><b>Back</b></apex:outputLink>
+        </center>
+        </apex:outputPanel>  
+    </apex:form>    
+
+</div>
+
+</apex:page>

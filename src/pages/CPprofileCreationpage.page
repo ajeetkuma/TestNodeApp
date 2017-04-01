@@ -1,0 +1,701 @@
+<!--------------------------------------------------------------------------------------------------------------
+
+                                        Created by :
+                                        Author Name:
+                                        purpose    :1.Stored in mirror information(CpprofileObject is mirror).
+                                                    2.Send a mail to portal admin.
+                                                    3.Admin have access to accept or reject.Depening on condition user got a mail 
+                                                    4.Meanwhile,uesrs got a sms depending on admin accept or reject.
+                                                    5.Everything on portal level.
+                                       
+                                        Modified by:
+                                        Lastmodified by:
+                                        Purpose:
+
+---------------------------------------------------------------------------------------------------------------- -->
+
+<apex:page controller="CPprofileCreationpagecon" sidebar="false" showHeader="false" id="BG_pAGE" standardStylesheets="true">
+    <apex:form ID="BG_fORM" >
+    
+    
+    <!----------------------------------Popup Starts----------------------------->
+    
+            
+        <apex:outputPanel id="intPop" >       
+        <apex:actionFunction name="setCountryOnTop" action="{!countryDetails}"  reRender="BG_fORM">
+            <apex:param name="parm3" assignTo="{!headerCountry1 }" value=""/>
+        </apex:actionFunction> 
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">   
+            
+              <center>  <div style="background-color:#0065b3;color:white;height:20px;padding:6px 0px;"> Select Project</div>     </center> 
+                <br/>                  
+
+               <!--  <center> <h3  style="background-color:#D4DBE1;">Select Project</h3></center> -->                     <br/><br/><center style="bottom:0;">
+                <b style="top:52px">Select Project:</b>
+                <apex:selectList value="{!seletecedCity}" multiselect="false" size="1" onchange="setCountryOnTop( this.value);" >
+                    <apex:selectOptions value="{!Items}"/ > 
+                    <apex:actionSupport event="onchange" action="{!countryDetails}" reRender="BG_fORM" />                
+                </apex:selectList></center><p/>                               
+            </apex:outputPanel>
+            
+                        
+        </apex:outputPanel>
+        <apex:actionFunction name="generatedJs" action="{!getReopenPopup}" reRender="intPop,BG_fORM" />
+        
+            
+
+    
+    <!-----------------------------------Popup Ends---------------------------------->
+    
+    
+            <apex:outputPanel styleClass="custPopup2"  style="text-align: right; margin-top: -5px;" id="fiedPopup1" > 
+                <div style="float:right; text-align:center; width:auto; line-height:10px; padding-right: 15px; position: absolute; right: -122px;">
+                    
+                    
+                    <apex:outputLink value="/apex/logoutPage" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" styleClass="caseButton" >&nbsp;Logout </apex:outputLink>  
+                </div> 
+            </apex:outputPanel>
+            
+           
+            <apex:outputPanel styleClass="custPopup3"   >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Project:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!selectedcodenew}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText><br/>
+             </apex:outputPanel>
+            
+            <apex:outputPanel styleClass="custPopup4"  id="fiedPopup2" >
+                <apex:outputPanel styleClass="fontStyle " style="font: normal 11px/110% Arial,Times New Roman, Times, serif;" ><b><font color="black">Unit No:</font>&nbsp;</b> </apex:outputPanel>&nbsp;                      
+                <apex:outputText value="{!unitnumber}" style="color:#0095ce;font-size: 13px;font: normal 12px/110% Arial,Times New Roman, Times, serif;"></apex:outputText>
+                <br/><br/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopup5"  id="fiedPopup3" >
+                <apex:outputLabel rendered="{!OnlysingleProject}">
+                    <a href="#" onclick="generatedJs();" styleClass="btn" style="font-size: 9px;;text-decoration:none;color:#697a8c;background-color:#c4e0f8;padding:5px 5px;-moz-border-radius: 0px;-webkit-border-radius: 0px;border-radius: 0px;font: normal 11px/110% Arial,Times New Roman, Times, serif;">Select a different project&nbsp;&nbsp;&nbsp;&nbsp; <apex:image id="drop" value="{!$Resource.Drop}"  /></a>
+                </apex:outputLabel>
+            </apex:outputPanel>
+             <style type="text/css">
+                
+                .custPopup {
+                background-color: white;
+                border-width: 2px;
+                border-style: solid;
+                z-index: 100;
+                left: 45%;
+                padding: 5px;
+                position: absolute;
+                width:400px;
+                height:250px;
+                // margin-left: -250px;
+                margin-left: -146px;
+                // top: 100px;
+                top:249px
+                
+                }
+                .caseButton{
+                    width: 13%;
+                    padding: 5px 4px;
+                    background-color:#1797c0;
+                    //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+                    border-radius: 4px;
+                    border: 1px solid #4e3043;
+                    box-shadow:
+                    inset 0 1px rgba(255,255,255,0.4),
+                    0 2px 1px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: all 0.3s ease-out;
+                    color: white;
+                    align: center;
+                    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+                    font-size: 12px;
+                    font-weight: bold;
+                    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+                    }
+                
+                .custPopup1 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 30%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                .custPopup2 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 63%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                
+                }
+                .custPopup3 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 36%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup4 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 48%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }
+                .custPopup5 {
+                
+                border-width: 0px;
+                border-style: solid;
+                z-index: 15;
+                left: 56%;
+                padding: 1px;
+                position: absolute;
+                width:206px;
+                margin-left: -5px;
+                top: 10px;
+                background-color:#ffffff;
+                }                
+                
+                .popupBackground {
+                //  background-color: red;
+                //  opacity: 0.10;
+                //  filter: alpha(opacity =   20);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                }
+                
+                .overlay {
+                background-color: #ffffff;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: 0.5;
+                filter: Alpha(opacity =     50); /* IE8 and earlier */
+                z-index: 12;
+                <!--background-image: url({!$Resource.loading1});-->
+                background-repeat: no-repeat;
+                background-position: center;
+                }
+                
+                .fontStyle {
+                font-weight: bold;
+                color: #95969b;
+                }
+                .fontButton{
+                text-align:center;
+                color: grey;
+                }
+            </style>
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--<link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap.css')}" rel="stylesheet" media="screen"/> -->
+        <link href="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap-theme.css')}" rel="stylesheet" media="screen"/> 
+        <apex:includeScript value="{!URLFOR($Resource.jquery1, '/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js')}"  />
+        <apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}"/>
+        <link href="{!URLFOR($Resource.brigadecss)}" rel="stylesheet" media="screen"/>
+        <script>
+         $( document ).ready(function() {
+       
+           setInterval("$('#blink').fadeOut(600).fadeIn(600);",600);
+       
+         });
+         function xyz(){
+         
+         alert('hi');
+         }
+       </script>
+        
+    <style type ="text/css">
+        
+        #headcontainer {
+           //background-image: url({!URLFOR($Resource.NavigatorBackground)});
+           }
+           h3{
+           color: #536d8b;
+                font: normal 14px/24px Verdana, Geneva, sans-serif;
+                text-align: center;
+                margin:0px 0px 0px 0px;   
+                //height: 24px;
+                border-bottom: 1px solid #c0c2c4;
+                
+                //background: url(../images/home-images/news-events-heading-bg.gif) repeat-x left top;
+                
+                font: normal 10px/24px Verdana, Geneva, sans-serif;
+                color: #536d8b;
+                }     
+       
+               /* fieldset.login label{
+                font-family: 'Lato', Calibri, Arial, sans-serif;                
+                top: 5px;
+                clear: both;
+                color: #333333;
+                display: block;
+                font-size: 14px;
+                text-align: left;
+                font-weight: bold;
+                padding-top: 10px;               
+                
+            }*/
+          fieldset.login input.text {
+                font-family: Arial;
+                font-size: 13px;
+                font-weight: 400;
+                display: block;
+                width: 80%;
+                padding: 5px;
+                margin-bottom: 5px;
+                border: 3px solid #ebe6e2;
+                border-radius: 5px;
+                transition: all 0.3s ease-out;
+            }
+              .right
+                {
+                position:absolute;
+                right:0px;
+                width:300px;
+                background-color:#b0e0e6;
+                }        
+                
+                .labelCol first{                  
+                    padding-left:4px;
+                    }
+                    
+              .profileButton{
+                width: 9%;
+                padding: 5px 5px;
+                background-color:#fff;
+                //background: linear-gradient(rgba(89,54,76,0.4), rgba(76,49,65,0.6));   
+                border-radius: 4px;
+                border: 1px solid #4e3043;
+                box-shadow:
+                  inset 0 1px rgba(255,255,255,0.4),
+                  0 2px 1px rgba(0,0,0,0.1);
+                cursor: pointer;
+                transition: all 0.3s ease-out;
+                color: white;
+                align: center;
+                text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+                font-size: 14px;
+                font-weight: bold;
+                font-family: 'Raleway', 'Lato', Arial, sans-serif;
+            }      
+                                
+ </style>
+ 
+ <style>
+        a.resi_button{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #ffffff;
+        margin: 0px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        line-height: 0px;
+        padding:15px;
+        background-color:#0065b3;
+        text-decoration:none;
+        }
+        a.resi_button2{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #0065b3;
+        margin: 0px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        line-height: 0px;
+        padding:10px;
+        background-color:#ffffff;
+        text-decoration:none;
+        }         
+        a.resi_button:hover{
+        background-color:#ffc20f;
+        }
+        a.resi_button2:hover{
+        background-color:#ffffe6;
+        cursor: pointer;
+        }        
+        td{
+            min-width:1px;
+        }
+        .pbSubheader h3, .pbSubheader h3 a {
+            color: #2F436F;
+            font-family: Arial;
+            font-size: 13px;
+            font-weight:bold;
+        }
+        </style>
+ </head>
+    <body>
+       <div id="page" align="center" background-color="white"  style="width:1005px">  
+             
+                <table width="1005px" border="0" align="center" cellpadding="0" cellspacing="0">         
+                        <tr>
+                            <td>
+                                <table width="100%" height="135px" border="0" cellpadding="0" cellspacing="0">                 
+                                    <tr>
+                                        <td height="117" id="headcontainer">
+                                            <table width="1005px" border="1" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td  height="117" align="left" valign="bottom">
+                                                    <table width="100%">
+                                                        <tr><td>
+                                                            <a href="http://www.brigadegroup.com/" target="brigadegroup">
+                                                    <img src="http://brigadeprod.s3.amazonaws.com/assets/images/bg-logo-hz.png" width="137" height="70" alt="Brigade Enterprises - 
+                                                                                                                                                                Leading Builders in Bangalore's Real Estate Industry" /></a>
+                                                            </td>
+                                                        <td valign="bottom" align="right" style="font-family: Arial;"><font size="2" color="black">Welcome</font>&nbsp;&nbsp;<font size="3" color="#0095ce"><b>{!uu.Name}&nbsp;&nbsp;</b></font></td>
+                                                        </tr>
+                                                    </table>
+                                                    
+                                                 
+                                                </td>
+                                                
+                                                
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td align="left" valign="bottom">
+                                                    
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td align="left" valign="baseline"><table border="0" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    
+                                                                    <td width="187" align="left"><table width="187" border="0" align="left" cellpadding="0" cellspacing="0">
+                                                                        <tr>
+                                                                            <td width="170" align="center" valign="baseline"><div id="search2">
+                                                                                <!--search form need to build hers-->
+                                                                                </div></td> 
+                                                                            <td width="17" align="center" valign="baseline">&nbsp;</td>
+                                                                        </tr>
+                                                                        </table></td>
+                                                                </tr>
+                                                                </table>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td align="left"><table border="0" cellspacing="0" cellpadding="0" >
+                                                                <tr>   
+                                                                    
+                                                                    
+                                                                    <td><a href="/apex/BrigadeHomePage" >
+                                                                        
+                                                                        <apex:image id="theImage" value="{!$Resource.Home}" style="width:98%;margin-bottom:2px;"  /></a></td>
+                                                                    
+                                                                    <td></td><td></td>
+                                                                    <!--<td><a href="/apex/CPprofileCreationpage" class="resi_button" >
+MY PROFILE</a>
+</td>-->
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myPayment_ext" class="resi_button">MY PAYMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/MyDocuments" class="resi_button">MY DOCUMENTS</a></td>
+                                                                    <td></td>
+                                                                    <td><a href="/apex/myCase" class="resi_button">QUERIES</a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/BrigadeReferralpage" class="resi_button"  >REFERRAL</a></td>                             
+                                                                    <td></td>
+                                                                    <td ><apex:outputLabel rendered="{!Imagenew}"> <a href="/apex/FeedBack" class="resi_button" id="blink" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td ><apex:outputLabel rendered="{!ImagenewNoFeedBack}"><a href="/apex/FeedBack" class="resi_button" >FEEDBACK</a></apex:outputLabel></td>
+                                                                    <td></td>
+                                                                    <td width="322" ><a class="resi_button"> </a></td>
+                                                                    <td></td>                              
+                                                                    <td><a href="/apex/CPprofileCreationpage" class="resi_button2"  >MY PROFILE</a></td>                                                                    
+                                                                </tr>
+                                                                </table>                           
+                                                            </td>
+                                                            
+                                                        </tr>                      
+                                                    </table>
+                                                </td>
+                                                
+                                            </tr>
+                                            </table>
+                                        </td>
+                                    </tr>          
+                                </table>
+                            </td>
+                        </tr>
+                    </table> 
+ 
+     <fieldset class="login">
+       <apex:pagemessages ></apex:pagemessages>       
+        <Apex:outputLabel rendered="{!not(cpprofileall)}">
+           
+           <!----------------------------------------- Portals First page all information---------------------------------->        
+          <apex:pageBlock mode="Detail" title="Profile Details" tabStyle="Contact" >
+          
+          <!--Contact Type Selection-->
+          
+    <apex:actionRegion >
+        <apex:actionFunction name="callOtherOption" action="{!cpProfile}" reRender="op11,op1,op12"/>
+        <apex:pageBlockSection columns="1" id="MyBlock5" title="Select Contact Type" rendered="{!If(fieldvalues!=true,true,false)}">    
+            <apex:pageBlockSectionItem id="MyItem">
+                <apex:outputLabel value="Contact Type:"/>
+                <apex:outputPanel >
+
+                    <apex:selectList value="{!selectedRT}" multiselect="false" size="1" id="selectedValue2"  Style="background-color:#EAF0F2;width:200px" styleClass="text" onchange="callOtherOption();">
+                        <apex:selectOptions value="{!contactTypeCode}"/>  
+                       <!-- <apex:actionSupport event="onchange" status="RT" reRender="op11,op1" action="{!cpProfile}"/>                         -->
+                    </apex:selectList>
+                    <apex:actionStatus startText="Checking..." id="RT"/>
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    
+ <apex:outputPanel id="op11" >
+         <apex:pageBlockSection title="Personal Information" rendered="{!if(contactTypeValue=='Second Applicant',true,false)}" >
+        <apex:outputField value="{!con.Name}" style="font-family: Arial;"/>
+        <apex:outputField value="{!con.Birthdate}" />
+        <apex:outputField value="{!con.Email}" />
+        <apex:outputField value="{!con.Wedding_Anniversary__c}" />
+        <apex:outputField value="{!con.MobilePhone}" />  
+         </apex:pageBlockSection>
+         
+       <apex:pageBlockSection title="Personal Information" rendered="{!if(contactTypeValue=='Third Applicant',true,false)}" >
+        <apex:outputField value="{!con.Name}" />
+        <apex:outputField value="{!con.Birthdate}" />
+        <apex:outputField value="{!con.Email}" />
+        <apex:outputField value="{!con.Wedding_Anniversary__c}" />
+        <apex:outputField value="{!con.MobilePhone}" />  
+         </apex:pageBlockSection>
+         
+         
+          <apex:pageBlockSection title="Personal Information" rendered="{!if(contactTypeValue=='Fourth Applicant',true,false)}" >
+        <apex:outputField value="{!con.Name}" />
+        <apex:outputField value="{!con.Birthdate}" />
+        <apex:outputField value="{!con.Email}" />
+        <apex:outputField value="{!con.Wedding_Anniversary__c}" />
+        <apex:outputField value="{!con.MobilePhone}" />  
+         </apex:pageBlockSection>
+         
+         <apex:pageBlockSection title="Address Details" rendered="{!if(contactTypeValue=='Second Applicant',true,false)}" >
+        <apex:outputField value="{!acc.House_number__c}" />
+        <apex:outputField value="{!acc.City__c}" />
+        <apex:outputField value="{!acc.Street1__c}" />
+        <apex:outputField value="{!acc.Street2__c}" />
+        <apex:outputField value="{!acc.Street3__c}" />
+        <apex:outputField value="{!acc.CountryL__r.Name}" />
+        <apex:outputField value="{!acc.Postal_Code__c}" />  
+         </apex:pageBlockSection>
+         
+         <apex:pageBlockSection title="Address Details" rendered="{!if(contactTypeValue=='Third Applicant',true,false)}" >
+        <apex:outputField value="{!acc.House_number__c}" />
+        <apex:outputField value="{!acc.City__c}" />
+        <apex:outputField value="{!acc.Street1__c}" />
+        <apex:outputField value="{!acc.Street2__c}" />
+        <apex:outputField value="{!acc.Street3__c}" />
+        <apex:outputField value="{!acc.CountryL__r.Name}" />
+        <apex:outputField value="{!acc.Postal_Code__c}" />  
+         </apex:pageBlockSection>       
+         
+         <apex:pageBlockSection title="Address Details" rendered="{!if(contactTypeValue=='Fourth Applicant',true,false)}" >
+        <apex:outputField value="{!acc.House_number__c}" />
+        <apex:outputField value="{!acc.City__c}" />
+        <apex:outputField value="{!acc.Street1__c}" />
+        <apex:outputField value="{!acc.Street2__c}" />
+        <apex:outputField value="{!acc.Street3__c}" />
+        <apex:outputField value="{!acc.CountryL__r.Name}" />
+        <apex:outputField value="{!acc.Postal_Code__c}" />  
+         </apex:pageBlockSection>           
+         
+          <apex:pageBlockSection title="Income Tax" rendered="{!if(contactTypeValue=='Second Applicant',true,false)}" >
+        <apex:outputField value="{!con.Income_Tax_PAN_GIR_No__c}" /> 
+         </apex:pageBlockSection>
+         
+       <apex:pageBlockSection title="Income Tax" rendered="{!if(contactTypeValue=='Third Applicant',true,false)}" >
+        <apex:outputField value="{!con.Income_Tax_PAN_GIR_No__c}" /> 
+         </apex:pageBlockSection>
+         
+          <apex:pageBlockSection title="Income Tax" rendered="{!if(contactTypeValue=='Fourth Applicant',true,false)}" >
+        <apex:outputField value="{!con.Income_Tax_PAN_GIR_No__c}" /> 
+         </apex:pageBlockSection>         
+         
+         <apex:pageBlockSection title="Professional Details" rendered="{!if(contactTypeValue=='Second Applicant',true,false)}" >
+        <apex:outputField value="{!con.Company__c}" />
+        <apex:outputField value="{!con.Designation__c}" />
+        <apex:outputField value="{!con.Educational_Qualification__c}" />
+        <apex:outputField value="{!con.Profession__c}" />
+        <apex:outputField value="{!con.Industry__c}" />  
+         </apex:pageBlockSection> 
+         
+         <apex:pageBlockSection title="Professional Details" rendered="{!if(contactTypeValue=='Third Applicant',true,false)}" >
+        <apex:outputField value="{!con.Company__c}" />
+        <apex:outputField value="{!con.Designation__c}" />
+        <apex:outputField value="{!con.Educational_Qualification__c}" />
+        <apex:outputField value="{!con.Profession__c}" />
+        <apex:outputField value="{!con.Industry__c}" />  
+         </apex:pageBlockSection>   
+         
+         <apex:pageBlockSection title="Professional Details" rendered="{!if(contactTypeValue=='Fourth Applicant',true,false)}" >
+        <apex:outputField value="{!con.Company__c}" />
+        <apex:outputField value="{!con.Designation__c}" />
+        <apex:outputField value="{!con.Educational_Qualification__c}" />
+        <apex:outputField value="{!con.Profession__c}" />
+        <apex:outputField value="{!con.Industry__c}" />  
+         </apex:pageBlockSection>  
+         
+         <apex:outputPanel rendered="{!if(contactTypeValue =='Second Applicant',true,false)}" >
+             <br/>             
+             *Profile information can be edited only for the First applicant. For changes to Second/Third applicants, please contact your Customer Support representative.
+         </apex:outPutPanel>
+                  <apex:outputPanel rendered="{!if(contactTypeValue =='Third Applicant',true,false)}" >
+             <br/>             
+             *Profile information can be edited only for the First applicant. For changes to Second/Third applicants, please contact your Customer Support representative.
+         </apex:outPutPanel>
+                  <apex:outputPanel rendered="{!if(contactTypeValue =='Fourth Applicant',true,false)}" >
+             <br/>             
+             *Profile information can be edited only for the First applicant. For changes to Second/Third applicants, please contact your Customer Support representative.
+         </apex:outPutPanel>
+ </apex:outputPanel>
+ 
+
+       
+              <!----------------------------------------------Personal Information Section---------------------------------------------->  
+              <apex:outputPanel id="op1"  >
+                 <apex:pageBlockSection id="pisc1" title="Personal Information" columns="2"  rendered="{!If(fieldvalues!=true && contactTypeValue=='First Applicant',true,false)}" >
+
+ 
+                          <apex:outputField value="{!CPprofileObj.Name}" ID="BG_iNPUTFIELdNAME" styleClass="labelCol first" /> 
+                          <apex:outputField value="{!CPprofileObj.CPprofile_BirthDate__c}" ID="BG_bIRTHdATE"/> 
+                          <apex:outputField value="{!CPprofileObj.CPprofile_EmailForCommunication__c}" />                                     
+                          <apex:outputField value="{!CPprofileObj.CPprofile_Wedding_Anniversary__c}" Id="BG_wEDaNIVER"/>
+                          <apex:outputField value="{!CPprofileObj.CPprofile_Mobile__c}" ID="BG_mObile"/> 
+
+                  </apex:pageBlockSection>                  
+                  <!-----------------------------------------Address Details Section----------------------------------------------------------------->
+                  <apex:pageBlockSection title="Address Details" collapsible="true" columns="2" rendered="{!If(fieldvalues!=true && contactTypeValue=='First Applicant',true,false)}" ID="BG_pGBLOCKsECTION2" >
+                         <!-- <apex:outputField value="{!CPprofileObj.CPprofile_MailingStreet__c}"/>
+                         <apex:outputField value="{!CPprofileObj.Mailing_Address__c}" ID="BG_bILLINGsTREET"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MailingCity__c}" ID="BG_mAILINGcITY"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCity__c}" ID="BG_bILLINGcity" /> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MailingState__c}" ID="BG_mAILINGsTATE"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingState__c}" id="BG_bILLINGsTATE"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MailingCountry__c}" Id="BG_mAILINGcOUNTRY"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCountry__c}" Id="BG_bILLINGcOUNTRY"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_MailingPostCode__c}" ID="BG_mAILINGpOSTcODE"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingPostcode__c}" Id="BG_bILLINGpOSTcODE"/><br/>-->
+                                                  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_HouseNumber__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCity__c }"/>                          
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street1__c}"/>  
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingCountry__c}"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street2__c}"/> 
+                         <apex:outputField value="{!CPprofileObj.CPprofile_BillingPostcode__c}"/>    
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Street3__c}"/> 
+                         
+                  </apex:pageBlockSection>
+                    <!-----------------------------------------IncomeTax Section----------------------------------------------------------------->                   
+                  <apex:pageBlockSection title="Income Tax" collapsible="true" columns="2" rendered="{!If(fieldvalues!=true && contactTypeValue=='First Applicant',true,false)}" ID="BG_pGBLOCKsECTION3" >
+                         <apex:outputField value="{!CPprofileObj.CPprofile_IncomeTaxPANGIRNo__c}" Id="BG_iNCOMEtAno"/>
+                  </apex:pageBlockSection> 
+                    <!-----------------------------------------Professional Details Section----------------------------------------------------------------->
+                  <apex:pageBlockSection title="Professional Details" collapsible="true" columns="2" rendered="{!If(fieldvalues!=true && contactTypeValue=='First Applicant',true,false)}" ID="BG_pGBLOCKsECTION4" >
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Company__c}" id="BG_pROFILEcOMPANY"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Designation__c}" ID="BG_dESIGNATION"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_EducationalQualification__c}" Id="BG_eDUCATIONALqUAL"/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Profession__c}" ID="BG_pROFILEpROFE"/><br/>
+                         <apex:outputField value="{!CPprofileObj.CPprofile_Industry__c}" ID="BG_pROFILEiNDTRY"/>
+                  </apex:pageBlockSection>                   
+                  <!--------------------------------This is for Update mirror information of renderinformation with in the same page----------------------->                 
+                 <apex:pageBlockSection columns="2" title="Update Data" rendered="{!(fieldvalues)}" ID="BG_pGBLOCKsECTION5" collapsible="true"  >
+                     
+                     <apex:outputText ><b style="padding-left:145px;font-family: Arial;" >             Current Information In Our System               </b></apex:outputText> 
+                     <apex:outputText ><b style="padding-left:145px;font-family: Arial;" >              New Information To Be Updated                   </b> </apex:outputText>
+                     <!---Read Only Fields-->
+                     
+                     <apex:outputField value="{!CPprofileObj.Name}" styleClass="text1" />
+                     <apex:outputField value="{!CPprofileObj.Name}" styleClass="text" />
+                     <apex:outputField value="{!CPprofileObj.CPprofile_IncomeTaxPANGIRNo__c}" styleClass="text1" />
+                     <apex:outputField value="{!CPprofileObj.CPprofile_IncomeTaxPANGIRNo__c}" styleClass="text1" />                     
+                     <apex:outputField value="{!CPprofileObj.CPprofile_BirthDate__c}" styleClass="text1" />
+                     <apex:pageBlockSectionItem >
+                     <apex:outputLabel >Birthdate</apex:outputLabel>
+                     <c:DateLink >
+                     <apex:inputField value="{!CPprofileObj2.CP_profile_MirrorBirthdate__c}" styleClass="text" label="Birthdate"/>
+                     </c:DateLink>
+                     </apex:pageBlockSectionItem>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Wedding_Anniversary__c}" styleClass="text1" />
+                     <apex:pageBlockSectionItem >
+                     <apex:outputLabel >Wedding Anniversary</apex:outputLabel>
+                     <c:DateLink >
+                     <apex:inputField value="{!CPprofileObj2.CP_Profile_MirrorWedding_Anniversary__c}" styleClass="text" />
+                     </c:DateLink>
+                     </apex:pageBlockSectionItem>
+                                          
+                     <!-- Editable Fields-->
+                     
+                     <apex:outputField value="{!CPprofileObj.CPprofile_EmailForCommunication__c}" styleClass="text1" id="text1"/>
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringEmailForCommunication__c}" Id="BG_mIRROReCOMMU" styleClass="text" />
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Mobile__c}" styleClass="text1"/>
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringMobile__c}"  styleClass="text"/>  
+                     <apex:outputField value="{!CPprofileObj.CPprofile_HouseNumber__c}"/> 
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringHouseNumber__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Street1__c}"/>    
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringStreet1__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Street2__c}"/>
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringStreet2__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Street3__c}"/> 
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringStreet3__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_BillingCity__c}" styleClass="text1"/> 
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringMailing_City__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_BillingPostcode__c}" styleClass="text1" />                    
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringMailingPostCode__c}"  styleClass="text"/>                       
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Company__c}" />                     
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringCompany__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Designation__c}" />
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringDesignation__c}"  styleClass="text"/>
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Industry__c}" /> 
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringIndustry__c}" styleClass="text" /> 
+                     <apex:outputField value="{!CPprofileObj.CPprofile_EducationalQualification__c}" />                     
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirrorEducationalQualification__c}"  styleClass="text"  />                     
+                     <apex:outputField value="{!CPprofileObj.CPprofile_Profession__c}" />                     
+                     <apex:inputField value="{!CPprofileObj2.CPprofile_MirroringProfession__c}"  styleClass="text" />   
+                                         
+                  </apex:pageBlockSection> 
+                  <!------------------------Buttons information searchpage,updatepage---------------------------------------------->
+              
+                    <center>
+                    <apex:commandButton value="  Edit  " action="{!searchPage}" rendered="{!If(fieldvalues!=true && contactTypeValue=='First Applicant',true,false)}" styleClass="profileButton" / > 
+                    <apex:commandButton value="Update" rendered="{!(fieldvalues)}" action="{!updatepage}"     Id="BG_uPDATE1"  styleClass="profileButton"/>
+                    <apex:commandButton value="Cancel" rendered="{!(fieldvalues)}" Id="BG_cANCEL1" action="{!cancelpage}"  styleClass="profileButton"/>
+                    </center>
+                    </apex:outputPanel>    </apex:actionRegion>
+                    
+             </apex:pageBlock>
+              </Apex:outputLabel>
+          </fieldset>            
+       </div> 
+    </body>     
+  </apex:form>
+</apex:page>

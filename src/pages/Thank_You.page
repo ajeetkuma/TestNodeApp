@@ -1,0 +1,40 @@
+<apex:page sidebar="false" showHeader="false">
+    <style>
+        .panelCls{
+            font-size:12px
+        }
+        
+        .bPageBlock{
+           margin-top: 50px !important;
+           margin-left: 150px !important;
+           width: 75%;           
+           padding: 10px !important;
+           //background-color: #ffffff !important;           
+        }
+        
+       
+    </style>
+    
+    <script type = "text/javascript" >
+       // alert("{!$CurrentPage.parameters.oppSurveyId}");
+      <!--For disabling back button functionality-->
+       function preventBack(){
+           window.history.forward();
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload=function(){
+           null
+        };
+    </script>
+  <apex:pageBlock >
+        <apex:outputPanel style="font-size=16px">
+            Thank you for your time. It might interest you to know that you are now eligible for rewards under our program ‘Brigade Communities’ where you can refer your friends to a Brigade property and earn 0.5% of the value of the property they book. You needn’t have booked a Brigade property yourself to be eligible for this reward. This amount becomes 1% if you also have booked a Brigade property and you refer your friends to book one for themselves.Click <a href='http://www.brigadegroup.com/residential/referrals'>here</a> to refer!                                  
+            <br/><br/>Hoping to see you as a proud owner of a Brigade home soon!<br/><br/>
+            
+            Warm Regards<br/><br/>            
+            Team Brigade<br/><br/>            
+            1800 102 9977<br/><br/>            
+            <a href="http://www.brigadegroup.com/" target="brigadegroup">www.brigadegroup.com</a>
+        </apex:outputPanel>
+    </apex:pageBlock>
+</apex:page>
